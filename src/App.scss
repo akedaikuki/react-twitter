@@ -1,0 +1,128 @@
+/* CSS reset */
+@import url("https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css");
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700&family=Noto+Sans+TC&family=Noto+Sans:ital,wght@0,600;0,700;0,800;1,600&display=swap');
+:root {
+  /* brand */
+  --main_orange: #ff6600;
+  --main_white: #ffffff;
+  --main_primary: #0062ff;
+  --main_secondary: #6c757d;
+  --main_success: #3dd598;
+  --main_warning: #ffc542;
+  --main_error: #fc5a5a;
+  --main_newtweet: #50b5ff;
+  --amin_tweetssuccess: #82c43c;
+  /* text */
+  --main_text: #171725;
+  --account_text-in-pop: #92929d;
+  --account_text-in-main: var(--main_secondary);
+  --textarea-placeholder: var(--main_secondary);
+
+  /* component */
+  --input-scale_light-gray: #f5f8fa;
+  --input-border_gray: #657786;
+  --input-label_gray: #696974;
+  --input-placeholder_gray: #b5b5be;
+  --avatar-scale_gray: #c4c4c4;
+  --scale_light-gray: #fafafb;
+  --border_gray: #e6ecf0;
+  --nav-unactive_gray: #44444f;
+  --tab-unactive_gray: var(--input-border_gray);
+  --reply-connect-line: #ccd6dd;
+  --card-background_gray: #f6f7f8;
+  --admin-delete-icon_gray: var(--input-label_gray);
+}
+
+html,
+body {
+  height: 100%;
+  font-family: "Noto Sans TC", "Lato", serif;
+}
+
+html {
+  overflow: -moz-hidden-unscrollable;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+body {
+  -ms-overflow-style: none;
+  height: 100%;
+  width: 100vw;
+  overflow: auto;
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+/* 共用Style */
+/* 字體樣式-heading */
+h1 {
+  font-size: 68px;
+  font-weight: 700;
+  line-height: 78px;
+}
+
+h2 {
+  font-size: 42px;
+  font-weight: 700;
+  line-height: 52px;
+}
+
+h3 {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 26px;
+}
+
+h4 {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 26px;
+}
+
+h5 {
+  font-size: 19px;
+  font-weight: 900;
+  line-height: 26px;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* p {
+  word-break: break-all;
+} */
+
+.App {
+  display: flex;
+  justify-content: center;
+}
+
+img {
+  margin: 15px 20px;
+  margin-right: 0;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 8px;
+  // outline: 3px solid tomato;
+}
+
+.account {
+  color: var(--account_text-in-pop);
+}
+
+/* mainpage */
+.main {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: space-evenly;
+  box-sizing: border-box;
+}
