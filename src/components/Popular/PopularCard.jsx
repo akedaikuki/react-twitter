@@ -43,18 +43,11 @@ const FollowBtnBox = styled.div`
   justify-content: flex-end;
 `;
 
-const PopularCard = ({
-  avatar,
-  name,
-  account,
-  isFollowed,
-  onBtnClicked,
-  userId,
-}) => {
+function PopularCard({ key, account, name, avatar, isFollowed, onBtnClicked }) {
   return (
     <>
       <PopularCardstyled>
-        <img src={avatar} alt="other User's avatar" id={userId} />
+        <img src={avatar} alt="other User's avatar" id={key} />
         <div className="user_text">
           <p className="username">{name}</p>
           <p className="useraccount">@{account}</p>
@@ -71,6 +64,6 @@ const PopularCard = ({
       <div className="line"></div>
     </>
   );
-};
+}
 
 export default PopularCard;
