@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { TurnbackIcon, LikedIcon, LikeIcon, ReplyIcon } from "../assets/icons";
-import TweetReplyCard from "../components/profile/TweetReplyCard";
+import TweetReplyCard from "../components/Cards/TweetReplyCard";
 import { PageStyle, UserPageConainer } from "../components/common/page.styled";
 import { styled } from "styled-components";
 import user1 from "../API/user1";
