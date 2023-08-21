@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { styled } from "styled-components";
-import TweetsCard from "../components/profile/TweetsCard";
+import TweetsCard from "../components/Cards/TweetsCard";
 import { StyledButton } from "../components/common/button.styled";
 import { PageStyle } from "../components/common/page.styled";
 import user1 from "../API/user1";

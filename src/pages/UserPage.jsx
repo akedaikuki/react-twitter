@@ -10,7 +10,7 @@ import {
   UserInfoText,
 } from "../components/common/page.styled";
 // import UserModal from "../components/profile/UserModal";
-import TweetsCard from "../components/profile/TweetsCard";
+import TweetsCard from "../components/Cards/TweetsCard";
 import user1 from "../API/user1";
 import users from "../API/users";
 function UserPage() {
