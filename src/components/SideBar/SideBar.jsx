@@ -94,7 +94,7 @@ function Navbar() {
         <LinkStyle>
           <NavLink
             className="user_icon"
-            to={"/user"}
+            to={"/user/:id"}
             style={({ isActive }) => ({ color: isActive && "#FF6600" })}
           >
             {({ isActive }) =>

@@ -2,7 +2,7 @@ import React from "react";
 import SideBar from "../components/SideBar/SideBar";
 import { Outlet } from "react-router-dom";
 
-import Popular from "../components/popular";
+import Popular from "../components/Popular";
 
 function MainPage() {
   return (
