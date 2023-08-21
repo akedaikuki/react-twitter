@@ -1,0 +1,191 @@
+const users = [
+  {
+    status: "success",
+    data: {
+      user: [
+        {
+          id: 1,
+          account: "Ray_OKon",
+          name: "Andrew Von",
+          email: "Alejandrin.Schowalter@hotmail.com",
+          avatar:
+            "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/957.jpg",
+          coverImage: "https://loremflickr.com/640/480/nature?lock=87605",
+          introduction: "Assumenda debitis eaque ea laboriosam.",
+        },
+      ],
+      Tweets: [
+        {
+          description: "Tenetur laudantium officiis harum.",
+          createdAt: "2010-11-20T17:48:45.799Z",
+          updatedAt: "2019-12-29T13:07:52.558Z",
+          tweetsTotal: 630,
+        },
+      ],
+      repliedTweets: [
+        {
+          description:
+            "Perferendis excepturi nemo atque nisi maiores ipsa aspernatur.",
+          createdAt: "2019-01-11T21:39:26.516Z",
+          updatedAt: "2019-12-30T09:04:07.559Z",
+          repliedTotal: 587,
+        },
+      ],
+      likes: [{ likesTotal: 4086 }],
+      followings: [{ followingTotal: 2441 }],
+      followers: [{ followerTotal: 4285 }],
+    },
+  },
+  {
+    status: "success",
+    data: {
+      user: [
+        {
+          id: 2,
+          account: "Whitney48",
+          name: "Ms. Martha Gusikowski",
+          email: "Nikki.Legros48@gmail.com",
+          avatar:
+            "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/502.jpg",
+          coverImage: "https://loremflickr.com/640/480/nature?lock=12487",
+          introduction: "Quae laboriosam ex rem dolore aliquid nulla quia.",
+        },
+      ],
+      Tweets: [
+        {
+          description:
+            "Error architecto quia numquam voluptates distinctio et maxime expedita.",
+          createdAt: "2013-09-19T12:21:58.323Z",
+          updatedAt: "2019-12-22T23:56:39.753Z",
+          tweetsTotal: 96,
+        },
+      ],
+      repliedTweets: [
+        {
+          description:
+            "Ipsum omnis enim ducimus repellendus perferendis porro labore repellat.",
+          createdAt: "2018-04-15T19:53:50.995Z",
+          updatedAt: "2019-12-23T10:46:16.525Z",
+          repliedTotal: 549,
+        },
+      ],
+      likes: [{ likesTotal: 5146 }],
+      followings: [{ followingTotal: 1182 }],
+      followers: [{ followerTotal: 3727 }],
+    },
+  },
+  {
+    status: "success",
+    data: {
+      user: [
+        {
+          id: 3,
+          account: "Nona_Ondricka",
+          name: "Bert Gulgowski",
+          email: "Carissa10@hotmail.com",
+          avatar:
+            "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/50.jpg",
+          coverImage: "https://loremflickr.com/640/480/nature?lock=65952",
+          introduction:
+            "Odit sequi praesentium natus quidem accusamus eligendi.",
+        },
+      ],
+      Tweets: [
+        {
+          description:
+            "Quisquam nisi suscipit delectus perspiciatis officiis reiciendis.",
+          createdAt: "2016-06-08T09:21:40.116Z",
+          updatedAt: "2019-12-29T17:35:48.097Z",
+          tweetsTotal: 302,
+        },
+      ],
+      repliedTweets: [
+        {
+          description: "Veniam totam cupiditate tempore quo tenetur quasi.",
+          createdAt: "2014-12-04T09:06:24.032Z",
+          updatedAt: "2019-12-25T07:08:17.503Z",
+          repliedTotal: 221,
+        },
+      ],
+      likes: [{ likesTotal: 6245 }],
+      followings: [{ followingTotal: 3042 }],
+      followers: [{ followerTotal: 7935 }],
+    },
+  },
+  {
+    status: "success",
+    data: {
+      user: [
+        {
+          id: 4,
+          account: "Otis56",
+          name: "Mrs. Sue Schneider",
+          email: "Dayton73@hotmail.com",
+          avatar:
+            "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/81.jpg",
+          coverImage: "https://loremflickr.com/640/480/nature?lock=68712",
+          introduction: "Et tempore dolore.",
+        },
+      ],
+      Tweets: [
+        {
+          description: "Modi culpa pariatur.",
+          createdAt: "2012-12-27T09:20:55.325Z",
+          updatedAt: "2019-12-22T22:45:52.375Z",
+          tweetsTotal: 935,
+        },
+      ],
+      repliedTweets: [
+        {
+          description: "Quasi harum delectus dolor.",
+          createdAt: "2019-07-11T21:19:11.220Z",
+          updatedAt: "2019-12-30T18:38:37.077Z",
+          repliedTotal: 154,
+        },
+      ],
+      likes: [{ likesTotal: 7251 }],
+      followings: [{ followingTotal: 9420 }],
+      followers: [{ followerTotal: 7550 }],
+    },
+  },
+  {
+    status: "success",
+    data: {
+      user: [
+        {
+          id: 5,
+          account: "Thaddeus11",
+          name: "Edward Koch",
+          email: "Audreanne.Bauch@yahoo.com",
+          avatar:
+            "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/387.jpg",
+          coverImage: "https://loremflickr.com/640/480/nature?lock=15122",
+          introduction:
+            "Quae laudantium corporis libero velit nemo fugit maxime illum libero.",
+        },
+      ],
+      Tweets: [
+        {
+          description:
+            "Ratione expedita facere nihil placeat quis cum explicabo.",
+          createdAt: "2019-06-28T14:49:36.723Z",
+          updatedAt: "2019-12-26T06:19:30.079Z",
+          tweetsTotal: 950,
+        },
+      ],
+      repliedTweets: [
+        {
+          description: "Voluptate mollitia in aliquam natus ad eos.",
+          createdAt: "2014-10-16T17:27:38.169Z",
+          updatedAt: "2019-12-24T06:20:15.437Z",
+          repliedTotal: 352,
+        },
+      ],
+      likes: [{ likesTotal: 5563 }],
+      followings: [{ followingTotal: 2990 }],
+      followers: [{ followerTotal: 1656 }],
+    },
+  },
+];
+
+export default users;
