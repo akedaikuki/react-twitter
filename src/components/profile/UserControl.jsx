@@ -3,10 +3,15 @@ import clsx from "clsx";
 import TweetReplyCard from "../Cards/TweetReplyCard"
 import TweetsCard from "../Cards/TweetsCard"
 import { StyledTabbar } from "../../components/common/tab.styled";
+import user1 from "../../API/user1";
+import users from "../../API/users";
+
 
 function UserControl() {
   const [activeTab, setActiveTab] = useState("tweet");
   const [panelData, setPanelData] = useState([]);
+  const [userInfo, setUserInfo] = useState(user1);
+  const [usersInfo, setUsersInfo] = useState(users);
   return (
     <div className="user-panel">
       <div active={"active"}>
@@ -16,7 +21,7 @@ function UserControl() {
       <StyledTabbar>
         <button
           className={
-            "user-action-tab" + clsx(" ", { active: activeTab === "tweet" })
+            "userTab" + clsx(" ", { active: activeTab === "tweet" })
           }
           onClick={() => {
             if (activeTab !== "tweet") {
@@ -29,7 +34,7 @@ function UserControl() {
         </button>
         <button
           className={
-            "user-action-tab" + clsx(" ", { active: activeTab === "reply" })
+            "userTab" + clsx(" ", { active: activeTab === "reply" })
           }
           onClick={() => {
             if (activeTab !== "reply") {
@@ -42,7 +47,7 @@ function UserControl() {
         </button>
         <button
           className={
-            "user-action-tab" + clsx(" ", { active: activeTab === "like" })
+            "userTab" + clsx(" ", { active: activeTab === "like" })
           }
           onClick={() => {
             if (activeTab !== "like") {
@@ -55,69 +60,55 @@ function UserControl() {
         </button>
       </StyledTabbar>
       <div className="tweet-list">
-        {panelData.map((item) => {
+        {usersInfo.map((usersInfo) => {
           if (activeTab === "reply") {
             return (
               <TweetReplyCard
-                key={item.id}
-                userId={item.UserId}
-                avatar={item.User.avatar}
-                name={item.User.name}
-                account={item.User.account}
-                createdAt={item.createdAt}
-                replyTo={item.Tweet.User.account}
-                comment={item.comment}
+              key={usersInfo.data.user[0].id}
+              account={usersInfo.data.user[0].account}
+              name={usersInfo.data.user[0].name}
+              avatar={usersInfo.data.user[0].avatar}
+              tweets={usersInfo.data.Tweets[0].description}
+              repliedTweets={usersInfo.data.repliedTweets[0].description}
+              repliedTotal={usersInfo.data.repliedTweets[0].repliedTotal}
+              likesTotal={usersInfo.data.likes[0].likesTotal}
+              userId={usersInfo.data.user[0].id}
+              
+              user1account={userInfo[0].data.user[0].account}
               />
             );
           } else if (activeTab === "tweet") {
             return (
               <TweetsCard
-                key={item.id}
-                userId={item.User.id}
-                tweetId={item.id}
-                personalInfo={personalInfo}
-                avatar={item.User.avatar}
-                name={item.User.name}
-                account={item.User.account}
-                createdAt={item.createdAt}
-                description={item.description}
-                replyCount={item.replyCount}
-                likeCount={item.likeCount}
-                isLiked={item.isLiked}
-                setActive={setActive}
-                setReplyToData={setReplyToData}
-                replyTweetId={replyTweetId}
-                setReplyTweetId={setReplyTweetId}
+              key={usersInfo.data.user[0].id}
+              account={usersInfo.data.user[0].account}
+              name={usersInfo.data.user[0].name}
+              avatar={usersInfo.data.user[0].avatar}
+              tweets={usersInfo.data.Tweets[0].description}
+              repliedTotal={usersInfo.data.repliedTweets[0].repliedTotal}
+              likesTotal={usersInfo.data.likes[0].likesTotal}
+              userId={usersInfo.data.user[0].id}
               />
             );
           } else {
             //使用者喜歡的內容
             return (
               <TweetsCard
-                key={item.id}
-                tweetId={item.TweetId}
-                userId={item.Tweet.User.id}
-                personalInfo={personalInfo}
-                avatar={item.Tweet.User.avatar}
-                name={item.Tweet.User.name}
-                account={item.Tweet.User.account}
-                createdAt={item.Tweet.createdAt}
-                description={item.Tweet.description}
-                replyCount={item.Tweet.replyCount}
-                likeCount={item.Tweet.likeCount}
-                isLiked={item.Tweet.isLiked}
-                setActive={setActive}
-                setReplyToData={setReplyToData}
-                setPanelData={setPanelData}
-                replyTweetId={replyTweetId}
-                setReplyTweetId={setReplyTweetId}
+              key={usersInfo.data.user[0].id}
+              account={usersInfo.data.user[0].account}
+              name={usersInfo.data.user[0].name}
+              avatar={usersInfo.data.user[0].avatar}
+              tweets={usersInfo.data.Tweets[0].description}
+              repliedTotal={usersInfo.data.repliedTweets[0].repliedTotal}
+              likesTotal={usersInfo.data.likes[0].likesTotal}
+              userId={usersInfo.data.user[0].id}
                 activeTab={activeTab}
               />
             );
           }
         })}
       </div>
-      {/* <PostTweets arr={tweetsData} /> */}
+     
     </div>
   );
 }

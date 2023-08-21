@@ -11,11 +11,14 @@ import {
 } from "../components/common/page.styled";
 // import UserModal from "../components/profile/UserModal";
 import TweetsCard from "../components/Cards/TweetsCard";
+import UserControl from "../components/profile/UserControl";
 import user1 from "../API/user1";
-import users from "../API/users";
+// import users from "../API/users";
+
+
 function UserPage() {
   const [userInfo, setUserInfo] = useState(user1);
-  const [usersInfo, setUsersInfo] = useState(users);
+  // const [usersInfo, setUsersInfo] = useState(users);
   const navigate = useNavigate();
   // console.log(users[0].username);
   return (
@@ -79,22 +82,26 @@ function UserPage() {
         </div>
 
         <StyledTabbar>
-          <button className={"userTab"}>推文</button>
-          <button className={"userTab"}>回覆</button>
-          <button className={"userTab"}>喜歡的內容</button>
+        <UserControl />
+          {/* <button className={"userTab"}>推文</button> */}
+          {/* <button className={"userTab"}>回覆</button> */}
+          {/* <button className={"userTab"}>喜歡的內容</button> */}
         </StyledTabbar>
-        {usersInfo.map((usersInfo) => (
-          <TweetsCard
-            key={usersInfo.data.user[0].id}
-            account={usersInfo.data.user[0].account}
-            name={usersInfo.data.user[0].name}
-            avatar={usersInfo.data.user[0].avatar}
-            tweets={usersInfo.data.Tweets[0].description}
-            repliedTotal={usersInfo.data.repliedTweets[0].repliedTotal}
-            likesTotal={usersInfo.data.likes[0].likesTotal}
-            userId={usersInfo.data.user[0].id}
-          />
-        ))}
+        {/* {usersInfo.map((usersInfo) => ( */}
+          
+          {/* // <TweetsCard
+          //   key={usersInfo.data.user[0].id}
+          //   account={usersInfo.data.user[0].account}
+          //   name={usersInfo.data.user[0].name}
+          //   avatar={usersInfo.data.user[0].avatar}
+          //   tweets={usersInfo.data.Tweets[0].description}
+          //   repliedTotal={usersInfo.data.repliedTweets[0].repliedTotal}
+          //   likesTotal={usersInfo.data.likes[0].likesTotal}
+          //   userId={usersInfo.data.user[0].id}
+          // /> */}
+
+
+        {/* ))} */}
       </PageStyle>
     </UserPageConainer>
   );
