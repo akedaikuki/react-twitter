@@ -3,7 +3,7 @@ import MainPage from "./pages/MainPage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import UserPage from "./pages/UserPage";
-// import TweetPage from "./pages/TweetPage";
+import TweetPage from "./pages/TweetPage";
 // import UserFollowPage from "./pages/UserFollowPage";
 // import OutuserPage from "./pages/OtherUser/OtherUserPage";
 // import SettingPage from "./pages/SettingPage";
@@ -14,10 +14,10 @@ function App() {
         <Routes>
           <Route path="/" element={<MainPage />}>
             <Route index element={<HomePage />} />
-            <Route path="user" element={<UserPage />} />
-            {/* <Route path="user/tweet" element={<TweetPage />} /> */}
-            {/* <Route path="otheruser" element={<OutuserPage />} /> */}
-            {/* <Route path="user/userfollow" element={<UserFollowPage />} /> */}
+            <Route path="user/:id" element={<UserPage />} />
+            <Route path="user/:id/tweets" element={<TweetPage />} />
+            {/* <Route path="otheruser/:id" element={<OutuserPage />} /> */}
+            {/* <Route path="user/:id/follow" element={<UserFollowPage />} /> */}
             {/* <Route path="setting" element={<SettingPage />} /> */}
           </Route>
         </Routes>
