@@ -10,7 +10,7 @@ import { Outlet } from "react-router-dom";
 
 // import SeetingPage from "./SeetingPage";
 
-// import Popular from "../components/Popular";
+import Popular from "../components/Popular";
 
 function MainPage() {
   return (
@@ -24,7 +24,7 @@ function MainPage() {
       {/* <OutuserFollowPage /> */}
       {/* <TweetPage /> */}
       {/* <SeetingPage /> */}
-      {/* <Popular /> */}
+      <Popular />
     </div>
   );
 }
