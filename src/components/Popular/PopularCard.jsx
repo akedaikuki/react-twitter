@@ -25,6 +25,7 @@ const PopularCardstyled = styled.li`
     white-space: nowrap;
     text-overflow: ellipsis;
     color: var(--main_text);
+    cursor: pointer;
   }
   .useraccount {
     font-size: 14px;
@@ -55,7 +56,7 @@ function PopularCard({ key, account, name, avatar, isFollowed, onBtnClicked }) {
         <FollowBtnBox>
           <StyledButton
             className={"following_btn" + clsx(" ", { active: isFollowed })}
-            onClick={onBtnClicked}
+            // onClick={onBtnClicked}
           >
             {isFollowed ? "正在跟隨" : "跟隨"}
           </StyledButton>

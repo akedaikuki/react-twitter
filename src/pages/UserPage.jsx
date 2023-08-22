@@ -10,11 +10,10 @@ import {
   UserInfoText,
 } from "../components/common/page.styled";
 // import UserModal from "../components/profile/UserModal";
-import TweetsCard from "../components/Cards/TweetsCard";
+// import TweetsCard from "../components/Cards/TweetsCard";
 import UserControl from "../components/profile/UserControl";
 import user1 from "../API/user1";
 // import users from "../API/users";
-
 
 function UserPage() {
   const [userInfo, setUserInfo] = useState(user1);
@@ -34,7 +33,6 @@ function UserPage() {
           <div className="header_info">
             <h5 className="username">{userInfo[0].data.user[0].name}</h5>
             <p className="tweet_amount">
-              {" "}
               {userInfo[0].data.Tweets[0].tweetsTotal} 推文
             </p>
           </div>
@@ -82,14 +80,14 @@ function UserPage() {
         </div>
 
         <StyledTabbar>
-        <UserControl />
+          <UserControl />
           {/* <button className={"userTab"}>推文</button> */}
           {/* <button className={"userTab"}>回覆</button> */}
           {/* <button className={"userTab"}>喜歡的內容</button> */}
         </StyledTabbar>
         {/* {usersInfo.map((usersInfo) => ( */}
-          
-          {/* // <TweetsCard
+
+        {/* // <TweetsCard
           //   key={usersInfo.data.user[0].id}
           //   account={usersInfo.data.user[0].account}
           //   name={usersInfo.data.user[0].name}
@@ -99,7 +97,6 @@ function UserPage() {
           //   likesTotal={usersInfo.data.likes[0].likesTotal}
           //   userId={usersInfo.data.user[0].id}
           // /> */}
-
 
         {/* ))} */}
       </PageStyle>
