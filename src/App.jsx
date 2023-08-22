@@ -5,7 +5,7 @@ import HomePage from "./pages/HomePage";
 import UserPage from "./pages/UserPage";
 import TweetPage from "./pages/TweetPage";
 // import UserFollowPage from "./pages/UserFollowPage";
-// import OutuserPage from "./pages/OtherUser/OtherUserPage";
+import OutuserPage from "./pages/OtherUser/OtherUserPage";
 // import SettingPage from "./pages/SettingPage";
 function App() {
   return (
@@ -16,7 +16,7 @@ function App() {
             <Route index element={<HomePage />} />
             <Route path="user/:id" element={<UserPage />} />
             <Route path="user/:id/tweets" element={<TweetPage />} />
-            {/* <Route path="otheruser/:id" element={<OutuserPage />} /> */}
+            <Route path="otheruser/:id" element={<OutuserPage />} />
             {/* <Route path="user/:id/follow" element={<UserFollowPage />} /> */}
             {/* <Route path="setting" element={<SettingPage />} /> */}
           </Route>
