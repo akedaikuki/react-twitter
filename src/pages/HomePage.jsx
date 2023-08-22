@@ -39,7 +39,7 @@ const Tweettextbox = styled.div`
       margin-left: 8px;
       font-size: 18px;
       font-weight: 700;
-      line-height: 26px;
+      line-height: 15px;
       /* color: var(--textarea-placeholder); */
     }
     :focus {

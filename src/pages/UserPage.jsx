@@ -18,6 +18,7 @@ import user1 from "../API/user1";
 function UserPage() {
   const [userInfo, setUserInfo] = useState(user1);
   // const [usersInfo, setUsersInfo] = useState(users);
+  const [editActive, setEditActive] = useState(false);
   const navigate = useNavigate();
   // console.log(users[0].username);
   return (
@@ -54,7 +55,7 @@ function UserPage() {
             </div>
 
             <div className="editInfo">{/* <UserModal /> */}</div>
-            <div className="btnBox">
+            <div className="btnBox" style={{ justifyContent: "flex-end" }}>
               <StyledButton className="editBtn active">
                 編輯個人資料
               </StyledButton>
