@@ -51,7 +51,10 @@ const LoginPage = () => {
 
             <Link to="/signup">
               <AuthLinkText>註冊</AuthLinkText>
-            </Link>
+            </Link>{'．'}
+            <Link to="/signup">
+               <AuthLinkText>後台登入</AuthLinkText>
+             </Link>
         </AuthContainer>
     )
   };

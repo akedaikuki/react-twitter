@@ -9,6 +9,7 @@ const SignUpPage = () => {
     const [account, setAccount] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [checkPassword, setCheckPassword] = useState('');
     const navigate = useNavigate('');
 
     const handleClick = async () => {
@@ -19,6 +20,9 @@ const SignUpPage = () => {
             return
         }
         if (password.length === 0) {
+            return
+        }
+        if (checkPassword.length === 0) {
             return
         }
     }
@@ -57,6 +61,15 @@ const SignUpPage = () => {
                   value={password}
                   onChange={(passwordInputValue) => setPassword 
                     (passwordInputValue)}
+                />
+            </AuthInputContainer>
+            <AuthInputContainer>
+                <AuthInput
+                  label="密碼確認"
+                  placeholder="請再次確認密碼"
+                  value={checkPassword}
+                  onChange={(checkPasswordInputValue) => setCheckPassword 
+                    (checkPasswordInputValue)}
                 />
             </AuthInputContainer>
             <AuthButton onClick={handleClick}>註冊</AuthButton>
