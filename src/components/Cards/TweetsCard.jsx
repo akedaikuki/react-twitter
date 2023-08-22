@@ -15,7 +15,7 @@ function TweetsCard({
   return (
     <>
       {/* users */}
-      <TweetCardContainer className="tweetCardContainer">
+      <TweetCardContainer className="tweetCardContainer" id={key}>
         <div className="userAvatar" id={key}>
           <img src={avatar} alt="other User's avatar" />
         </div>
