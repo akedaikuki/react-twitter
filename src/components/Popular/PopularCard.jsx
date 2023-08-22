@@ -3,6 +3,7 @@ import React from "react";
 import { StyledButton } from "../common/button.styled";
 import { styled } from "styled-components";
 import clsx from "clsx";
+import { Link } from "react-router-dom";
 
 const PopularCardstyled = styled.li`
   display: flex;
@@ -44,15 +45,25 @@ const FollowBtnBox = styled.div`
   justify-content: flex-end;
 `;
 
-function PopularCard({ key, account, name, avatar, isFollowed, onBtnClicked }) {
+function PopularCard({
+  userId,
+  key,
+  account,
+  name,
+  avatar,
+  isFollowed,
+  onBtnClicked,
+}) {
   return (
     <>
       <PopularCardstyled>
-        <img src={avatar} alt="other User's avatar" id={key} />
-        <div className="user_text">
+        <Link to={`/otheruser/:id/?id=${userId}`}>
+          <img src={avatar} alt="other User's avatar" id={key} />
+        </Link>
+        <Link className="user_text" to={`/otheruser/:id/?id=${userId}`}>
           <p className="username">{name}</p>
           <p className="useraccount">@{account}</p>
-        </div>
+        </Link>
         <FollowBtnBox>
           <StyledButton
             className={"following_btn" + clsx(" ", { active: isFollowed })}

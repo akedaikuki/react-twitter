@@ -34,6 +34,7 @@ function PopularList() {
       <ul className="popularList">
         {usersInfo.map((usersInfo) => (
           <PopularCard
+            useId={usersInfo.data.user[0].id}
             key={usersInfo.data.user[0].id}
             avatar={usersInfo.data.user[0].avatar}
             userId={usersInfo.data.user[0].id}

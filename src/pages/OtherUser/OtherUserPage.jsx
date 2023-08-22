@@ -57,7 +57,7 @@ function OtherUserPage() {
             </div>
 
             <div className="editInfo">{/* <UserModal /> */}</div>
-            <div className="btnBox">
+            <div className="btnBox" style={{ justifyContent: "space-around" }}>
               <div className="msgIcon">
                 <MsgIcon />
               </div>

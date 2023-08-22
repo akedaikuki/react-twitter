@@ -1,5 +1,6 @@
 import React from "react";
 import { TweetCardContainer } from "../common/tweet.styled";
+import { Link } from "react-router-dom";
 
 function TweetReplyList({
   key,
@@ -17,16 +18,20 @@ function TweetReplyList({
     <>
       {/* reoly */}
       <TweetCardContainer className="tweetCardContainer" id={key}>
-        <div className="userAvatar" id={key}>
-          <img src={avatar} alt="avatar" />
-        </div>
+        <Link
+          className="userAvatar"
+          to={`/otheruser/:id/?id=${userId}`}
+          id={key}
+        >
+          <img src={avatar} alt="avatar" style={{ marginTop: "0" }} />
+        </Link>
         <div className="right">
-          <div className="name_link">
+          <Link className="name_link" to={`/otheruser/:id/?id=${userId}`}>
             <span className="tweetname">{name}</span>
             <span className="tweetaccount">@{account}</span>
 
             <span className="time"> · 13 小時</span>
-          </div>
+          </Link>
 
           <p className="reply_to">
             回覆 <span>@{user1account}</span>
