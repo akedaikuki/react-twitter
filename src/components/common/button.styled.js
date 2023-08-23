@@ -12,7 +12,8 @@ export const StyledButton = styled.button`
   cursor: pointer;
 
   &:hover {
-    box-shadow: 2px 2px 5px var(--scale_light-gray);
+    color: var(--main_white);
+    background-color: var(--main_orange);
   }
   &.active {
     color: var(--main_white);
@@ -32,7 +33,6 @@ export const StyledNavbarButton = styled.button`
   cursor: pointer;
 
   &:hover {
-    transform: translate(1px, 1px);
-    box-shadow: 2px 2px 5px var(--scale_light-gray);
+    background-color: var(--btn-hover-bg);
   }
 `;

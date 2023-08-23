@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import clsx from "clsx";
 import { Link } from "react-router-dom";
 import { TweetCardContainer } from "../common/tweet.styled";
@@ -18,7 +18,9 @@ const NameLink = styled.div`
   margin-bottom: 8px;
 `;
 
-function UserFollowCard({ userId, avatar, name, introduction, isFollowed }) {
+function UserFollowCard({ userId, avatar, name, introduction }) {
+  const [isFollowed, setIsFollowed] = useState(false);
+
   return (
     <>
       {/* follow1 */}
@@ -35,6 +37,7 @@ function UserFollowCard({ userId, avatar, name, introduction, isFollowed }) {
               <StyledButton
                 className={"following_btn" + clsx(" ", { active: isFollowed })}
                 // onClick={onBtnClicked}
+                onClick={() => setIsFollowed(!isFollowed)}
               >
                 {isFollowed ? "正在跟隨" : "跟隨"}
               </StyledButton>

@@ -17,12 +17,8 @@ function TweetsCard({
   return (
     <>
       {/* users */}
-      <TweetCardContainer className="tweetCardContainer" id={key}>
-        <Link
-          className="userAvatar"
-          to={`/otheruser/:id/?id=${userId}`}
-          id={key}
-        >
+      <TweetCardContainer className="tweetCardContainer" id={userId}>
+        <Link className="userAvatar" to={`/otheruser/:id/?id=${userId}`}>
           <img
             src={avatar}
             alt="other User's avatar"
@@ -37,9 +33,9 @@ function TweetsCard({
             <span className="time">・3小時</span>
           </Link>
 
-          <div className="tweetContent_link">
+          <Link className="tweetContent_link" to={`/user/:id/tweets`}>
             <p className="tweetP">{tweets}</p>
-          </div>
+          </Link>
           <div className="user_action">
             <span className="replyIcon">
               <ReplyIcon />

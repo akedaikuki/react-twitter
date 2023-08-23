@@ -31,6 +31,7 @@
   --reply-connect-line: #ccd6dd;
   --card-background_gray: #f6f7f8;
   --admin-delete-icon_gray: var(--input-label_gray);
+  --btn-hover-bg: #ff7d26;
 }
 
 html,
@@ -55,10 +56,15 @@ body {
 }
 
 ::-webkit-scrollbar {
-  width: 0px;
-  background: transparent;
+  width: 8px;
+  background-color: #FAFAFA;
 }
 
+::-webkit-scrollbar-thumb {
+  background-color: #C1C1C1;
+  border-radius: 4px;
+  border: 2px solid #FAFAFA;
+}
 /* 共用Style */
 /* 字體樣式-heading */
 h1 {

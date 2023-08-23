@@ -9,7 +9,7 @@ import {
   UserInfoPicture,
   UserInfoText,
 } from "../components/common/page.styled";
-// import UserModal from "../components/profile/UserModal";
+import UserModal from "../components/profile/UserModal";
 // import TweetsCard from "../components/Cards/TweetsCard";
 import UserControl from "../components/profile/UserControl";
 import user1 from "../API/user1";
@@ -21,8 +21,20 @@ function UserPage() {
   const [editActive, setEditActive] = useState(false);
   const navigate = useNavigate();
   // console.log(users[0].username);
+
+  const handleOpen = () => {
+    setEditActive(true);
+  };
+  const handleClose = () => {
+    setEditActive(false);
+  };
+
   return (
-    <UserPageConainer className="userPageConainer">
+    <UserPageConainer
+      className="userPageConainer"
+      active={editActive}
+      onClose={handleClose}
+    >
       <PageStyle>
         <header>
           <TurnbackIcon
@@ -54,11 +66,11 @@ function UserPage() {
               />
             </div>
 
-            <div className="editInfo">{/* <UserModal /> */}</div>
+            <div className="editInfo" onClick={handleOpen}>
+              <UserModal />
+            </div>
             <div className="btnBox" style={{ justifyContent: "flex-end" }}>
-              <StyledButton className="editBtn active">
-                編輯個人資料
-              </StyledButton>
+              <StyledButton className="editBtn ">編輯個人資料</StyledButton>
             </div>
           </UserInfoPicture>
           <UserInfoText className="userInfoText">
