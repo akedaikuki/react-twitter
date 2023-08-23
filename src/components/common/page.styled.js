@@ -37,8 +37,12 @@ export const PageStyle = styled.div`
 
 export const UserPageConainer = styled.div`
   width: 600px;
-  margin-right: 10px;
-  margin-left: 10px;
+  /* flex: 1 1 0; */
+  border: 1px solid var(--border_gray);
+  overflow-y: auto;
+  overflow-x: hidden;
+  /* margin-right: 10px; */
+  /* margin-left: 10px; */
 `;
 export const UserInfoPicture = styled.div`
   .coverImg {

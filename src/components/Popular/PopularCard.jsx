@@ -73,7 +73,6 @@ function PopularCard({
           </StyledButton>
         </FollowBtnBox>
       </PopularCardstyled>
-      <div className="line"></div>
     </>
   );
 }

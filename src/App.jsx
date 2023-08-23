@@ -18,7 +18,8 @@ function App() {
             <Route path="user/:id" element={<UserPage />} />
             <Route path="user/:id/tweets" element={<TweetPage />} />
             <Route path="otheruser/:id" element={<OutuserPage />} />
-            <Route path="user/:id/follow" element={<UserFollowPage />} />
+            <Route path="user/:id/follower" element={<UserFollowPage />} />
+            <Route path="user/:id/following" element={<UserFollowPage />} />
             {/* <Route path="setting" element={<SettingPage />} /> */}
           </Route>
 

@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useId, useState } from "react";
+
 import clsx from "clsx";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { TurnbackIcon, MsgIcon, NotiIcon } from "../../assets/icons";
 import { StyledTabbar } from "../../components/common/tab.styled";
 import { PageStyle } from "../../components/common/page.styled";
@@ -16,12 +17,17 @@ import UserControl from "../../components/profile/UserControl";
 import users from "../../API/users";
 
 function OtherUserPage() {
-  const [usersInfo, setUsersInfo] = useState(users[3]);
+  const [usersInfo, setUsersInfo] = useState(users[0]);
   const [isFollowed, setIsFollowed] = useState(false);
   const navigate = useNavigate();
 
+  const useId = useParams();
+
   return (
-    <UserPageConainer className="userPageConainer">
+    <UserPageConainer
+      className="userPageConainer"
+      useId={usersInfo.data.user[0].id}
+    >
       {/* <div className="step_back" /> */}
 
       <PageStyle className="userPageStyle">
