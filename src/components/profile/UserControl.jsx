@@ -5,11 +5,13 @@ import TweetsCard from "../Cards/TweetsCard";
 import { StyledTabbar } from "../../components/common/tab.styled";
 import user1 from "../../API/user1";
 import users from "../../API/users";
+// import { useNavigate } from "react-router-dom";
 
 function UserControl() {
-  const [activeTab, setActiveTab] = useState("tweet");
+  const [activeTab, setActiveTab] = useState("tweets");
   const [userInfo, setUserInfo] = useState(user1);
   const [usersInfo, setUsersInfo] = useState(users);
+  // const navigate = useNavigate();
   return (
     <div className="userControl">
       <div active={"active"}>
@@ -17,31 +19,36 @@ function UserControl() {
       </div>
       <StyledTabbar>
         <button
-          className={"userTab" + clsx(" ", { active: activeTab === "tweet" })}
+          className={"userTab" + clsx(" ", { active: activeTab === "tweets" })}
           onClick={() => {
-            if (activeTab !== "tweet") {
+            if (activeTab !== "tweets") {
             }
-            setActiveTab("tweet");
+            setActiveTab("tweets");
+            // navigate("tweets");
           }}
         >
           推文
         </button>
         <button
-          className={"userTab" + clsx(" ", { active: activeTab === "reply" })}
+          className={
+            "userTab" + clsx(" ", { active: activeTab === "replied_tweets" })
+          }
           onClick={() => {
-            if (activeTab !== "reply") {
+            if (activeTab !== "replied_tweets") {
             }
-            setActiveTab("reply");
+            setActiveTab("replied_tweets");
+            // navigate("replied_tweets");
           }}
         >
           回覆
         </button>
         <button
-          className={"userTab" + clsx(" ", { active: activeTab === "like" })}
+          className={"userTab" + clsx(" ", { active: activeTab === "likes" })}
           onClick={() => {
-            if (activeTab !== "like") {
+            if (activeTab !== "likes") {
             }
-            setActiveTab("like");
+            setActiveTab("likes");
+            // navigate("likes");
           }}
         >
           喜歡的內容
@@ -49,7 +56,7 @@ function UserControl() {
       </StyledTabbar>
       <div className="tweetList">
         {usersInfo.map((usersInfo) => {
-          if (activeTab === "reply") {
+          if (activeTab === "replied_tweets") {
             return (
               <TweetReplyCard
                 key={usersInfo.data.user[0].id}
@@ -64,7 +71,7 @@ function UserControl() {
                 user1account={userInfo[0].data.user[0].account}
               />
             );
-          } else if (activeTab === "tweet") {
+          } else if (activeTab === "tweets") {
             return (
               <TweetsCard
                 key={usersInfo.data.user[0].id}
