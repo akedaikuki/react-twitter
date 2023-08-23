@@ -60,10 +60,10 @@ function PopularCard({
   return (
     <>
       <PopularCardstyled>
-        <Link to={`/otheruser/:id/?id=${userId}`}>
-          <img src={avatar} alt="other User's avatar" id={key} />
+        <Link to={`/api/otherusers/:id/?id=${userId}`}>
+          <img src={avatar} alt="other User's avatar" />
         </Link>
-        <Link className="user_text" to={`/otheruser/:id/?id=${userId}`}>
+        <Link className="user_text" to={`/api/otherusers/:id/?id=${userId}`}>
           <p className="username">{name}</p>
           <p className="useraccount">@{account}</p>
         </Link>

@@ -5,7 +5,7 @@ export const StyledTabbar = styled.div`
   display: flex;
 
   .tweetList {
-    width: 600px;
+    width: 640px;
   }
 
   .userTab {

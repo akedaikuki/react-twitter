@@ -94,7 +94,7 @@ function Navbar() {
         <LinkStyle>
           <NavLink
             className="user_icon"
-            to={"/user/:id"}
+            to={"api/users/:id"}
             style={({ isActive }) => ({ color: isActive && "#FF6600" })}
           >
             {({ isActive }) =>
@@ -136,7 +136,7 @@ function Navbar() {
         <StyledNavbarButton className="bigButton">推文</StyledNavbarButton>
         <LinkStyle className="logout">
           <LogoutIcon />
-          <Link className="outIcon" to="login">
+          <Link className="outIcon" to="api/users">
             登出
           </Link>
         </LinkStyle>

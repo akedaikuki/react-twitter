@@ -63,7 +63,13 @@ function OtherUserPage() {
             </div>
 
             <div className="editInfo">{/* <UserModal /> */}</div>
-            <div className="btnBox" style={{ justifyContent: "space-around" }}>
+            <div
+              className="btnBox"
+              style={{
+                transform: "translate(430px, 570%)",
+                alignItems: "center",
+              }}
+            >
               <div className="msgIcon">
                 <MsgIcon />
               </div>

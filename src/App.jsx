@@ -7,7 +7,7 @@ import HomePage from "./pages/HomePage";
 import UserPage from "./pages/UserPage";
 import TweetPage from "./pages/TweetPage";
 import UserFollowPage from "./pages/UserFollowPage";
-import OutuserPage from "./pages/OtherUser/OtherUserPage";
+import OtheruserPage from "./pages/OtherUser/OtherUserPage";
 
 // import SettingPage from "./pages/SettingPage";
 function App() {
@@ -18,17 +18,23 @@ function App() {
           <Routes>
             <Route path="/" element={<MainPage />}>
               <Route index element={<HomePage />} />
-              <Route path="user/:id" element={<UserPage />} />
-              <Route path="user/:id/tweets" element={<TweetPage />} />
-              <Route path="otheruser/:id" element={<OutuserPage />} />
-              <Route path="user/:id/follower" element={<UserFollowPage />} />
-              <Route path="user/:id/following" element={<UserFollowPage />} />
+              <Route path="api/users/:id" element={<UserPage />} />
+              <Route path="api/users/:id/tweets" element={<TweetPage />} />
+              <Route path="api/otherusers/:id" element={<OtheruserPage />} />
+              <Route
+                path="api/users/:id/followers"
+                element={<UserFollowPage />}
+              />
+              <Route
+                path="api/users/:id/followings"
+                element={<UserFollowPage />}
+              />
               {/* <Route path="setting" element={<SettingPage />} /> */}
             </Route>
 
-            <Route path="login" element={<LoginPage />} />
-            <Route path="signup" element={<SignUpPage />} />
-            <Route path="admin_login" element={<AdminLoginPase />} />
+            <Route path="api/users" element={<LoginPage />} />
+            <Route path="api/users/signin" element={<SignUpPage />} />
+            <Route path="api/admin/users" element={<AdminLoginPase />} />
           </Routes>
         </FollowClickContextProvider>
       </BrowserRouter>
