@@ -1,7 +1,8 @@
-import React, { useId, useState } from "react";
+import React, { useId, useState, useContext } from "react";
 
 import clsx from "clsx";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { FollowClickContext } from "../../Context/FollowClickContext";
 import { TurnbackIcon, MsgIcon, NotiIcon } from "../../assets/icons";
 import { StyledTabbar } from "../../components/common/tab.styled";
 import { PageStyle } from "../../components/common/page.styled";
@@ -18,15 +19,26 @@ import users from "../../API/users";
 
 function OtherUserPage() {
   const [usersInfo, setUsersInfo] = useState(users[0]);
+  const [editActive, setEditActive] = useState(false);
   const [isFollowed, setIsFollowed] = useState(false);
+  const { setActiveTab } = useContext(FollowClickContext);
   const navigate = useNavigate();
 
-  const useId = useParams();
+  // const useId = useParams();
+
+  const handleOpen = () => {
+    setEditActive(true);
+  };
+  const handleClose = () => {
+    setEditActive(false);
+  };
 
   return (
     <UserPageConainer
       className="userPageConainer"
       useId={usersInfo.data.user[0].id}
+      active={editActive}
+      onClose={handleClose}
     >
       {/* <div className="step_back" /> */}
 
@@ -62,7 +74,9 @@ function OtherUserPage() {
               />
             </div>
 
-            <div className="editInfo">{/* <UserModal /> */}</div>
+            <div className="editInfo" onClick={handleOpen}>
+              {/* <UserModal /> */}
+            </div>
             <div
               className="btnBox"
               style={{
@@ -95,14 +109,26 @@ function OtherUserPage() {
             <div className="useraccount">@{usersInfo.data.user[0].account}</div>
             <p className="intro">{usersInfo.data.user[0].introduction}</p>
             <div className="followInfo">
-              <p className="followingText">
+              <Link
+                to="followings"
+                className="followingText"
+                onClick={() => {
+                  setActiveTab("followings");
+                }}
+              >
                 <span> {usersInfo.data.followings[0].followingTotal} 個</span>
                 跟隨中
-              </p>
-              <p className="followerText">
+              </Link>
+              <Link
+                to="followers"
+                className="followerText"
+                onClick={() => {
+                  setActiveTab("followers");
+                }}
+              >
                 <span> {usersInfo.data.followers[0].followerTotal} 位</span>
                 跟隨者
-              </p>
+              </Link>
             </div>
           </UserInfoText>
         </div>

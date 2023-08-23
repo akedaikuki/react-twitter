@@ -1,15 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import clsx from "clsx";
 import { Link, useNavigate } from "react-router-dom";
+
 import { TurnbackIcon } from "../assets/icons";
 import { StyledTabbar } from "../components/common/tab.styled";
 import { PageStyle, UserPageConainer } from "../components/common/page.styled";
 import UserFollowCard from "../components/Cards/UserFollowCard";
 import user1 from "../API/user1";
 import users from "../API/users";
+import { FollowClickContext } from "../Context/FollowClickContext";
 
 function UserFollowPage() {
-  const [activeTab, setActiveTab] = useState("followers");
+  const { activeTab, setActiveTab } = useContext(FollowClickContext);
   const [userInfo, setUserInfo] = useState(user1);
   const [usersInfo, setUsersInfo] = useState(users);
   const navigate = useNavigate();
@@ -66,7 +68,7 @@ function UserFollowPage() {
                   avatar={usersInfo.data.user[0].avatar}
                   name={usersInfo.data.user[0].name}
                   introduction={usersInfo.data.user[0].introduction}
-                  // isFollowed={usersInfo.data.followers[0].isFollowed}
+                  isFollowed={usersInfo.data.followers[0].isFollowed}
                 />
               );
             }
@@ -78,7 +80,7 @@ function UserFollowPage() {
                   avatar={usersInfo.data.user[0].avatar}
                   name={usersInfo.data.user[0].name}
                   introduction={usersInfo.data.user[0].introduction}
-                  // isFollowed={usersInfo.data.followers[0].isFollowed}
+                  isFollowed={usersInfo.data.followers[0].isFollowed}
                 />
               );
             }
