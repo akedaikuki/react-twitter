@@ -9,7 +9,7 @@ import user1 from "../API/user1";
 import users from "../API/users";
 
 function UserFollowPage() {
-  const [activeTab, setActiveTab] = useState("follower");
+  const [activeTab, setActiveTab] = useState("followers");
   const [userInfo, setUserInfo] = useState(user1);
   const [usersInfo, setUsersInfo] = useState(users);
   const navigate = useNavigate();
@@ -35,26 +35,22 @@ function UserFollowPage() {
         <StyledTabbar>
           <button
             className={
-              "userTab" + clsx(" ", { active: activeTab === "follower" })
+              "userTab" + clsx(" ", { active: activeTab === "followers" })
             }
             onClick={() => {
-              if (activeTab !== "follower") {
-              }
-              setActiveTab("follower");
-              navigate("/user/:id/follower");
+              setActiveTab("followers");
+              navigate("/api/users/:id/followers");
             }}
           >
             追隨者
           </button>
           <button
             className={
-              "userTab" + clsx(" ", { active: activeTab === "following" })
+              "userTab" + clsx(" ", { active: activeTab === "followings" })
             }
             onClick={() => {
-              if (activeTab !== "following") {
-              }
-              setActiveTab("following");
-              navigate("/user/:id/following");
+              setActiveTab("followings");
+              navigate("/api/users/:id/followings");
             }}
           >
             正在追隨
@@ -62,7 +58,7 @@ function UserFollowPage() {
         </StyledTabbar>
         <div className="followList">
           {usersInfo.map((usersInfo) => {
-            if (activeTab === "follower") {
+            if (activeTab === "followers") {
               return (
                 <UserFollowCard
                   key={usersInfo.data.user[0].id}
@@ -74,7 +70,7 @@ function UserFollowPage() {
                 />
               );
             }
-            if (activeTab === "following") {
+            if (activeTab === "followings") {
               return (
                 <UserFollowCard
                   key={usersInfo.data.user[0].id}

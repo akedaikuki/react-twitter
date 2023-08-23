@@ -25,12 +25,12 @@ function UserFollowCard({ userId, avatar, name, introduction }) {
     <>
       {/* follow1 */}
       <TweetCardContainer className="TweetCardContainer" id={userId}>
-        <Link className="userAvatar" to={`/otheruser/:id/?id=${userId}`}>
+        <Link className="userAvatar" to={`/api/otherusers/:id/?id=${userId}`}>
           <img src={avatar} alt="avatar" style={{ marginTop: "0" }} />
         </Link>
         <div className="right">
           <NameLink className="name_link">
-            <Link to={`/otheruser/:id/?id=${userId}`}>
+            <Link to={`/api/otherusers/:id/?id=${userId}`}>
               <span className="tweetname">{name}</span>
             </Link>
             <FollowBtnBox>

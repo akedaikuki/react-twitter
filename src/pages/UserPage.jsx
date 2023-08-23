@@ -80,11 +80,11 @@ function UserPage() {
             </div>
             <p className="intro">{userInfo[0].data.user[0].introduction}</p>
             <div className="followInfo">
-              <Link to="/user/:id/following" className="followingText">
+              <Link to="followings" className="followingText">
                 <span> {userInfo[0].data.followings[0].followingTotal} 個</span>
                 跟隨中
               </Link>
-              <Link to="/user/:id/follower" className="followerText">
+              <Link to="followers" className="followerText">
                 <span> {userInfo[0].data.followers[0].followerTotal} 位</span>
                 跟隨者
               </Link>

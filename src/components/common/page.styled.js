@@ -4,7 +4,7 @@ export const PageStyle = styled.div`
   position: relative;
   box-sizing: border-box;
   height: 100vh;
-  width: 600px;
+  width: 640px;
   border: 1px solid var(--border_gray);
   overflow-y: scroll;
   overflow-x: hidden;
@@ -36,7 +36,7 @@ export const PageStyle = styled.div`
 `;
 
 export const UserPageConainer = styled.div`
-  width: 600px;
+  width: 640px;
   /* flex: 1 1 0; */
   /*  */
   /* margin-right: 10px; */
@@ -65,7 +65,7 @@ export const UserInfoPicture = styled.div`
     display: flex;
     justify-content: space-between;
     width: 180px;
-    transform: translate(400px, 570%);
+    transform: translate(430px, 530%);
 
     .msgIcon,
     .notiIcon {

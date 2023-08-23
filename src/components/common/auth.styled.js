@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 const StyedContainer = styled.div`
   display: flex;
@@ -10,7 +10,7 @@ const StyedContainer = styled.div`
 `;
 
 const StyledAuthInputContainer = styled.div`
-  width: 50%;
+  width: 100%;
   margin-top: 30px;
 `;
 
@@ -21,7 +21,7 @@ const StyledButton = styled.button`
 
   color: white;
   min-width: 300px;
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: "Noto Sans TC", sans-serif;
   font-weight: bold;
   padding: 6px 0;
   margin: 2rem 0;
