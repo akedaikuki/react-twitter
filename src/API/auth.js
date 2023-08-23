@@ -1,10 +1,10 @@
 import axios from "axios";
 const authURL = ''
 
-export const login = async ({ username, password }) => {
+export const login = async ({ account, password }) => {
     try {
         const { data } = await axios.post(`${authURL}/login`, {
-            username,
+            account,
             password,
         })
 
@@ -19,10 +19,10 @@ export const login = async ({ username, password }) => {
     }
 }
 
-export const register = async ({ username, email, password }) => {
+export const register = async ({ account, email, password }) => {
     try {
       const { data } = await axios.post(`${authURL}/register`, {
-        username,
+        account,
         email,
         password,
       });
