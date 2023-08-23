@@ -17,12 +17,8 @@ function TweetReplyList({
   return (
     <>
       {/* reoly */}
-      <TweetCardContainer className="tweetCardContainer" id={key}>
-        <Link
-          className="userAvatar"
-          to={`/otheruser/:id/?id=${userId}`}
-          id={key}
-        >
+      <TweetCardContainer className="tweetCardContainer" id={userId}>
+        <Link className="userAvatar" to={`/otheruser/:id/?id=${userId}`}>
           <img src={avatar} alt="avatar" style={{ marginTop: "0" }} />
         </Link>
         <div className="right">

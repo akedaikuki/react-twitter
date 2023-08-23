@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { StyledButton } from "../common/button.styled";
 import { styled } from "styled-components";
@@ -51,9 +51,12 @@ function PopularCard({
   account,
   name,
   avatar,
-  isFollowed,
+  // isFollowed,
+  // setIsFollowed,
   onBtnClicked,
 }) {
+  const [isFollowed, setIsFollowed] = useState(false);
+
   return (
     <>
       <PopularCardstyled>
@@ -67,7 +70,7 @@ function PopularCard({
         <FollowBtnBox>
           <StyledButton
             className={"following_btn" + clsx(" ", { active: isFollowed })}
-            // onClick={onBtnClicked}
+            onClick={() => setIsFollowed(!isFollowed)}
           >
             {isFollowed ? "正在跟隨" : "跟隨"}
           </StyledButton>

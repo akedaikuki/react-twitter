@@ -8,8 +8,6 @@ import users from "../API/users";
 
 const HomePageContainer = styled.div`
   width: 600px;
-  margin-right: 10px;
-  margin-left: 10px;
 
   .HomePage {
     position: sticky;

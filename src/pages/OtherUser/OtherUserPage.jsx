@@ -67,13 +67,17 @@ function OtherUserPage() {
               <div className="msgIcon">
                 <MsgIcon />
               </div>
-              <div className="notiIcon">
+              <div
+                className="notiIcon"
+                style={{ position: "absolute", left: "40px" }}
+              >
                 <NotiIcon />
               </div>
 
               <StyledButton
                 className={"following_btn" + clsx(" ", { active: isFollowed })}
-                onClick={() => {}}
+                // onClick={() => {}}
+                onClick={() => setIsFollowed(!isFollowed)}
               >
                 {isFollowed ? "正在跟隨" : "跟隨"}
               </StyledButton>
