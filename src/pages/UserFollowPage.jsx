@@ -41,6 +41,7 @@ function UserFollowPage() {
               if (activeTab !== "follower") {
               }
               setActiveTab("follower");
+              navigate("/user/:id/follower");
             }}
           >
             追隨者
@@ -53,6 +54,7 @@ function UserFollowPage() {
               if (activeTab !== "following") {
               }
               setActiveTab("following");
+              navigate("/user/:id/following");
             }}
           >
             正在追隨

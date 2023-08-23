@@ -18,7 +18,7 @@ import {
 import { StyledNavbarButton } from "../common/button.styled";
 
 const NavbarContainer = styled.div`
-  width: 350px;
+  /* width: 350px; */
 
   .navbarStyle {
     width: 178px;
