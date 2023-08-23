@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { FollowClickContext } from "../Context/FollowClickContext";
 import { TurnbackIcon } from "../assets/icons";
 import { StyledTabbar } from "../components/common/tab.styled";
 import { StyledButton } from "../components/common/button.styled";
@@ -19,6 +20,7 @@ function UserPage() {
   const [userInfo, setUserInfo] = useState(user1);
   // const [usersInfo, setUsersInfo] = useState(users);
   const [editActive, setEditActive] = useState(false);
+  const { setActiveTab } = useContext(FollowClickContext);
   const navigate = useNavigate();
   // console.log(users[0].username);
 
@@ -80,11 +82,25 @@ function UserPage() {
             </div>
             <p className="intro">{userInfo[0].data.user[0].introduction}</p>
             <div className="followInfo">
-              <Link to="followings" className="followingText">
+              <Link
+                to="followings"
+                className="followingText"
+                onClick={() => {
+                  setActiveTab("followings");
+                  // navigate("followings");
+                }}
+              >
                 <span> {userInfo[0].data.followings[0].followingTotal} 個</span>
                 跟隨中
               </Link>
-              <Link to="followers" className="followerText">
+              <Link
+                to="followers"
+                className="followerText"
+                onClick={() => {
+                  setActiveTab("followers");
+                  // navigate("followers");
+                }}
+              >
                 <span> {userInfo[0].data.followers[0].followerTotal} 位</span>
                 跟隨者
               </Link>

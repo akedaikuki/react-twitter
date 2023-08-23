@@ -3,11 +3,16 @@ import { createContext, useState } from "react";
 const FollowClickContext = createContext();
 
 function FollowClickContextProvider({ children }) {
-  const [isFollowed, setIsFollowed] = useState(false);
-  const [followTab, setFollowTab] = useState("follower");
+  //   const [isFollowed, setIsFollowed] = useState(false);
+  const [activeTab, setActiveTab] = useState("followers");
   return (
     <FollowClickContext.Provider
-      value={{ isFollowed, setIsFollowed, followTab, setFollowTab }}
+      value={{
+        // isFollowed,
+        // setIsFollowed,
+        activeTab,
+        setActiveTab,
+      }}
     >
       {children}
     </FollowClickContext.Provider>
