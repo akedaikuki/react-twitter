@@ -29,7 +29,24 @@ const LoginPage = () => {
     })
     if (success) {
         localStorage.setItem('authToken', authToken)
+        Swal.fire({
+            title: '登入成功',
+            icon: 'success',
+            showConfirmButton: false,
+            timer: 1000,
+            position: 'top',
+        });
+        navigate('api/users/:id/tweets')
+        return;
     }
+    Swal.fire({
+        title: '登入失敗',
+        icon: 'error',
+        showConfirmButton: false,
+        timer: 1000,
+        position: 'top',
+    })
+    return;
   };
 
   return (
