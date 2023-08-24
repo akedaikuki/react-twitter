@@ -49,7 +49,7 @@ const AdminLoginPase = () => {
       </AuthInputContainer>
       <AuthButton onClick={handleClick}>登入</AuthButton>
 
-      <Link to="api/users/signin">
+      <Link to="/api/users/signin">
         <AuthLinkText>前台登入</AuthLinkText>
       </Link>
     </AuthContainer>

@@ -40,8 +40,8 @@ function App() {
             {/* <Route path="setting" element={<SettingPage />} /> */}
           </Route>
 
-          <Route path="api/users" element={<LoginPage />} />
-          <Route path="api/users/signin" element={<SignUpPage />} />
+          <Route path="api/users/signin" element={<LoginPage />} />
+          <Route path="api/users" element={<SignUpPage />} />
           <Route path="api/admin/users" element={<AdminLoginPase />} />
         </Routes>
         {/* </FollowClickContextProvider> */}

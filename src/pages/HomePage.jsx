@@ -85,7 +85,7 @@ function HomePage() {
               id="tweettext"
               rows="5"
               placeholder="有什麼新鮮事?"
-              value=""
+              // value=""
             ></textarea>
 
             <div className="panel">

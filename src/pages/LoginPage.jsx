@@ -59,11 +59,11 @@ const LoginPage = () => {
       </AuthInputContainer>
       <AuthButton onClick={handleClick}>登入</AuthButton>
 
-      <Link to="api/users">
+      <Link to="/api/users">
         <AuthLinkText>註冊</AuthLinkText>
       </Link>
       {"．"}
-      <Link to="api/admin/users">
+      <Link to="/api/admin/users">
         <AuthLinkText>後台登入</AuthLinkText>
       </Link>
     </AuthContainer>
