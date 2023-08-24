@@ -6,10 +6,10 @@ import {
 } from "../components/common/auth.styled";
 import { BrandLogo } from "../assets/icons";
 import AuthInput from "../components/AuthInput";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { register } from "../API/auth";
+import { checkPermission, register } from "../API/auth";
 
 const SignUpPage = () => {
   const [account, setAccount] = useState("");
@@ -65,6 +65,25 @@ const SignUpPage = () => {
     })
     return;
   };
+
+  useEffect(() => {
+    const checkTokenIsValid = async () => {
+        const authToken = localStorage.getItem
+        ('authToken');
+
+        if (!authToken) {
+            return
+        }
+        const result = await checkPermission
+        (authToken);
+
+        if (result) {
+            navigate('')
+        }
+    };
+
+    checkTokenIsValid();
+  }, [navigate])
 
   return (
     <AuthContainer>
