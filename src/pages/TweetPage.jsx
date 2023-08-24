@@ -3,9 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { TurnbackIcon, LikedIcon, LikeIcon, ReplyIcon } from "../assets/icons";
 import TweetReplyCard from "../components/Cards/TweetReplyCard";
 import { PageStyle, UserPageConainer } from "../components/common/page.styled";
+import Popular from "../components/Popular";
 import { styled } from "styled-components";
 import user1 from "../API/user1";
 import users from "../API/users";
+import createTime from "../utilities/creatTime";
+
 const UsertweetContainer = styled.div`
   margin: 15px;
 
@@ -74,76 +77,85 @@ const UsertweetContainer = styled.div`
     cursor: pointer;
   }
 `;
+
 function TweetPage() {
   const [userInfo, setUserInfo] = useState(user1);
   const [usersInfo, setUsersInfo] = useState(users);
+  const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
+  const handleShow = () => setShowModal(true);
   return (
-    <UserPageConainer className="tweetPageConainer">
-      <PageStyle className="TweetPageStyle">
-        <header>
-          <TurnbackIcon
-            className="returnIcon"
-            onClick={() => {
-              navigate(-1);
-            }}
-          />
-          <div className="header_info">
-            <h4 className="tweet">推文</h4>
-          </div>
-        </header>
-
-        <UsertweetContainer className="usertweetContainer">
-          <div className="userInfo">
-            <img
-              src={userInfo[0].data.user[0].avatar}
-              alt="userAvatar"
-              className="userAvatar"
+    <>
+      <UserPageConainer className="tweetPageConainer">
+        <PageStyle className="TweetPageStyle">
+          <header>
+            <TurnbackIcon
+              className="returnIcon"
+              onClick={() => {
+                navigate(-1);
+              }}
             />
-            <div className="usertweetAccount">
-              <p className="username">{userInfo[0].data.user[0].name}</p>
-              <p className="useraccount">@{userInfo[0].data.user[0].account}</p>
+            <div className="header_info">
+              <h4 className="tweet">推文</h4>
             </div>
-          </div>
-          <p className="tweetContent">{userInfo[0].data.Tweets[0].description}</p>
-          <p className="createdTime">上午 10:05・2020年6月10日</p>
-          <div className="tweetline"></div>
-          <div className="qtyBox">
-            <p className="replyQty">
-              <span> {userInfo[0].data.Tweets[0].tweetsTotal} </span> 回覆
+          </header>
+
+          <UsertweetContainer className="usertweetContainer">
+            <div className="userInfo">
+              <img
+                src={userInfo[0].data.user[0].avatar}
+                alt="userAvatar"
+                className="userAvatar"
+              />
+              <div className="usertweetAccount">
+                <p className="username">{userInfo[0].data.user[0].name}</p>
+                <p className="useraccount">
+                  @{userInfo[0].data.user[0].account}
+                </p>
+              </div>
+            </div>
+            <p className="tweetContent">
+              {userInfo[0].data.Tweets[0].description}
             </p>
-            <p className="likeQty">
-              <span> {userInfo[0].data.likes[0].likesTotal} </span> 喜歡次數
-            </p>
-          </div>
-          <div className="tweetline"></div>
-          <div className="iconBox">
-            <ReplyIcon />
+            <p className="createdTime">上午 10:05・2020年6月10日</p>
+            <div className="tweetline"></div>
+            <div className="qtyBox">
+              <p className="replyQty">
+                <span> {userInfo[0].data.Tweets[0].tweetsTotal} </span> 回覆
+              </p>
+              <p className="likeQty">
+                <span> {userInfo[0].data.likes[0].likesTotal} </span> 喜歡次數
+              </p>
+            </div>
+            <div className="tweetline"></div>
+            <div className="iconBox">
+              <ReplyIcon className="reply" onClick={handleShow} />
 
-            <LikedIcon />
+              <LikedIcon />
 
-            {/* <LikeIcon /> */}
-          </div>
-        </UsertweetContainer>
+              {/* <LikeIcon /> */}
+            </div>
+          </UsertweetContainer>
 
-        {usersInfo.map((usersInfo) => (
-          <TweetReplyCard
-          key={usersInfo.data.user[0].id}
-          account={usersInfo.data.user[0].account}
-          name={usersInfo.data.user[0].name}
-          avatar={usersInfo.data.user[0].avatar}
-          tweets={usersInfo.data.Tweets[0].description}
-          repliedTweets={usersInfo.data.repliedTweets[0].description}
-          repliedTotal={usersInfo.data.repliedTweets[0].repliedTotal}
-          likesTotal={usersInfo.data.likes[0].likesTotal}
-          userId={usersInfo.data.user[0].id}
-          
-          user1account={userInfo[0].data.user[0].account}
-          
-          />
-        ))}
-      </PageStyle>
-    </UserPageConainer>
+          {usersInfo.map((usersInfo) => (
+            <TweetReplyCard
+              key={usersInfo.data.user[0].id}
+              account={usersInfo.data.user[0].account}
+              name={usersInfo.data.user[0].name}
+              avatar={usersInfo.data.user[0].avatar}
+              tweets={usersInfo.data.Tweets[0].description}
+              repliedTweets={usersInfo.data.repliedTweets[0].description}
+              repliedTotal={usersInfo.data.repliedTweets[0].repliedTotal}
+              likesTotal={usersInfo.data.likes[0].likesTotal}
+              userId={usersInfo.data.user[0].id}
+              createdAt={usersInfo.data.repliedTweets[0].createdAt}
+              user1account={userInfo[0].data.user[0].account}
+            />
+          ))}
+        </PageStyle>
+      </UserPageConainer>
+      <Popular />
+    </>
   );
 }
 

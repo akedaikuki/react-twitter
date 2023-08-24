@@ -9,7 +9,7 @@ import TweetPage from "./pages/TweetPage";
 import UserFollowPage from "./pages/UserFollowPage";
 import OtheruserPage from "./pages/OtherUser/OtherUserPage";
 import OtherFollowPage from "./pages/OtherUser/OtherFollowPage";
-// import SettingPage from "./pages/SettingPage";
+import SettingPage from "./pages/SettingPage";
 function App() {
   return (
     <div className="App">
@@ -18,26 +18,26 @@ function App() {
         <Routes>
           <Route path="/" element={<MainPage />}>
             <Route index element={<HomePage />} />
-            <Route path="api/users/:id" element={<UserPage />} />
-            <Route path="api/users/:id/tweets" element={<TweetPage />} />
-            <Route path="api/otherusers/:id" element={<OtheruserPage />} />
+            <Route path="api/users/:UserId" element={<UserPage />} />
+            <Route path="api/users/:UserId/tweets" element={<TweetPage />} />
+            <Route path="api/otherusers/:UserId" element={<OtheruserPage />} />
             <Route
-              path="api/users/:id/followers"
+              path="api/users/:UserId/followers"
               element={<UserFollowPage />}
             />
             <Route
-              path="api/users/:id/followings"
+              path="api/users/:UserId/followings"
               element={<UserFollowPage />}
             />
             <Route
-              path="api/otherusers/:id/followers"
+              path="api/otherusers/:UserId/followers"
               element={<OtherFollowPage />}
             />
             <Route
-              path="api/otherusers/:id/followings"
+              path="api/otherusers/:UserId/followings"
               element={<OtherFollowPage />}
             />
-            {/* <Route path="setting" element={<SettingPage />} /> */}
+            <Route path="setting" element={<SettingPage />} />
           </Route>
 
           <Route path="api/users/signin" element={<LoginPage />} />
