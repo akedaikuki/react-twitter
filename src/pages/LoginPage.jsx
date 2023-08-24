@@ -8,6 +8,7 @@ import { BrandLogo } from "../assets/icons";
 import AuthInput from "../components/AuthInput";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { login } from "../API/auth";
 import Swal from "sweetalert2";
 
 const LoginPage = () => {
@@ -21,6 +22,13 @@ const LoginPage = () => {
     }
     if (password.length === 0) {
       return;
+    }
+    const { success, authToken} = await login({
+        account,
+        password,
+    })
+    if (success) {
+        localStorage.setItem('authToken', authToken)
     }
   };
 
