@@ -1,5 +1,5 @@
 import axios from "axios";
-const authURL = ''
+const authURL = 'https://todo-list.alphacamp.io/api/auth'
 
 export const login = async ({ account, password }) => {
     try {
@@ -19,10 +19,11 @@ export const login = async ({ account, password }) => {
     }
 }
 
-export const register = async ({ account, email, password }) => {
+export const register = async ({ account, name, email, password }) => {
     try {
       const { data } = await axios.post(`${authURL}/register`, {
         account,
+        name,
         email,
         password,
       });
