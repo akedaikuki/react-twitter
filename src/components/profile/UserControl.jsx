@@ -1,18 +1,17 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import clsx from "clsx";
 import TweetReplyCard from "../Cards/TweetReplyCard";
 import TweetsCard from "../Cards/TweetsCard";
 import { StyledTabbar } from "../../components/common/tab.styled";
 import user1 from "../../API/user1";
 import users from "../../API/users";
-import { useNavigate } from "react-router-dom";
-import { UserControlContext } from "../../Context/UserControlClickContext";
+// import { useNavigate } from "react-router-dom";
 
 function UserControl() {
-  const { userActiveTab, setUserActiveTab } = useContext(UserControlContext);
+  const [activeTab, setActiveTab] = useState("tweets");
   const [userInfo, setUserInfo] = useState(user1);
   const [usersInfo, setUsersInfo] = useState(users);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   return (
     <div className="userControl">
       <div active={"active"}>
@@ -20,13 +19,11 @@ function UserControl() {
       </div>
       <StyledTabbar>
         <button
-          className={
-            "userTab" + clsx(" ", { active: userActiveTab === "tweets" })
-          }
+          className={"userTab" + clsx(" ", { active: activeTab === "tweets" })}
           onClick={() => {
-            if (userActiveTab !== "tweets") {
+            if (activeTab !== "tweets") {
             }
-            setUserActiveTab("tweets");
+            setActiveTab("tweets");
             // navigate("tweets");
           }}
         >
@@ -34,26 +31,23 @@ function UserControl() {
         </button>
         <button
           className={
-            "userTab" +
-            clsx(" ", { active: userActiveTab === "replied_tweets" })
+            "userTab" + clsx(" ", { active: activeTab === "replied_tweets" })
           }
           onClick={() => {
-            if (userActiveTab !== "replied_tweets") {
+            if (activeTab !== "replied_tweets") {
             }
-            setUserActiveTab("replied_tweets");
+            setActiveTab("replied_tweets");
             // navigate("replied_tweets");
           }}
         >
           回覆
         </button>
         <button
-          className={
-            "userTab" + clsx(" ", { active: userActiveTab === "likes" })
-          }
+          className={"userTab" + clsx(" ", { active: activeTab === "likes" })}
           onClick={() => {
-            if (userActiveTab !== "likes") {
+            if (activeTab !== "likes") {
             }
-            setUserActiveTab("likes");
+            setActiveTab("likes");
             // navigate("likes");
           }}
         >
@@ -62,7 +56,7 @@ function UserControl() {
       </StyledTabbar>
       <div className="tweetList">
         {usersInfo.map((usersInfo) => {
-          if (userActiveTab === "replied_tweets") {
+          if (activeTab === "replied_tweets") {
             return (
               <TweetReplyCard
                 key={usersInfo.data.user[0].id}
@@ -74,11 +68,10 @@ function UserControl() {
                 repliedTotal={usersInfo.data.repliedTweets[0].repliedTotal}
                 likesTotal={usersInfo.data.likes[0].likesTotal}
                 userId={usersInfo.data.user[0].id}
-                createdAt={usersInfo.data.repliedTweets[0].createdAt}
                 user1account={userInfo[0].data.user[0].account}
               />
             );
-          } else if (userActiveTab === "tweets") {
+          } else if (activeTab === "tweets") {
             return (
               <TweetsCard
                 key={usersInfo.data.user[0].id}
@@ -89,7 +82,6 @@ function UserControl() {
                 repliedTotal={usersInfo.data.repliedTweets[0].repliedTotal}
                 likesTotal={usersInfo.data.likes[0].likesTotal}
                 userId={usersInfo.data.user[0].id}
-                createdAt={usersInfo.data.Tweets[0].createdAt}
               />
             );
           } else {
@@ -104,8 +96,7 @@ function UserControl() {
                 repliedTotal={usersInfo.data.repliedTweets[0].repliedTotal}
                 likesTotal={usersInfo.data.likes[0].likesTotal}
                 userId={usersInfo.data.user[0].id}
-                createdAt={usersInfo.data.Tweets[0].createdAt}
-                userActiveTab={userActiveTab}
+                activeTab={activeTab}
               />
             );
           }
