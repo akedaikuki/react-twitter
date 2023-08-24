@@ -6,9 +6,9 @@ import {
 } from "../components/common/auth.styled";
 import { BrandLogo } from "../assets/icons";
 import AuthInput from "../components/AuthInput";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { login } from "../API/auth";
+import { login, checkPermission } from "../API/auth";
 import Swal from "sweetalert2";
 
 const LoginPage = () => {
@@ -29,8 +29,43 @@ const LoginPage = () => {
     })
     if (success) {
         localStorage.setItem('authToken', authToken)
+        Swal.fire({
+            title: '登入成功',
+            icon: 'success',
+            showConfirmButton: false,
+            timer: 1000,
+            position: 'top',
+        });
+        navigate('api/users/:id/tweets')
+        return;
     }
+    Swal.fire({
+        title: '登入失敗',
+        icon: 'error',
+        showConfirmButton: false,
+        timer: 1000,
+        position: 'top',
+    })
+    return;
   };
+
+  useEffect(() => {
+    const checkTokenIsValid = async () => {
+        const authToken = localStorage.getItem
+        ('authToken');
+        if (!authToken) {
+            return
+        }
+        const result = await checkPermission
+        (authToken);
+
+        if (result) {
+            navigate('')
+        }
+    };
+
+    checkTokenIsValid();
+  }, [navigate])
 
   return (
     <AuthContainer>
