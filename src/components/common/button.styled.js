@@ -18,10 +18,6 @@ export const StyledButton = styled.button`
   &.active {
     color: var(--main_white);
     background-color: var(--main_orange);
-
-    &:hover {
-      background-color: var(--btn-hover-bg);
-    }
   }
 `;
 

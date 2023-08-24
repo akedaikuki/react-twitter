@@ -2,19 +2,12 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import { FollowClickContextProvider } from "./Context/FollowClickContext";
-import { ShowModalContextProvider } from "./Context/ShowModalContext";
-import { UserControlContextProvider } from "./Context/UserControlClickContext";
-
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <ShowModalContextProvider>
-      <UserControlContextProvider>
-        <FollowClickContextProvider>
-          <App />
-        </FollowClickContextProvider>
-      </UserControlContextProvider>
-    </ShowModalContextProvider>
+    <FollowClickContextProvider>
+      <App />
+    </FollowClickContextProvider>
   </React.StrictMode>
 );
 
