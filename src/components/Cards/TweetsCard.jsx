@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-
 import { ReplyIcon, LikedIcon, LikeIcon } from "../../assets/icons";
 import { TweetCardContainer } from "../common/tweet.styled";
 import { Link } from "react-router-dom";
+import relativeTime from "../../utilities/relativeTime";
 // import users from "../../API/users";
 function TweetsCard({
   userId,
   key,
   account,
+  createdAt,
   name,
   avatar,
   tweets,
@@ -18,7 +19,10 @@ function TweetsCard({
     <>
       {/* users */}
       <TweetCardContainer className="tweetCardContainer" id={userId}>
-        <Link className="userAvatar" to={`/api/otherusers/:id/?id=${userId}`}>
+        <Link
+          className="userAvatar"
+          to={`/api/otherusers/:UserId/?id=${userId}`}
+        >
           <img
             src={avatar}
             alt="other User's avatar"
@@ -26,14 +30,17 @@ function TweetsCard({
           />
         </Link>
         <div className="right">
-          <Link className="name_link" to={`/api/otherusers/:id/?id=${userId}`}>
+          <Link
+            className="name_link"
+            to={`/api/otherusers/:UserId/?id=${userId}`}
+          >
             <span className="tweetname">{name}</span>
             <span className="tweetaccount">@{account}</span>
 
-            <span className="time">・3小時</span>
+            <span className="time">・{relativeTime(createdAt)}</span>
           </Link>
 
-          <Link className="tweetContent_link" to={"/api/users/:id/tweets"}>
+          <Link className="tweetContent_link" to={"/api/users/:UserId/tweets"}>
             <p className="tweetP">{tweets}</p>
           </Link>
           <div className="user_action">
