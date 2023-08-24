@@ -37,8 +37,6 @@ export const PageStyle = styled.div`
 
 export const UserPageConainer = styled.div`
   width: 640px;
-  /* flex: 1 1 0; */
-  /*  */
   /* margin-right: 10px; */
   /* margin-left: 10px; */
 `;
@@ -65,7 +63,7 @@ export const UserInfoPicture = styled.div`
     display: flex;
     justify-content: space-between;
     width: 180px;
-    transform: translate(430px, 530%);
+    transform: translate(430px, 570%);
 
     .msgIcon,
     .notiIcon {

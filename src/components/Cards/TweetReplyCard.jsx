@@ -1,6 +1,7 @@
 import React from "react";
 import { TweetCardContainer } from "../common/tweet.styled";
 import { Link } from "react-router-dom";
+import relativeTime from "../../utilities/relativeTime";
 
 function TweetReplyList({
   key,
@@ -12,21 +13,28 @@ function TweetReplyList({
   repliedTotal,
   likesTotal,
   userId,
+  createdAt,
   user1account,
 }) {
   return (
     <>
       {/* reoly */}
       <TweetCardContainer className="tweetCardContainer" id={userId}>
-        <Link className="userAvatar" to={`/api/otherusers/:id/?id=${userId}`}>
+        <Link
+          className="userAvatar"
+          to={`/api/otherusers/:UserId/?id=${userId}`}
+        >
           <img src={avatar} alt="avatar" style={{ marginTop: "0" }} />
         </Link>
         <div className="right">
-          <Link className="name_link" to={`/api/otherusers/:id/?id=${userId}`}>
+          <Link
+            className="name_link"
+            to={`/api/otherusers/:UserId/?id=${userId}`}
+          >
             <span className="tweetname">{name}</span>
             <span className="tweetaccount">@{account}</span>
 
-            <span className="time"> · 13 小時</span>
+            <span className="time"> · {relativeTime(createdAt)}</span>
           </Link>
 
           <p className="reply_to">

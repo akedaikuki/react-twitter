@@ -10,7 +10,8 @@ import {
   UserInfoPicture,
   UserInfoText,
 } from "../components/common/page.styled";
-import UserModal from "../components/profile/UserModal";
+import Popular from "../components/Popular";
+import UserModal from "../components/profile/Modal";
 // import TweetsCard from "../components/Cards/TweetsCard";
 import UserControl from "../components/profile/UserControl";
 import user1 from "../API/user1";
@@ -32,91 +33,95 @@ function UserPage() {
   };
 
   return (
-    <UserPageConainer
-      className="userPageConainer"
-      active={editActive}
-      onClose={handleClose}
-    >
-      <PageStyle>
-        <header>
-          <TurnbackIcon
-            className="returnIcon"
-            onClick={() => {
-              navigate(-1);
-            }}
-          />
-          <div className="header_info">
-            <h5 className="username">{userInfo[0].data.user[0].name}</h5>
-            <p className="tweet_amount">
-              {userInfo[0].data.Tweets[0].tweetsTotal} 推文
-            </p>
+    <>
+      <div className="editInfo" onClick={handleOpen}>
+        {/* <UserModal /> */}
+      </div>
+      <UserPageConainer
+        className="userPageConainer"
+        active={editActive}
+        onClose={handleClose}
+      >
+        <PageStyle>
+          <header>
+            <TurnbackIcon
+              className="returnIcon"
+              onClick={() => {
+                navigate(-1);
+              }}
+            />
+            <div className="header_info">
+              <h5 className="username">{userInfo[0].data.user[0].name}</h5>
+              <p className="tweet_amount">
+                {userInfo[0].data.Tweets[0].tweetsTotal} 推文
+              </p>
+            </div>
+          </header>
+
+          <div className="userInfoContainer">
+            <UserInfoPicture className="userInfoPicture">
+              <div className="image_area">
+                <img
+                  src={userInfo[0].data.user[0].coverImage}
+                  alt="cover"
+                  className="coverImg"
+                />
+                <img
+                  src={userInfo[0].data.user[0].avatar}
+                  alt="avatar"
+                  className="avatarImg"
+                />
+              </div>
+
+              <div className="btnBox" style={{ justifyContent: "flex-end" }}>
+                <StyledButton className="editBtn ">編輯個人資料</StyledButton>
+              </div>
+            </UserInfoPicture>
+            <UserInfoText className="userInfoText">
+              <h5 className="username">{userInfo[0].data.user[0].name}</h5>
+              <div className="useraccount">
+                @{userInfo[0].data.user[0].account}
+              </div>
+              <p className="intro">{userInfo[0].data.user[0].introduction}</p>
+              <div className="followInfo">
+                <Link
+                  to="followings"
+                  className="followingText"
+                  onClick={() => {
+                    setActiveTab("followings");
+                    // navigate("followings");
+                  }}
+                >
+                  <span>
+                    {" "}
+                    {userInfo[0].data.followings[0].followingTotal} 個
+                  </span>
+                  跟隨中
+                </Link>
+                <Link
+                  to="followers"
+                  className="followerText"
+                  onClick={() => {
+                    setActiveTab("followers");
+                    // navigate("followers");
+                  }}
+                >
+                  <span> {userInfo[0].data.followers[0].followerTotal} 位</span>
+                  跟隨者
+                </Link>
+              </div>
+            </UserInfoText>
           </div>
-        </header>
 
-        <div className="userInfoContainer">
-          <UserInfoPicture className="userInfoPicture">
-            <div className="image_area">
-              <img
-                src={userInfo[0].data.user[0].coverImage}
-                alt="cover"
-                className="coverImg"
-              />
-              <img
-                src={userInfo[0].data.user[0].avatar}
-                alt="avatar"
-                className="avatarImg"
-              />
-            </div>
+          <StyledTabbar>
+            <UserControl />
+            {/* <button className={"userTab"}>推文</button> */}
+            {/* <button className={"userTab"}>回覆</button> */}
+            {/* <button className={"userTab"}>喜歡的內容</button> */}
+          </StyledTabbar>
+          {/* {usersInfo.map((usersInfo) => ( */}
 
-            <div className="editInfo" onClick={handleOpen}>
-              <UserModal />
-            </div>
-            <div className="btnBox" style={{ justifyContent: "flex-end" }}>
-              <StyledButton className="editBtn ">編輯個人資料</StyledButton>
-            </div>
-          </UserInfoPicture>
-          <UserInfoText className="userInfoText">
-            <h5 className="username">{userInfo[0].data.user[0].name}</h5>
-            <div className="useraccount">
-              @{userInfo[0].data.user[0].account}
-            </div>
-            <p className="intro">{userInfo[0].data.user[0].introduction}</p>
-            <div className="followInfo">
-              <Link
-                to="followings"
-                className="followingText"
-                onClick={() => {
-                  setActiveTab("followings");
-                  // navigate("followings");
-                }}
-              >
-                <span> {userInfo[0].data.followings[0].followingTotal} 個</span>
-                跟隨中
-              </Link>
-              <Link
-                to="followers"
-                className="followerText"
-                onClick={() => {
-                  setActiveTab("followers");
-                  // navigate("followers");
-                }}
-              >
-                <span> {userInfo[0].data.followers[0].followerTotal} 位</span>
-                跟隨者
-              </Link>
-            </div>
-          </UserInfoText>
-        </div>
-
-        <StyledTabbar>
-          <UserControl />
-          {/* <button className={"userTab"}>推文</button> */}
-          {/* <button className={"userTab"}>回覆</button> */}
-          {/* <button className={"userTab"}>喜歡的內容</button> */}
-        </StyledTabbar>
-        {/* {usersInfo.map((usersInfo) => ( */}
-
-        {/* // <TweetsCard
+          {/* // <TweetsCard
           //   key={usersInfo.data.user[0].id}
           //   account={usersInfo.data.user[0].account}
           //   name={usersInfo.data.user[0].name}
@@ -127,9 +132,11 @@ function UserPage() {
           //   userId={usersInfo.data.user[0].id}
           // /> */}
 
-        {/* ))} */}
-      </PageStyle>
-    </UserPageConainer>
+          {/* ))} */}
+        </PageStyle>
+      </UserPageConainer>
+      <Popular />
+    </>
   );
 }
 
