@@ -9,19 +9,46 @@ import AuthInput from "../components/AuthInput";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { adminLogin } from "../API/admin";
 
 const AdminLoginPase = () => {
   const [account, setAccount] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate("");
 
-  const handleClick = () => {
+  const handleClick = async () => {
     if (account.length === 0) {
       return;
     }
     if (password.length === 0) {
       return;
     }
+    const { success, userToken} = await adminLogin({
+        account,
+        password,
+    })
+    if (success) {
+        localStorage.setItem('userToken', userToken)
+        Swal.fire({
+            title: '登入成功',
+            icon: 'success',
+            showConfirmButton: false,
+            timer: 1000,
+            position: 'top',
+        });
+        navigate('api/users/:id/tweets')
+        return;
+    }
+    Swal.fire({
+        title: '登入失敗',
+        icon: 'error',
+        showConfirmButton: false,
+        timer: 1000,
+        position: 'top',
+    })
+    return;
   };
+
 
   return (
     <AuthContainer>
