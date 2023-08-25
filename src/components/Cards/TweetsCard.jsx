@@ -34,8 +34,8 @@ function TweetsCard({
             className="name_link"
             to={`/api/otherusers/:UserId/?id=${userId}`}
           >
-            <span className="tweetname">{name}</span>
-            <span className="tweetaccount">@{account}</span>
+            <span className="name">{name}</span>
+            <span className="account">@{account}</span>
 
             <span className="time">・{relativeTime(createdAt)}</span>
           </Link>

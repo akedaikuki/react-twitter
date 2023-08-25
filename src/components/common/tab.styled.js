@@ -9,6 +9,8 @@ export const StyledTabbar = styled.div`
   }
 
   .userTab {
+    display: flex;
+    justify-content: center;
     width: 130px;
     padding: 15px 0;
     border: none;

@@ -1,9 +1,6 @@
 import { React, useState } from "react";
 import styled from "styled-components";
 import { Link, NavLink } from "react-router-dom";
-// import HomePage from "../../Pages/HomePage";
-// import UserPage from "../../Pages/UserPage";
-// import SeetingPage from "../../Pages/SeetingPage";
 import {
   BrandLogo,
   ProfileIcon,
@@ -65,7 +62,7 @@ const LinkStyle = styled.div`
   }
 `;
 
-function Navbar() {
+function Navbar({ setShowModal }) {
   return (
     <NavbarContainer className="NavbarContainer">
       <div className="navbarStyle">
@@ -94,7 +91,7 @@ function Navbar() {
         <LinkStyle>
           <NavLink
             className="user_icon"
-            to={"api/users/:id/tweets"}
+            to={"api/users/:UserId/tweets"}
             style={({ isActive }) => ({ color: isActive && "#FF6600" })}
           >
             {({ isActive }) =>
@@ -133,7 +130,14 @@ function Navbar() {
             }
           </NavLink>
         </LinkStyle>
-        <StyledNavbarButton className="bigButton">推文</StyledNavbarButton>
+        <StyledNavbarButton
+          className="bigButton"
+          onClick={() => {
+            setShowModal(true);
+          }}
+        >
+          推文
+        </StyledNavbarButton>
         <LinkStyle className="logout">
           <LogoutIcon />
           <Link className="outIcon" to="api/users/signin">

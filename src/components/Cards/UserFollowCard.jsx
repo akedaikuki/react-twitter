@@ -34,7 +34,7 @@ function UserFollowCard({ userId, avatar, name, introduction }) {
         <div className="right">
           <NameLink className="name_link">
             <Link to={`/api/otherusers/:UserId/?id=${userId}`}>
-              <span className="tweetname">{name}</span>
+              <span className="name">{name}</span>
             </Link>
             <FollowBtnBox>
               <StyledButton
