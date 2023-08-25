@@ -1,9 +1,6 @@
 import { React, useState } from "react";
 import styled from "styled-components";
 import { Link, NavLink } from "react-router-dom";
-// import HomePage from "../../Pages/HomePage";
-// import UserPage from "../../Pages/UserPage";
-// import SeetingPage from "../../Pages/SeetingPage";
 import {
   BrandLogo,
   ProfileIcon,
@@ -14,9 +11,8 @@ import {
   HomeIconActive,
   LogoutIcon,
 } from "../../assets/icons";
-
 import { StyledNavbarButton } from "../common/button.styled";
-
+import TextareaModal from "../profile/TextareaModal";
 const NavbarContainer = styled.div`
   /* width: 350px; */
 
@@ -66,82 +62,90 @@ const LinkStyle = styled.div`
 `;
 
 function Navbar() {
+  const [show, setShow] = useState(false);
+
+  const handleShow = () => setShow(true);
   return (
-    <NavbarContainer className="NavbarContainer">
-      <div className="navbarStyle">
-        <BrandLogo className="logo" />
-        <LinkStyle>
-          <NavLink
-            className="home_icon"
-            to={`/`}
-            style={({ isActive }) => ({ color: isActive && "#FF6600" })}
-          >
-            {({ isActive }) =>
-              isActive ? (
-                <>
-                  <HomeIconActive />
-                  <span>首頁</span>
-                </>
-              ) : (
-                <>
-                  <HomeIcon />
-                  <span>首頁</span>
-                </>
-              )
-            }
-          </NavLink>
-        </LinkStyle>
-        <LinkStyle>
-          <NavLink
-            className="user_icon"
-            to={"api/users/:id"}
-            style={({ isActive }) => ({ color: isActive && "#FF6600" })}
-          >
-            {({ isActive }) =>
-              isActive ? (
-                <>
-                  <ProfileIconActive />
-                  <span>個人資料</span>
-                </>
-              ) : (
-                <>
-                  <ProfileIcon />
-                  <span>個人資料</span>
-                </>
-              )
-            }
-          </NavLink>
-        </LinkStyle>
-        <LinkStyle>
-          <NavLink
-            className="setting_icon"
-            to={"/setting"}
-            style={({ isActive }) => ({ color: isActive && "#FF6600" })}
-          >
-            {({ isActive }) =>
-              isActive ? (
-                <>
-                  <SettingIconActive />
-                  <span>設定</span>
-                </>
-              ) : (
-                <>
-                  <SettingIcon />
-                  <span>設定</span>
-                </>
-              )
-            }
-          </NavLink>
-        </LinkStyle>
-        <StyledNavbarButton className="bigButton">推文</StyledNavbarButton>
-        <LinkStyle className="logout">
-          <LogoutIcon />
-          <Link className="outIcon" to="api/users">
-            登出
-          </Link>
-        </LinkStyle>
-      </div>
-    </NavbarContainer>
+    <>
+      {/* <TextareaModal show={show} setShow={setShow} /> */}
+      <NavbarContainer className="NavbarContainer">
+        <div className="navbarStyle">
+          <BrandLogo className="logo" />
+          <LinkStyle>
+            <NavLink
+              className="home_icon"
+              to={`/`}
+              style={({ isActive }) => ({ color: isActive && "#FF6600" })}
+            >
+              {({ isActive }) =>
+                isActive ? (
+                  <>
+                    <HomeIconActive />
+                    <span>首頁</span>
+                  </>
+                ) : (
+                  <>
+                    <HomeIcon />
+                    <span>首頁</span>
+                  </>
+                )
+              }
+            </NavLink>
+          </LinkStyle>
+          <LinkStyle>
+            <NavLink
+              className="user_icon"
+              to={"api/users/:id"}
+              style={({ isActive }) => ({ color: isActive && "#FF6600" })}
+            >
+              {({ isActive }) =>
+                isActive ? (
+                  <>
+                    <ProfileIconActive />
+                    <span>個人資料</span>
+                  </>
+                ) : (
+                  <>
+                    <ProfileIcon />
+                    <span>個人資料</span>
+                  </>
+                )
+              }
+            </NavLink>
+          </LinkStyle>
+          <LinkStyle>
+            <NavLink
+              className="setting_icon"
+              to={"/setting"}
+              style={({ isActive }) => ({ color: isActive && "#FF6600" })}
+            >
+              {({ isActive }) =>
+                isActive ? (
+                  <>
+                    <SettingIconActive />
+                    <span>設定</span>
+                  </>
+                ) : (
+                  <>
+                    <SettingIcon />
+                    <span>設定</span>
+                  </>
+                )
+              }
+            </NavLink>
+          </LinkStyle>
+          <StyledNavbarButton className="bigButton" onClick={handleShow}>
+            推文
+          </StyledNavbarButton>
+          <LinkStyle className="logout">
+            <LogoutIcon />
+            <Link className="outIcon" to="api/users/signin">
+              登出
+            </Link>
+          </LinkStyle>
+        </div>
+      </NavbarContainer>
+    </>
   );
 }
 

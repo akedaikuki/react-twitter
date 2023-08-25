@@ -162,7 +162,7 @@ const StyledTextareaContainer = styled.div`
   }
 `;
 
-function Modal({
+function ReplyModal({
   tweetId,
   active,
   // setShowModal,
@@ -250,4 +250,4 @@ function Modal({
   );
 }
 
-export default Modal;
+export default ReplyModal;

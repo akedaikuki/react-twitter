@@ -11,7 +11,7 @@ import {
   UserInfoText,
 } from "../components/common/page.styled";
 import Popular from "../components/Popular";
-import UserModal from "../components/profile/Modal";
+import UserModal from "../components/profile/TextareaModal";
 // import TweetsCard from "../components/Cards/TweetsCard";
 import UserControl from "../components/profile/UserControl";
 import user1 from "../API/user1";

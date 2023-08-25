@@ -16,6 +16,8 @@ import { ReactComponent as TweetIcon } from "./tweet-icon.svg";
 import { ReactComponent as NotiIcon } from "./noti-icon.svg";
 import { ReactComponent as NotiIconActive } from "./noti-icon-active.svg";
 import { ReactComponent as MsgIcon } from "./message-icon.svg";
+import { ReactComponent as NoImageIcon } from "../../assets/icons/no-image.svg";
+import { ReactComponent as NoImageBigIcon } from "../../assets/icons/no-image-big.svg";
 
 export {
   BrandLogo,
@@ -36,4 +38,6 @@ export {
   NotiIcon,
   NotiIconActive,
   MsgIcon,
+  NoImageIcon,
+  NoImageBigIcon,
 };

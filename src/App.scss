@@ -40,6 +40,12 @@ body {
   font-family: "Noto Sans TC", "Lato", serif;
 }
 
+*,
+::before,
+::after {
+  box-sizing: border-box;
+}
+
 html {
   overflow: -moz-hidden-unscrollable;
 }

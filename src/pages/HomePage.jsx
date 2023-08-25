@@ -7,8 +7,8 @@ import user1 from "../API/user1";
 import users from "../API/users";
 import Popular from "../components/Popular";
 import relativeTime from "../utilities/relativeTime";
-import Modal from "../components/profile/Modal";
-
+// import Modal from "../components/profile/TextareaModal";
+import TextareaModal from "../components/profile/TextareaModal";
 const HomePageContainer = styled.div`
   width: 640px;
 
@@ -48,6 +48,8 @@ const Tweettextbox = styled.div`
     }
   }
   .panel {
+    display: flex;
+    align-items: center;
     position: absolute;
     bottom: 16px;
     right: 24px;
@@ -66,27 +68,51 @@ const Tweettextbox = styled.div`
       &[disabled] {
         opacity: 65%;
       }
+      &:hover {
+        background-color: var(--btn-hover-bg);
+      }
     }
   }
 `;
 
-function HomePage() {
+function HomePage({ show, setShow }) {
   const [userInfo, setUserInfo] = useState(user1);
   const [usersInfo, setUsersInfo] = useState(users);
-  const [tweet, setTweet] = useState("");
+  const [tweetText, setTweetText] = useState("");
+  const [errorMsg, setErrorMsg] = useState(null);
   // console.log(usersInfo[0].data.user[0].avatar);
 
-  const isValid = useMemo(() => {
-    if (!tweet || tweet.length > 140) {
-      return false;
-    }
+  const handleClose = () => setShow(false);
 
-    return true;
-  }, [tweet]);
+  const handleChange = (e) => {
+    setErrorMsg(null);
+    setTweetText(e.target.value);
+  };
+
+  const handlePost = () => {
+    if (tweetText.length === 0) {
+      setErrorMsg("內容不可空白");
+      return;
+    }
+    const tweet = { description: tweetText };
+    // const status = await postTweet({ token, tweet });
+
+    setTweetText("");
+  };
+
+  // const isValid = useMemo(() => {
+  //   if (!tweetText || tweetText.length > 140) {
+  //     return false;
+  //   }
+
+  //   return true;
+  // }, [tweetText]);
 
   return (
     <>
-      <div className="tweetsmodal">{/* <Modal /> */}</div>
+      <div className="tweetsmodal" show={show} setShow={setShow}>
+        {<TextareaModal />}
+      </div>
       <HomePageContainer className="homePageContainer">
         <PageStyle>
           <div className="HomePage">
@@ -99,15 +125,24 @@ function HomePage() {
 
               <textarea
                 className="tweettext"
-                id="tweettext"
+                name="tweetpost"
+                id="tweetpost"
                 rows="5"
                 placeholder="有什麼新鮮事?"
-                // value=""
+                value={tweetText}
+                onChange={handleChange}
               ></textarea>
 
               <div className="panel">
-                <p className="error_msg">{/* "字數不可超過 140 字" */}</p>
-                <StyledButton className="tweet_post_btn" disabled={!isValid}>
+                <p className="error_msg">
+                  {tweetText.length > 140 ? "字數不可超過 140 字" : ""}
+                  {errorMsg !== null && errorMsg}
+                </p>
+                <StyledButton
+                  className="tweet_post_btn"
+                  // disabled={!isValid}
+                  onClick={handlePost}
+                >
                   推文
                 </StyledButton>
               </div>
@@ -126,6 +161,7 @@ function HomePage() {
               likesTotal={usersInfo.data.likes[0].likesTotal}
               userId={usersInfo.data.user[0].id}
               createdAt={usersInfo.data.Tweets[0].createdAt}
+              handlePost={handlePost}
             />
           ))}
         </PageStyle>
