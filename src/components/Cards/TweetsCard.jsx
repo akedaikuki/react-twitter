@@ -40,7 +40,10 @@ function TweetsCard({
             <span className="time">・{relativeTime(createdAt)}</span>
           </Link>
 
-          <Link className="tweetContent_link" to={"/api/users/:UserId/tweets"}>
+          <Link
+            className="tweetContent_link"
+            to={"/api/tweets/:tweet_id/replies"}
+          >
             <p className="tweetP">{tweets}</p>
           </Link>
           <div className="user_action">
