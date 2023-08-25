@@ -23,32 +23,31 @@ const AdminLoginPase = () => {
     if (password.length === 0) {
       return;
     }
-    const { success, userToken} = await adminLogin({
-        account,
-        password,
-    })
+    const { success, userToken } = await adminLogin({
+      account,
+      password,
+    });
     if (success) {
-        localStorage.setItem('userToken', userToken)
-        Swal.fire({
-            title: '登入成功',
-            icon: 'success',
-            showConfirmButton: false,
-            timer: 1000,
-            position: 'top',
-        });
-        navigate('api/users/:id/tweets')
-        return;
-    }
-    Swal.fire({
-        title: '登入失敗',
-        icon: 'error',
+      localStorage.setItem("userToken", userToken);
+      Swal.fire({
+        title: "登入成功",
+        icon: "success",
         showConfirmButton: false,
         timer: 1000,
-        position: 'top',
-    })
+        position: "top",
+      });
+      navigate("/api/users/:id/tweets");
+      return;
+    }
+    Swal.fire({
+      title: "登入失敗",
+      icon: "error",
+      showConfirmButton: false,
+      timer: 1000,
+      position: "top",
+    });
     return;
   };
-
 
   return (
     <AuthContainer>
