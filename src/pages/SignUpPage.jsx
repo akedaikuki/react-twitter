@@ -6,12 +6,14 @@ import {
 } from "../components/common/auth.styled";
 import { BrandLogo } from "../assets/icons";
 import AuthInput from "../components/AuthInput";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { checkPermission, register } from "../API/auth";
 
 const SignUpPage = () => {
   const [account, setAccount] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [checkPassword, setCheckPassword] = useState("");
@@ -19,6 +21,9 @@ const SignUpPage = () => {
 
   const handleClick = async () => {
     if (account.length === 0) {
+      return;
+    }
+    if (username.length ===0) {
       return;
     }
     if (email.length === 0) {
@@ -30,7 +35,55 @@ const SignUpPage = () => {
     if (checkPassword.length === 0) {
       return;
     }
+
+    const { success, authToken } = await register({
+        account, 
+        username, 
+        email, 
+        password, 
+        checkPassword,
+    })
+
+    if (success) {
+        localStorage.setItem('authToken', authToken)
+        Swal.fire({
+            title: '註冊成功',
+            icon: 'success',
+            showConfirmButton: false,
+            timer: 1000,
+            position: 'top',
+        });
+        navigate('api/users/:id/tweets')
+        return;
+    }
+    Swal.fire({
+        title: '註冊失敗',
+        icon: 'error',
+        showConfirmButton: false,
+        timer: 1000,
+        position: 'top',
+    })
+    return;
   };
+
+  useEffect(() => {
+    const checkTokenIsValid = async () => {
+        const authToken = localStorage.getItem
+        ('authToken');
+
+        if (!authToken) {
+            return
+        }
+        const result = await checkPermission
+        (authToken);
+
+        if (!result) {
+            navigate('')
+        }
+    };
+
+    checkTokenIsValid();
+  }, [navigate])
 
   return (
     <AuthContainer>
@@ -45,6 +98,15 @@ const SignUpPage = () => {
           placeholder="請輸入帳號"
           value={account}
           onChange={(accountInputValue) => setAccount(accountInputValue)}
+        />
+      </AuthInputContainer>
+
+      <AuthInputContainer>
+        <AuthInput
+          label="名稱"
+          placeholder="請輸入使用者名稱"
+          value={username}
+          onChange={(usernameInputValue) => setUsername(usernameInputValue)}
         />
       </AuthInputContainer>
 
