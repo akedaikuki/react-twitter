@@ -47,13 +47,23 @@ const SettingStyle = styled.div`
     background-color: var(--input-scale_light-gray);
     transition: 0.3s;
   }
-  .saveButton {
-    /* position: absolute; */
-    /* top: 600px; */
-    /* right: 650px; */
-    padding: 10px 40px;
-    color: var(--main_white);
-    background-color: var(--main_orange);
+  .buttonBox {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+
+    .saveButton {
+      /* position: absolute; */
+      /* top: 600px; */
+      /* right: 650px; */
+      padding: 10px 40px;
+      color: var(--main_white);
+      background-color: var(--main_orange);
+
+      &:hover {
+        background-color: var(--btn-hover-bg);
+      }
+    }
   }
 `;
 
@@ -117,7 +127,9 @@ function SettingPage() {
                 placeholder={"請再次輸入密碼"}
                 errorMessage={null}
               />
-              <StyledButton className="saveButton">儲存</StyledButton>
+              <div className="buttonBox">
+                <StyledButton className="saveButton">儲存</StyledButton>
+              </div>
             </div>
           </div>
         </SettingStyle>
