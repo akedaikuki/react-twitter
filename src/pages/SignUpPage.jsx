@@ -41,7 +41,7 @@ const SignUpPage = () => {
         username, 
         email, 
         password, 
-        checkPassword
+        checkPassword,
     })
 
     if (success) {
@@ -77,7 +77,7 @@ const SignUpPage = () => {
         const result = await checkPermission
         (authToken);
 
-        if (result) {
+        if (!result) {
             navigate('')
         }
     };
