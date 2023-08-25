@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FollowClickContext } from "../Context/FollowClickContext";
 import { TurnbackIcon } from "../assets/icons";
@@ -11,7 +11,7 @@ import {
   UserInfoText,
 } from "../components/common/page.styled";
 import Popular from "../components/Popular";
-import UserModal from "../components/profile/Modal";
+import UserModal from "../components/profile/UserModal";
 // import TweetsCard from "../components/Cards/TweetsCard";
 import UserControl from "../components/profile/UserControl";
 import user1 from "../API/user1";
@@ -32,11 +32,10 @@ function UserPage() {
     setEditActive(false);
   };
 
+  useEffect(() => {}, [editActive]);
+
   return (
     <>
-      <div className="editInfo" onClick={handleOpen}>
-        {/* <UserModal /> */}
-      </div>
       <UserPageConainer
         className="userPageConainer"
         active={editActive}
@@ -73,8 +72,18 @@ function UserPage() {
                 />
               </div>
 
+              <div
+                className="editInfo"
+                active={editActive}
+                onClose={handleClose}
+              >
+                {editActive ? <UserModal onClose={handleClose} /> : null}
+              </div>
+
               <div className="btnBox" style={{ justifyContent: "flex-end" }}>
-                <StyledButton className="editBtn ">編輯個人資料</StyledButton>
+                <StyledButton className="editBtn " onClick={handleOpen}>
+                  編輯個人資料
+                </StyledButton>
               </div>
             </UserInfoPicture>
             <UserInfoText className="userInfoText">
