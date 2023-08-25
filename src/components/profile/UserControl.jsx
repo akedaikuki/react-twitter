@@ -5,13 +5,13 @@ import TweetsCard from "../Cards/TweetsCard";
 import { StyledTabbar } from "../../components/common/tab.styled";
 import user1 from "../../API/user1";
 import users from "../../API/users";
-import { useNavigate, redirect } from "react-router-dom";
+import { useNavigate, redirect, Link } from "react-router-dom";
 
 function UserControl() {
   const [activeTab, setActiveTab] = useState("tweets");
   const [userInfo, setUserInfo] = useState(user1);
   const [usersInfo, setUsersInfo] = useState(users);
-  // const navigate = redirect();
+  const navigate = useNavigate();
 
   return (
     <div className="userControl">
@@ -19,7 +19,8 @@ function UserControl() {
         <div />
       </div>
       <StyledTabbar>
-        <button
+        <Link
+          to="/api/users/:UserId/tweets"
           className={"userTab" + clsx(" ", { active: activeTab === "tweets" })}
           onClick={() => {
             if (activeTab !== "tweets") {
@@ -29,8 +30,9 @@ function UserControl() {
           }}
         >
           推文
-        </button>
-        <button
+        </Link>
+        <Link
+          to="/api/users/:UserId/replied_tweets"
           className={
             "userTab" + clsx(" ", { active: activeTab === "replied_tweets" })
           }
@@ -38,12 +40,13 @@ function UserControl() {
             if (activeTab !== "replied_tweets") {
             }
             setActiveTab("replied_tweets");
-            // navigate("");
+            // navigate("replied_tweets");
           }}
         >
           回覆
-        </button>
-        <button
+        </Link>
+        <Link
+          to="/api/users/:UserId/likes"
           className={"userTab" + clsx(" ", { active: activeTab === "likes" })}
           onClick={() => {
             if (activeTab !== "likes") {
@@ -53,7 +56,7 @@ function UserControl() {
           }}
         >
           喜歡的內容
-        </button>
+        </Link>
       </StyledTabbar>
       <div className="tweetList">
         {usersInfo.map((usersInfo) => {

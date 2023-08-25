@@ -21,7 +21,7 @@ export const TweetCardContainer = styled.div`
       width: 100%;
       align-items: baseline;
     }
-    .tweetname {
+    .name {
       display: block;
       font-size: 16px;
       font-weight: 700;
@@ -29,7 +29,7 @@ export const TweetCardContainer = styled.div`
       margin-right: 5px;
       cursor: pointer;
     }
-    .tweetaccount,
+    .account,
     .time {
       font-size: 15px;
       font-weight: 400;

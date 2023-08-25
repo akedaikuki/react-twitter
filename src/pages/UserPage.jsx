@@ -85,7 +85,7 @@ function UserPage() {
               <p className="intro">{userInfo[0].data.user[0].introduction}</p>
               <div className="followInfo">
                 <Link
-                  to="followings"
+                  to="/api/users/:UserId/followings"
                   className="followingText"
                   onClick={() => {
                     setActiveTab("followings");
@@ -99,7 +99,7 @@ function UserPage() {
                   跟隨中
                 </Link>
                 <Link
-                  to="followers"
+                  to="/api/users/:UserId/followers"
                   className="followerText"
                   onClick={() => {
                     setActiveTab("followers");

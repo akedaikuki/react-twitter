@@ -72,7 +72,7 @@ const Tweettextbox = styled.div`
   }
 `;
 
-function HomePage() {
+function HomePage({ showModal, setShowModal }) {
   const [userInfo, setUserInfo] = useState(user1);
   const [usersInfo, setUsersInfo] = useState(users);
   const [tweetText, setTweetText] = useState("");
@@ -120,7 +120,9 @@ function HomePage() {
 
   return (
     <>
-      <div className="tweetsmodal">{/* <Modal /> */}</div>
+      <div className="tweetsmodal" showModal={showModal}>
+        <Modal showModal={showModal} setShowModal={setShowModal} />
+      </div>
       <HomePageContainer className="homePageContainer">
         <PageStyle>
           <div className="HomePage">
