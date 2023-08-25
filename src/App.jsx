@@ -18,8 +18,11 @@ function App() {
         <Routes>
           <Route path="/" element={<MainPage />}>
             <Route index element={<HomePage />} />
-            <Route path="api/users/:UserId" element={<UserPage />} />
-            <Route path="api/users/:UserId/tweets" element={<TweetPage />} />
+            <Route path="api/users/:UserId/tweets" element={<UserPage />} />
+            <Route
+              path="api/tweets/:tweet_id/replies"
+              element={<TweetPage />}
+            />
             <Route path="api/otherusers/:UserId" element={<OtheruserPage />} />
             <Route
               path="api/users/:UserId/followers"

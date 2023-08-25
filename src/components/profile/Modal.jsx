@@ -188,16 +188,16 @@ function Modal({
       <div className="modalHeader">
         <CloseIcon
           className="close"
-          onClick={() => {
-            handleShow(false);
-            if (onPages) {
-              navigate(-1);
-            }
-          }}
+          // onClick={() => {
+          //   handleShow(false);
+          //   if (onPages) {
+          //     navigate(-1);
+          //   }
+          // }}
         />
       </div>
       {/* reply */}
-      {onReply && (
+      {/* {onReply && (
         <StyledCardContainer modal={showModal}>
           <div className="left">
             <img src="{avatar}" alt="{name}" />
@@ -207,18 +207,18 @@ function Modal({
             <span className="name">name</span>
             <span className="account">@account</span>
             <span className="created-time">
-              {/* {" "}
+              {" "}
               ·{" "}
               {Array.isArray(createdAt)
                 ? `${createdAt[0]} ${createdAt[1]}`
-                : createdAt} */}
+                : createdAt}
             </span>
             <p>description</p>
           </div>
         </StyledCardContainer>
-      )}
+      )} */}
       {/* Tweettextbox */}
-      <StyledTextareaContainer modal={showModal}>
+      <StyledTextareaContainer>
         <img src="" alt="你的頭像" />
         <textarea
           name=""
