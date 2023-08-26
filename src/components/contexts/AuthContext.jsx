@@ -1,5 +1,6 @@
 import { login, register, checkPermission } from "../../API/auth";
-import { createContext, useState, useEffect } from "react";
+import { adminLogin } from "../../API/admin";
+import { createContext, useState, useEffect, useContext } from "react";
 import * as jwt from "jsonwebtoken";
 import { useLocation } from 'react-router-dom';
 
@@ -13,7 +14,7 @@ const defaultAuthContext = {
   };
 
   const AuthContext = createContext(defaultAuthContext);
-
+  export const useAuth = () => useContext(AuthContext);
   export const AuthProvider = ({ children }) => {
 
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -23,17 +24,17 @@ const defaultAuthContext = {
 
     useEffect(() => {
         const checkTokenIsValid = async () => {
-            const authToken = localStorage.getItem
-            ('authToken');
-            if (!authToken) {
+            const userToken = localStorage.getItem
+            ('userToken');
+            if (!userToken) {
                 setIsAuthenticated(false);
                 setPayload(null);
                 return;
             }
-            const result = await checkPermission(authToken);
+            const result = await checkPermission(userToken);
             if (!result) {
                 setIsAuthenticated(true);
-                const tempPayload = jwt.decode(authToken);
+                const tempPayload = jwt.decode(userToken);
                 setPayload(tempPayload);
             }else {
                 setIsAuthenticated(false);
@@ -53,19 +54,19 @@ const defaultAuthContext = {
                     name: payload.name,
                 },
                 register: async (data) => {
-                    const { success, AuthToken } = await register 
+                    const { success, userToken } = await register 
                     ({
                         account: data.account,
-                        username: data.username,
+                        name: data.name,
                         email: data.email,
                         password: data.password,
                         checkPassword: data.checkPassword,
                     });
-                    const tempPayload = jwt.decode(AuthToken);
+                    const tempPayload = jwt.decode(userToken);
                     if(tempPayload) {
                         setPayload(tempPayload);
                         setIsAuthenticated(true);
-                        localStorage.setItem('authToken', AuthToken);
+                        localStorage.setItem('userToken', userToken);
                     } else {
                         setPayload(null);
                         setIsAuthenticated(false);
@@ -73,15 +74,31 @@ const defaultAuthContext = {
                     return success;
                 },
                 login: async (data) => {
-                    const  { success, AuthToken } = await login({
+                    const  { success, userToken } = await login({
                         account: data.account,
                         password: data.password,
                     });
-                    const tempPayload = jwt.decode(AuthToken);
+                    const tempPayload = jwt.decode(userToken);
                     if(tempPayload) {
                         setPayload(tempPayload);
                         setIsAuthenticated(true);
-                        localStorage.setItem('authToken', AuthToken);
+                        localStorage.setItem('userToken', userToken);
+                    } else {
+                        setPayload(null);
+                        setIsAuthenticated(false);
+                    }
+                    return success;
+                },
+                adminLogin: async (data) => {
+                    const  { success, userToken } = await adminLogin({
+                        account: data.account,
+                        password: data.password,
+                    });
+                    const tempPayload = jwt.decode(userToken);
+                    if(tempPayload) {
+                        setPayload(tempPayload);
+                        setIsAuthenticated(true);
+                        localStorage.setItem('userToken', userToken);
                     } else {
                         setPayload(null);
                         setIsAuthenticated(false);
@@ -89,7 +106,7 @@ const defaultAuthContext = {
                     return success;
                 },
                 logout: () => {
-                    localStorage.removeItem('authToken');
+                    localStorage.removeItem('userToken');
                     setPayload(null);
                     isAuthenticated(false);
                 },
