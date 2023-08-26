@@ -6,10 +6,10 @@ import {
 } from "../components/common/auth.styled";
 import { BrandLogo } from "../assets/icons";
 import AuthInput from "../components/AuthInput";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { register } from "../API/auth";
+import { register, checkPermission } from "../API/auth";
 
 const SignUpPage = () => {
   const [account, setAccount] = useState("");
@@ -65,6 +65,22 @@ const SignUpPage = () => {
     })
     return;
   };
+
+  useEffect(() => {
+    const checkTokenIsValid = async () => {
+      const userToken = localStorage.getItem('userToken');
+
+      if(!userToken) {
+        return
+      }
+      const result = await checkPermission(userToken);
+
+      if(result) {
+        navigate('api/users/:id/tweets');
+      }
+    }
+    checkTokenIsValid();
+  }, [navigate])
 
 
   return (
