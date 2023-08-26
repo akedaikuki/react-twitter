@@ -11,10 +11,11 @@ import {
   UserInfoText,
 } from "../components/common/page.styled";
 import Popular from "../components/Popular";
-import UserModal from "../components/profile/UserModal";
+// import UserModal from "../components/profile/UserModal";
 // import TweetsCard from "../components/Cards/TweetsCard";
 import UserControl from "../components/profile/UserControl";
 import user1 from "../API/user1";
+import UserModal from "../components/profile/UserModal";
 // import users from "../API/users";
 
 function UserPage() {
@@ -25,21 +26,24 @@ function UserPage() {
   const navigate = useNavigate();
   // console.log(users[0].username);
 
-  const handleOpen = () => {
-    setEditActive(true);
-  };
-  const handleClose = () => {
-    setEditActive(false);
-  };
+  // const handleOpen = () => {
+  //   setEditActive(true);
+  // };
+  // const handleClose = () => {
+  //   setEditActive(false);
+  // };
 
   useEffect(() => {}, [editActive]);
 
   return (
     <>
+      <div className="modal">
+        <UserModal />
+      </div>
       <UserPageConainer
         className="userPageConainer"
         active={editActive}
-        onClose={handleClose}
+        // onClose={handleClose}
       >
         <PageStyle>
           <header>
@@ -75,13 +79,16 @@ function UserPage() {
               <div
                 className="editInfo"
                 active={editActive}
-                onClose={handleClose}
+                // onClose={handleClose}
               >
-                {editActive ? <UserModal onClose={handleClose} /> : null}
+                {/* {editActive ? <UserModal onClose={handleClose} /> : null} */}
               </div>
 
               <div className="btnBox" style={{ justifyContent: "flex-end" }}>
-                <StyledButton className="editBtn " onClick={handleOpen}>
+                <StyledButton
+                  className="editBtn "
+                  // onClick={handleOpen}
+                >
                   編輯個人資料
                 </StyledButton>
               </div>
@@ -102,7 +109,6 @@ function UserPage() {
                   }}
                 >
                   <span>
-                    {" "}
                     {userInfo[0].data.followings[0].followingTotal} 個
                   </span>
                   跟隨中

@@ -7,7 +7,8 @@ import user1 from "../API/user1";
 import users from "../API/users";
 import Popular from "../components/Popular";
 import relativeTime from "../utilities/relativeTime";
-import Modal from "../components/profile/Modal";
+import SideBarModal from "../components/profile/SideBarModal";
+import TweetReplyModal from "../components/profile/TweetReplyModal";
 
 const HomePageContainer = styled.div`
   width: 640px;
@@ -72,7 +73,7 @@ const Tweettextbox = styled.div`
   }
 `;
 
-function HomePage({ showModal, setShowModal }) {
+function HomePage() {
   const [userInfo, setUserInfo] = useState(user1);
   const [usersInfo, setUsersInfo] = useState(users);
   const [tweetText, setTweetText] = useState("");
@@ -85,29 +86,11 @@ function HomePage({ showModal, setShowModal }) {
 
   const handlePost = async () => {
     if (tweetText.length === 0) {
-      setErrorMsg("內容不可空白");
       return;
     }
-    const tweet = { description: tweetText };
+    // const tweet = { description: tweetText };
 
     setTweetText("");
-    // if (status === 200) {
-    //   Swal.fire({
-    //     position: "top",
-    //     title: "推文發送成功！",
-    //     timer: 1000,
-    //     icon: "success",
-    //     showConfirmButton: false,
-    //   });
-    // } else {
-    //   Swal.fire({
-    //     position: "top",
-    //     title: "推文發送失敗！",
-    //     timer: 1000,
-    //     icon: "error",
-    //     showConfirmButton: false,
-    //   });
-    // }
   };
 
   const isValid = useMemo(() => {
@@ -120,8 +103,9 @@ function HomePage({ showModal, setShowModal }) {
 
   return (
     <>
-      <div className="tweetsmodal" showModal={showModal}>
-        <Modal showModal={showModal} setShowModal={setShowModal} />
+      <div className="modal">
+        {/* <SideBarModal /> */}
+        {/* {<TweetReplyModal />} */}
       </div>
       <HomePageContainer className="homePageContainer">
         <PageStyle>
