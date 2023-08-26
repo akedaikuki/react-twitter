@@ -6,9 +6,9 @@ import {
 } from "../components/common/auth.styled";
 import { BrandLogo } from "../assets/icons";
 import AuthInput from "../components/AuthInput";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { login } from "../API/auth";
+import { login, checkPermission } from "../API/auth";
 import Swal from "sweetalert2";
 
 const LoginPage = () => {
@@ -48,6 +48,22 @@ const LoginPage = () => {
     });
     return;
   };
+  useEffect(() => {
+    const checkTokenIsValid = async () => {
+      const userToken = localStorage.getItem('userToken');
+
+      if(!userToken) {
+        return
+      }
+      const result = await checkPermission(userToken);
+
+      if(result) {
+        navigate('api/users/:id/tweets');
+      }
+    }
+    checkTokenIsValid();
+  }, [navigate])
+  
 
   return (
     <AuthContainer>
