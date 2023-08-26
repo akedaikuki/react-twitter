@@ -165,7 +165,8 @@ const StyledTextareaContainer = styled.div`
 function Modal({
   tweetId,
   active,
-  // setShowModal,
+  showModal,
+  setShowModal,
   personalInfo,
   onReply,
   onPages,
@@ -177,19 +178,19 @@ function Modal({
   setReplyTweetId,
 }) {
   const navigate = useNavigate();
-  const [showModal, setShowModal] = useState(false);
+  // const [showModal, setShowModal] = useState(false);
   // const tweetRef = useRef(null);
   // const [draft, setDraft] = useState("");
-  // const [errorMsg, setErrorMsg] = useState(null);
-  const handleShow = () => setShowModal(true);
+  const [errorMsg, setErrorMsg] = useState(null);
+  // const handleShow = () => setShowModal(true);
 
-  return (
+  return showModal ? (
     <StyledModalContainer>
       <div className="modalHeader">
         <CloseIcon
           className="close"
           onClick={() => {
-            handleShow(false);
+            setShowModal(false);
             if (onPages) {
               navigate(-1);
             }
@@ -197,7 +198,7 @@ function Modal({
         />
       </div>
       {/* reply */}
-      {onReply && (
+      {/* {onReply && (
         <StyledCardContainer modal={showModal}>
           <div className="left">
             <img src="{avatar}" alt="{name}" />
@@ -207,18 +208,18 @@ function Modal({
             <span className="name">name</span>
             <span className="account">@account</span>
             <span className="created-time">
-              {/* {" "}
+              {" "}
               ·{" "}
               {Array.isArray(createdAt)
                 ? `${createdAt[0]} ${createdAt[1]}`
-                : createdAt} */}
+                : createdAt}
             </span>
             <p>description</p>
           </div>
         </StyledCardContainer>
-      )}
+      )} */}
       {/* Tweettextbox */}
-      <StyledTextareaContainer modal={showModal}>
+      <StyledTextareaContainer>
         <img src="" alt="你的頭像" />
         <textarea
           name=""
@@ -236,7 +237,7 @@ function Modal({
         <div className="action-panel">
           <p className="error-msg">
             {"".length > 140 ? "字數不可超過 140 字!" : ""}
-            {/* {errorMsg !== null && errorMsg} */}
+            {errorMsg !== null && errorMsg}
           </p>
           <StyledButton
             className="post-tweet active"
@@ -247,7 +248,7 @@ function Modal({
         </div>
       </StyledTextareaContainer>
     </StyledModalContainer>
-  );
+  ) : null;
 }
 
 export default Modal;

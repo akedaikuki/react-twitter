@@ -1,7 +1,7 @@
 import "./App.scss";
 import MainPage from "./pages/MainPage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
+import { useState } from "react";
 import { AdminLoginPase, LoginPage, SignUpPage } from "./pages";
 import HomePage from "./pages/HomePage";
 import UserPage from "./pages/UserPage";
@@ -11,15 +11,29 @@ import OtheruserPage from "./pages/OtherUser/OtherUserPage";
 import OtherFollowPage from "./pages/OtherUser/OtherFollowPage";
 import SettingPage from "./pages/SettingPage";
 function App() {
+  const [showModal, setShowModal] = useState(false);
   return (
     <div className="App">
       <BrowserRouter>
         {/* <FollowClickContextProvider> */}
         <Routes>
           <Route path="/" element={<MainPage />}>
-            <Route index element={<HomePage />} />
-            <Route path="api/users/:UserId" element={<UserPage />} />
-            <Route path="api/users/:UserId/tweets" element={<TweetPage />} />
+            <Route
+              index
+              element={
+                <HomePage showModal={showModal} setShowModal={setShowModal} />
+              }
+            />
+            <Route path="api/users/:UserId/tweets" element={<UserPage />} />
+            <Route
+              path="api/users/:UserId/replied_tweets"
+              element={<UserPage />}
+            />
+            <Route path="api/users/:UserId/likes" element={<UserPage />} />
+            <Route
+              path="api/tweets/:tweet_id/replies"
+              element={<TweetPage />}
+            />
             <Route path="api/otherusers/:UserId" element={<OtheruserPage />} />
             <Route
               path="api/users/:UserId/followers"

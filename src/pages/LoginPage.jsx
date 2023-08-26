@@ -23,32 +23,31 @@ const LoginPage = () => {
     if (password.length === 0) {
       return;
     }
-    const { success, userToken} = await login({
-        account,
-        password,
-    })
+    const { success, userToken } = await login({
+      account,
+      password,
+    });
     if (success) {
-        localStorage.setItem('userToken', userToken)
-        Swal.fire({
-            title: '登入成功',
-            icon: 'success',
-            showConfirmButton: false,
-            timer: 1000,
-            position: 'top',
-        });
-        navigate('api/users/:id/tweets')
-        return;
-    }
-    Swal.fire({
-        title: '登入失敗',
-        icon: 'error',
+      localStorage.setItem("userToken", userToken);
+      Swal.fire({
+        title: "登入成功",
+        icon: "success",
         showConfirmButton: false,
         timer: 1000,
-        position: 'top',
-    })
+        position: "top",
+      });
+      navigate("/api/users/:id/tweets");
+      return;
+    }
+    Swal.fire({
+      title: "登入失敗",
+      icon: "error",
+      showConfirmButton: false,
+      timer: 1000,
+      position: "top",
+    });
     return;
   };
-
   useEffect(() => {
     const checkTokenIsValid = async () => {
       const userToken = localStorage.getItem('userToken');
@@ -64,10 +63,8 @@ const LoginPage = () => {
     }
     checkTokenIsValid();
   }, [navigate])
-
-
-
   
+
   return (
     <AuthContainer>
       <div>

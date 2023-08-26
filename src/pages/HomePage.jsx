@@ -48,6 +48,8 @@ const Tweettextbox = styled.div`
     }
   }
   .panel {
+    display: flex;
+    align-items: center;
     position: absolute;
     bottom: 16px;
     right: 24px;
@@ -70,23 +72,57 @@ const Tweettextbox = styled.div`
   }
 `;
 
-function HomePage() {
+function HomePage({ showModal, setShowModal }) {
   const [userInfo, setUserInfo] = useState(user1);
   const [usersInfo, setUsersInfo] = useState(users);
-  const [tweet, setTweet] = useState("");
+  const [tweetText, setTweetText] = useState("");
+  const [errorMsg, setErrorMsg] = useState(null);
   // console.log(usersInfo[0].data.user[0].avatar);
+  const handleChange = (e) => {
+    setErrorMsg(null);
+    setTweetText(e.target.value);
+  };
+
+  const handlePost = async () => {
+    if (tweetText.length === 0) {
+      setErrorMsg("內容不可空白");
+      return;
+    }
+    const tweet = { description: tweetText };
+
+    setTweetText("");
+    // if (status === 200) {
+    //   Swal.fire({
+    //     position: "top",
+    //     title: "推文發送成功！",
+    //     timer: 1000,
+    //     icon: "success",
+    //     showConfirmButton: false,
+    //   });
+    // } else {
+    //   Swal.fire({
+    //     position: "top",
+    //     title: "推文發送失敗！",
+    //     timer: 1000,
+    //     icon: "error",
+    //     showConfirmButton: false,
+    //   });
+    // }
+  };
 
   const isValid = useMemo(() => {
-    if (!tweet || tweet.length > 140) {
+    if (!tweetText || tweetText.length > 140) {
       return false;
     }
 
     return true;
-  }, [tweet]);
+  }, [tweetText]);
 
   return (
     <>
-      <div className="tweetsmodal">{/* <Modal /> */}</div>
+      <div className="tweetsmodal" showModal={showModal}>
+        <Modal showModal={showModal} setShowModal={setShowModal} />
+      </div>
       <HomePageContainer className="homePageContainer">
         <PageStyle>
           <div className="HomePage">
@@ -102,12 +138,20 @@ function HomePage() {
                 id="tweettext"
                 rows="5"
                 placeholder="有什麼新鮮事?"
-                // value=""
+                value={tweetText}
+                onChange={handleChange}
               ></textarea>
 
               <div className="panel">
-                <p className="error_msg">{/* "字數不可超過 140 字" */}</p>
-                <StyledButton className="tweet_post_btn" disabled={!isValid}>
+                <p className="error_msg">
+                  {tweetText.length > 140 ? "字數不可超過 140 字" : ""}
+                  {errorMsg !== null && errorMsg}
+                </p>
+                <StyledButton
+                  className="tweet_post_btn"
+                  onClick={handlePost}
+                  disabled={!isValid}
+                >
                   推文
                 </StyledButton>
               </div>
