@@ -53,7 +53,8 @@ function PopularCard({
   avatar,
   // isFollowed,
   // setIsFollowed,
-  onBtnClicked,
+  // handleFollow,
+  // onBtnClicked,
 }) {
   const [isFollowed, setIsFollowed] = useState(false);
 
