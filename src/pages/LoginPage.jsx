@@ -48,6 +48,7 @@ const LoginPage = () => {
     });
     return;
   };
+  
   useEffect(() => {
     const checkTokenIsValid = async () => {
       const userToken = localStorage.getItem('userToken');
