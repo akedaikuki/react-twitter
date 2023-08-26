@@ -11,7 +11,7 @@ import {
   HomeIconActive,
   LogoutIcon,
 } from "../../assets/icons";
-
+// import SideBarModal from "../profile/SideBarModal";
 import { StyledNavbarButton } from "../common/button.styled";
 
 const NavbarContainer = styled.div`
@@ -62,7 +62,10 @@ const LinkStyle = styled.div`
   }
 `;
 
-function Navbar({ setShowModal }) {
+function Navbar() {
+  // const [show, setShow] = useState(false);
+  // 開啟跟關閉modal
+  // const handleShow = () => setShow(true);
   return (
     <NavbarContainer className="NavbarContainer">
       <div className="navbarStyle">
@@ -132,9 +135,7 @@ function Navbar({ setShowModal }) {
         </LinkStyle>
         <StyledNavbarButton
           className="bigButton"
-          onClick={() => {
-            setShowModal(true);
-          }}
+          // onClick={handleShow}
         >
           推文
         </StyledNavbarButton>
@@ -145,6 +146,7 @@ function Navbar({ setShowModal }) {
           </Link>
         </LinkStyle>
       </div>
+      {/* <SideBarModal show={show} setShow={setShow} /> */}
     </NavbarContainer>
   );
 }
