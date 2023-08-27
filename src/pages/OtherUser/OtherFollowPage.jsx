@@ -72,7 +72,7 @@ function OutuserFollowPage() {
                     avatar={usersInfo.data.user[0].avatar}
                     name={usersInfo.data.user[0].name}
                     introduction={usersInfo.data.user[0].introduction}
-                    isFollowed={usersInfo.data.followers[0].isFollowed}
+                    isFollowed={usersInfo.data.user[0].isFollowed}
                   />
                 );
               }
@@ -84,7 +84,7 @@ function OutuserFollowPage() {
                     avatar={usersInfo.data.user[0].avatar}
                     name={usersInfo.data.user[0].name}
                     introduction={usersInfo.data.user[0].introduction}
-                    isFollowed={usersInfo.data.followers[0].isFollowed}
+                    isFollowed={usersInfo.data.user[0].isFollowed}
                   />
                 );
               }

@@ -4,6 +4,7 @@ import { StyledButton } from "../common/button.styled";
 import { styled } from "styled-components";
 import clsx from "clsx";
 import { Link } from "react-router-dom";
+import users from "../../API/users";
 
 const PopularCardstyled = styled.li`
   display: flex;
@@ -51,12 +52,32 @@ function PopularCard({
   account,
   name,
   avatar,
-  // isFollowed,
+  isFollowed,
   // setIsFollowed,
   // handleFollow,
   // onBtnClicked,
 }) {
-  const [isFollowed, setIsFollowed] = useState(false);
+  // const [isFollowed, setIsFollowed] = useState(false);
+  const [followState, setFollowState] = useState(isFollowed);
+  console.log(followState);
+  // 切換follow狀態
+  function handleFollow(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    if (followState === 0) {
+      setFollowState(1);
+      try {
+      } catch (error) {
+        console.error(error);
+      }
+    } else if (followState === 1) {
+      setFollowState(0);
+      try {
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }
 
   return (
     <>
@@ -70,10 +91,10 @@ function PopularCard({
         </Link>
         <FollowBtnBox>
           <StyledButton
-            className={"following_btn" + clsx(" ", { active: isFollowed })}
-            onClick={() => setIsFollowed(!isFollowed)}
+            className={"following_btn" + clsx(" ", { active: followState })}
+            onClick={handleFollow}
           >
-            {isFollowed ? "正在跟隨" : "跟隨"}
+            {followState === 1 ? "正在跟隨" : "跟隨"}
           </StyledButton>
         </FollowBtnBox>
       </PopularCardstyled>

@@ -15,6 +15,27 @@ function UserFollowPage() {
   const [userInfo, setUserInfo] = useState(user1);
   const [usersInfo, setUsersInfo] = useState(users);
   const navigate = useNavigate();
+  // const [followData, setFollowData] = useState([]);
+  const [followers, setFollowers] = useState(usersInfo);
+  const [followings, setFollowings] = useState(usersInfo);
+
+  const handleFollowerBtnClick = (id, isFollowed) => {
+    setFollowers(
+      followers.map((follower) => {
+        if (follower.data.user[0].id === id) {
+          return { ...follower, isFollowed: !isFollowed };
+        } else {
+          return follower;
+        }
+      })
+    );
+  };
+
+  const handleFollowingBtnClick = (id) => {
+    setFollowings(
+      followings.filter((following) => following.data.user[0].id !== id)
+    );
+  };
 
   return (
     <>
@@ -69,7 +90,8 @@ function UserFollowPage() {
                     avatar={usersInfo.data.user[0].avatar}
                     name={usersInfo.data.user[0].name}
                     introduction={usersInfo.data.user[0].introduction}
-                    isFollowed={usersInfo.data.followers[0].isFollowed}
+                    isFollowed={usersInfo.data.user[0].isFollowed}
+                    handleFollowerBtnClick={handleFollowerBtnClick}
                   />
                 );
               }
@@ -81,7 +103,8 @@ function UserFollowPage() {
                     avatar={usersInfo.data.user[0].avatar}
                     name={usersInfo.data.user[0].name}
                     introduction={usersInfo.data.user[0].introduction}
-                    isFollowed={usersInfo.data.followers[0].isFollowed}
+                    isFollowed={usersInfo.data.user[0].isFollowed}
+                    handleFollowingBtnClick={handleFollowingBtnClick}
                   />
                 );
               }
