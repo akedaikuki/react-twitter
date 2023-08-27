@@ -95,7 +95,10 @@ function UserFollowPage() {
                   />
                 );
               }
-              if (activeTab === "followings") {
+              if (
+                activeTab === "followings" &&
+                usersInfo.data.user[0].isFollowed === 1
+              ) {
                 return (
                   <UserFollowCard
                     key={usersInfo.data.user[0].id}

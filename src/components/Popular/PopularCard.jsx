@@ -59,7 +59,7 @@ function PopularCard({
 }) {
   // const [isFollowed, setIsFollowed] = useState(false);
   const [followState, setFollowState] = useState(isFollowed);
-  console.log(followState);
+  // console.log(followState);
   // 切換follow狀態
   function handleFollow(e) {
     e.stopPropagation();
