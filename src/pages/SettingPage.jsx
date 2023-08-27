@@ -2,7 +2,7 @@ import React from "react";
 import { styled } from "styled-components";
 import { StyledButton } from "../components/common/button.styled";
 import { useState } from "react";
-import { getUser, putUserSelf } from "../API/tweets";
+import { getUser, putUserSelf } from "../API/setting";
 import { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 
