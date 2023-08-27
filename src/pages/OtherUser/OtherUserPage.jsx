@@ -19,14 +19,36 @@ import UserControl from "../../components/profile/UserControl";
 import users from "../../API/users";
 
 function OtherUserPage() {
+  // { isFollowed }
   const [usersInfo, setUsersInfo] = useState(users[0]);
   const [editActive, setEditActive] = useState(false);
-  const [isFollowed, setIsFollowed] = useState(false);
+  const [followState, setFollowState] = useState(
+    usersInfo.data.user[0].isFollowed
+  );
   const { setActiveTab } = useContext(FollowClickContext);
   const navigate = useNavigate();
 
   // const useId = useParams();
 
+  console.log(followState);
+  // 切換follow狀態
+  function handleFollow(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    if (followState === 0) {
+      setFollowState(1);
+      try {
+      } catch (error) {
+        console.error(error);
+      }
+    } else if (followState === 1) {
+      setFollowState(0);
+      try {
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }
   const handleOpen = () => {
     setEditActive(true);
   };
@@ -98,12 +120,12 @@ function OtherUserPage() {
 
                 <StyledButton
                   className={
-                    "following_btn" + clsx(" ", { active: isFollowed })
+                    "following_btn" + clsx(" ", { active: followState })
                   }
                   // onClick={() => {}}
-                  onClick={() => setIsFollowed(!isFollowed)}
+                  onClick={handleFollow}
                 >
-                  {isFollowed ? "正在跟隨" : "跟隨"}
+                  {followState === 1 ? "正在跟隨" : "跟隨"}
                 </StyledButton>
                 {/* <StyledButton className="follow_btn">跟隨</StyledButton> */}
               </div>

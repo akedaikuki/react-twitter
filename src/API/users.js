@@ -12,6 +12,7 @@ const users = [
             "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/957.jpg",
           coverImage: "https://loremflickr.com/640/480/nature?lock=87605",
           introduction: "Assumenda debitis eaque ea laboriosam.",
+          isFollowed: 1,
         },
       ],
       Tweets: [
@@ -49,6 +50,7 @@ const users = [
             "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/502.jpg",
           coverImage: "https://loremflickr.com/640/480/nature?lock=12487",
           introduction: "Quae laboriosam ex rem dolore aliquid nulla quia.",
+          isFollowed: 1,
         },
       ],
       Tweets: [
@@ -88,6 +90,7 @@ const users = [
           coverImage: "https://loremflickr.com/640/480/nature?lock=65952",
           introduction:
             "Odit sequi praesentium natus quidem accusamus eligendi.",
+          isFollowed: 0,
         },
       ],
       Tweets: [
@@ -125,6 +128,7 @@ const users = [
             "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/81.jpg",
           coverImage: "https://loremflickr.com/640/480/nature?lock=68712",
           introduction: "Et tempore dolore.",
+          isFollowed: 1,
         },
       ],
       Tweets: [
@@ -162,6 +166,7 @@ const users = [
           coverImage: "https://loremflickr.com/640/480/nature?lock=15122",
           introduction:
             "Quae laudantium corporis libero velit nemo fugit maxime illum libero.",
+          isFollowed: 0,
         },
       ],
       Tweets: [

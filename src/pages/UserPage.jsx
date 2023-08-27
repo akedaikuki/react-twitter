@@ -37,9 +37,7 @@ function UserPage() {
 
   return (
     <>
-      <div className="modal">
-        <UserModal />
-      </div>
+      <div className="modal">{/* <UserModal /> */}</div>
       <UserPageConainer
         className="userPageConainer"
         active={editActive}
