@@ -72,11 +72,14 @@ function OutuserFollowPage() {
                     avatar={usersInfo.data.user[0].avatar}
                     name={usersInfo.data.user[0].name}
                     introduction={usersInfo.data.user[0].introduction}
-                    isFollowed={usersInfo.data.followers[0].isFollowed}
+                    isFollowed={usersInfo.data.user[0].isFollowed}
                   />
                 );
               }
-              if (activeTab === "followings") {
+              if (
+                activeTab === "followings" &&
+                usersInfo.data.user[0].isFollowed === 1
+              ) {
                 return (
                   <UserFollowCard
                     key={usersInfo.data.user[0].id}
@@ -84,7 +87,7 @@ function OutuserFollowPage() {
                     avatar={usersInfo.data.user[0].avatar}
                     name={usersInfo.data.user[0].name}
                     introduction={usersInfo.data.user[0].introduction}
-                    isFollowed={usersInfo.data.followers[0].isFollowed}
+                    isFollowed={usersInfo.data.user[0].isFollowed}
                   />
                 );
               }

@@ -18,8 +18,27 @@ const NameLink = styled.div`
   margin-bottom: 8px;
 `;
 
-function UserFollowCard({ userId, avatar, name, introduction }) {
-  const [isFollowed, setIsFollowed] = useState(false);
+function UserFollowCard({ userId, avatar, name, introduction, isFollowed }) {
+  const [followState, setFollowState] = useState(isFollowed);
+  // console.log(followState);
+  // 切換follow狀態
+  function handleFollow(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    if (followState === 0) {
+      setFollowState(1);
+      try {
+      } catch (error) {
+        console.error(error);
+      }
+    } else if (followState === 1) {
+      setFollowState(0);
+      try {
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }
 
   return (
     <>
@@ -38,11 +57,10 @@ function UserFollowCard({ userId, avatar, name, introduction }) {
             </Link>
             <FollowBtnBox>
               <StyledButton
-                className={"following_btn" + clsx(" ", { active: isFollowed })}
-                // onClick={onBtnClicked}
-                onClick={() => setIsFollowed(!isFollowed)}
+                className={"following_btn" + clsx(" ", { active: followState })}
+                onClick={handleFollow}
               >
-                {isFollowed ? "正在跟隨" : "跟隨"}
+                {followState === 1 ? "正在跟隨" : "跟隨"}
               </StyledButton>
               {/* <StyledButton className={"follow_btn"}>跟隨</StyledButton> */}
             </FollowBtnBox>

@@ -40,6 +40,8 @@ function PopularList() {
             userId={usersInfo.data.user[0].id}
             name={usersInfo.data.user[0].name}
             account={usersInfo.data.user[0].account}
+            isFollowed={usersInfo.data.user[0].isFollowed}
+            // handleFollowBtnClick={handleFollowBtnClick}
           />
         ))}
       </ul>

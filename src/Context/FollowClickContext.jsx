@@ -1,24 +1,26 @@
 import { createContext, useState, useEffect } from "react";
-
+import users from "../API/users";
 const FollowClickContext = createContext();
 
 function FollowClickContextProvider({ children }) {
   //   const [isFollowed, setIsFollowed] = useState(false);
   const [activeTab, setActiveTab] = useState("followers");
   // const [followState, setFollowState] = useState(false);
-  const [isFollowed, setIsFollowed] = useState(false);
-  async function handleFollow(e) {
+  const [isFollowed, setIsFollowed] = useState(
+    users[0].data.user[0].isFollowed
+  );
+  function handleFollow(e) {
     e.stopPropagation();
     e.preventDefault();
-    if (isFollowed === false) {
-      setIsFollowed(true);
+    if (isFollowed === 0) {
+      setIsFollowed(1);
       try {
         // await followUser(UserId.UserId);
       } catch (error) {
         console.error(error);
       }
-    } else if (isFollowed === true) {
-      setIsFollowed(false);
+    } else if (isFollowed === 1) {
+      setIsFollowed(0);
       try {
         // await unfollowUser(UserId.UserId);
       } catch (error) {

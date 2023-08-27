@@ -3,7 +3,12 @@ import React, { useId, useState, useContext } from "react";
 import clsx from "clsx";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { FollowClickContext } from "../../Context/FollowClickContext";
-import { TurnbackIcon, MsgIcon, NotiIcon } from "../../assets/icons";
+import {
+  TurnbackIcon,
+  MsgIcon,
+  NotiIcon,
+  NotiIconActive,
+} from "../../assets/icons";
 import { StyledTabbar } from "../../components/common/tab.styled";
 import { PageStyle } from "../../components/common/page.styled";
 import { StyledButton } from "../../components/common/button.styled";
@@ -19,20 +24,49 @@ import UserControl from "../../components/profile/UserControl";
 import users from "../../API/users";
 
 function OtherUserPage() {
+  // { isFollowed }
   const [usersInfo, setUsersInfo] = useState(users[0]);
   const [editActive, setEditActive] = useState(false);
-  const [isFollowed, setIsFollowed] = useState(false);
+  const [showNotice, setShowNotice] = useState(false);
+  const [followState, setFollowState] = useState(
+    usersInfo.data.user[0].isFollowed
+  );
   const { setActiveTab } = useContext(FollowClickContext);
   const navigate = useNavigate();
 
   // const useId = useParams();
 
-  const handleOpen = () => {
-    setEditActive(true);
-  };
-  const handleClose = () => {
-    setEditActive(false);
-  };
+  // console.log(followState);
+  // 切換小鈴鐺ICON
+  function handleShowNotice() {
+    setShowNotice(!showNotice);
+  }
+
+  // 切換follow狀態
+  function handleFollow(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    if (followState === 0) {
+      setFollowState(1);
+      try {
+      } catch (error) {
+        console.error(error);
+      }
+    } else if (followState === 1) {
+      setFollowState(0);
+      try {
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }
+
+  // const handleOpen = () => {
+  //   setEditActive(true);
+  // };
+  // const handleClose = () => {
+  //   setEditActive(false);
+  // };
 
   return (
     <>
@@ -40,7 +74,7 @@ function OtherUserPage() {
         className="userPageConainer"
         useId={usersInfo.data.user[0].id}
         active={editActive}
-        onClose={handleClose}
+        // onClose={handleClose}
       >
         {/* <div className="step_back" /> */}
 
@@ -76,9 +110,9 @@ function OtherUserPage() {
                 />
               </div>
 
-              <div className="editInfo" onClick={handleOpen}>
-                {/* <UserModal /> */}
-              </div>
+              {/* <div className="editInfo" >
+                <UserModal />
+              </div> */}
               <div
                 className="btnBox"
                 style={{
@@ -89,21 +123,31 @@ function OtherUserPage() {
                 <div className="msgIcon">
                   <MsgIcon />
                 </div>
-                <div
-                  className="notiIcon"
-                  style={{ position: "absolute", left: "40px" }}
-                >
-                  <NotiIcon />
-                </div>
-
+                {showNotice === true ? (
+                  <div
+                    className="notiIconActive"
+                    style={{ position: "absolute", left: "40px" }}
+                    onClick={handleShowNotice}
+                  >
+                    <NotiIconActive />
+                  </div>
+                ) : (
+                  <div
+                    className="notiIcon"
+                    style={{ position: "absolute", left: "40px" }}
+                    onClick={handleShowNotice}
+                  >
+                    <NotiIcon />
+                  </div>
+                )}
                 <StyledButton
                   className={
-                    "following_btn" + clsx(" ", { active: isFollowed })
+                    "following_btn" + clsx(" ", { active: followState })
                   }
                   // onClick={() => {}}
-                  onClick={() => setIsFollowed(!isFollowed)}
+                  onClick={handleFollow}
                 >
-                  {isFollowed ? "正在跟隨" : "跟隨"}
+                  {followState === 1 ? "正在跟隨" : "跟隨"}
                 </StyledButton>
                 {/* <StyledButton className="follow_btn">跟隨</StyledButton> */}
               </div>
