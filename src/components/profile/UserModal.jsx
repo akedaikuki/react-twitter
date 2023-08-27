@@ -134,7 +134,7 @@ const UserInfoText = styled.div`
     &:hover,
     &:focus {
       outline: 0;
-      border-bottom-color: var(--main_primary);
+      border-bottom-color: var(--main_newtweet);
     }
     &.error {
       border-bottom-color: var(--main_error);
