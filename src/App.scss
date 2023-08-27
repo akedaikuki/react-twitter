@@ -44,6 +44,17 @@ html {
   overflow: -moz-hidden-unscrollable;
 }
 
+input {
+  :hover,
+    :focus {
+      outline: 0;
+      border-bottom-color: var(--main_newtweet);
+    }
+    .error {
+      border-bottom-color: var(--main_error);
+    }
+}
+
 body::-webkit-scrollbar {
   display: none;
 }
