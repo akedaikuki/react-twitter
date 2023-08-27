@@ -36,7 +36,7 @@ const LoginPage = () => {
         timer: 1000,
         position: "top",
       });
-      navigate("/api/users/:id/tweets");
+      navigate("/");
       return;
     }
     Swal.fire({
@@ -48,23 +48,22 @@ const LoginPage = () => {
     });
     return;
   };
-  
+
   useEffect(() => {
     const checkTokenIsValid = async () => {
-      const userToken = localStorage.getItem('userToken');
+      const userToken = localStorage.getItem("userToken");
 
-      if(!userToken) {
-        return
+      if (!userToken) {
+        return;
       }
       const result = await checkPermission(userToken);
 
-      if(result) {
-        navigate('api/users/:id/tweets');
+      if (result) {
+        navigate("/");
       }
-    }
+    };
     checkTokenIsValid();
-  }, [navigate])
-  
+  }, [navigate]);
 
   return (
     <AuthContainer>
