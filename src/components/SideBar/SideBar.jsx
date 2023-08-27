@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useContext, useState } from "react";
 import styled from "styled-components";
 import { Link, NavLink } from "react-router-dom";
 import {
@@ -13,6 +13,7 @@ import {
 } from "../../assets/icons";
 // import SideBarModal from "../profile/SideBarModal";
 import { StyledNavbarButton } from "../common/button.styled";
+import { ShowModalContext } from "../../Context/ShowModalContext";
 
 const NavbarContainer = styled.div`
   /* width: 350px; */
@@ -63,6 +64,7 @@ const LinkStyle = styled.div`
 `;
 
 function Navbar() {
+  const { toggleShowPostModal } = useContext(ShowModalContext);
   // const [show, setShow] = useState(false);
   // 開啟跟關閉modal
   // const handleShow = () => setShow(true);
@@ -133,10 +135,7 @@ function Navbar() {
             }
           </NavLink>
         </LinkStyle>
-        <StyledNavbarButton
-          className="bigButton"
-          // onClick={handleShow}
-        >
+        <StyledNavbarButton className="bigButton" onClick={toggleShowPostModal}>
           推文
         </StyledNavbarButton>
         <LinkStyle className="logout">
