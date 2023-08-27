@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import styled from "styled-components";
 import { CloseIcon, CameraIcon } from "../../assets/icons";
 import { StyledButton } from "../common/button.styled";
 import Swal from "sweetalert2";
 import user1 from "../../API/user1";
+import { ShowModalContext } from "../../Context/ShowModalContext";
 
 const ModalStyle = styled.div`
   box-sizing: border-box;
@@ -16,7 +17,7 @@ const ModalStyle = styled.div`
   /* background-color: red; */
   z-index: 200;
   background-color: var(--main_white);
-  outline: 1px solid tomato;
+  /* outline: 1px solid tomato; */
 
   .header {
     display: flex;
@@ -167,6 +168,7 @@ function UserModal() {
     avatar: userInfo[0].data.user[0].avatar,
     cover: userInfo[0].data.user[0].coverImage,
   });
+  const { toggleShowEditModal } = useContext(ShowModalContext);
   function handleSave() {
     if (name.length === 0) {
       setErrorMessage({ ...errorMessage, name: "名稱不能為空白" });
@@ -182,7 +184,7 @@ function UserModal() {
   return (
     <ModalStyle>
       <div className="header">
-        <CloseIcon className="close" />
+        <CloseIcon className="close" onClick={toggleShowEditModal} />
         <h5>編輯個人資料</h5>
         <StyledButton className="save active">儲存</StyledButton>
       </div>

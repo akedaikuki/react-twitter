@@ -1,8 +1,9 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useContext } from "react";
 import styled from "styled-components";
 import { CloseIcon } from "../../assets/icons";
 import { StyledButton } from "../common/button.styled";
 import user1 from "../../API/user1";
+import { ShowModalContext } from "../../Context/ShowModalContext";
 
 const ModalContainer = styled.div`
   position: absolute;
@@ -17,7 +18,7 @@ const ModalContainer = styled.div`
   border-radius: 14px;
   background-color: var(--main_white);
   z-index: 200;
-  outline: 1px solid tomato;
+  /* outline: 1px solid tomato; */
   .modalHeader {
     height: unset;
     padding: unset;
@@ -73,8 +74,12 @@ const Tweettextbox = styled.div`
       align-items: flex-start;
       color: var(--main_white);
       background-color: var(--main_orange);
+
       &[disabled] {
         opacity: 65%;
+      }
+      &:hover {
+        background-color: var(--btn-hover-bg);
       }
     }
   }
@@ -83,6 +88,7 @@ function SideBarModal() {
   const [userInfo, setUserInfo] = useState(user1);
   const [tweetText, setTweetText] = useState("");
   const [errorMsg, setErrorMsg] = useState(null);
+  const { toggleShowPostModal } = useContext(ShowModalContext);
   // console.log(usersInfo[0].data.user[0].avatar);
   const handleChange = (e) => {
     setErrorMsg(null);
@@ -109,10 +115,7 @@ function SideBarModal() {
   return (
     <ModalContainer className="ModalContainer">
       <div className="modalHeader">
-        <CloseIcon
-          className="close"
-          // onClick={}
-        />
+        <CloseIcon className="close" onClick={toggleShowPostModal} />
         <div className="line"></div>
         <Tweettextbox className="Tweettextbox">
           <img src={userInfo[0].data.user[0].avatar} alt="user avatar" />
