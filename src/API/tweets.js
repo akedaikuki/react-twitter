@@ -1,47 +1,64 @@
 import axios from "axios";
 
-const baseURL = "https://secure-beach-58251-e97c6ff22f2e.herokuapp.com/api";
+const apiURL = "https://secure-beach-58251-e97c6ff22f2e.herokuapp.com/api";
 
 const axiosInstance = axios.create({
-    baseURL: baseURL,
-});
+  baseURL: apiURL
+})
 
 axiosInstance.interceptors.request.use(
-    (config) => {
-        const token = localStorage.getItem("userToken");
-
-        if (token) {
-            config.headers["Authorization"] = `Bearer ${token}`;
-        }
-        return config
-    },
-    (error) => {
-        console.log(error)
+  (config) => {
+    const token = localStorage.getItem('UserToken');
+    console.log(token)
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`;
     }
-)
+    return config;
+  },
+  (error) => {
+    console.error(error);
+  },
+);
 
-
-// get使用者
-export const getUser = async (id) => {
+// get tweets api
+export const getTweets = async () => {
     try {
-        const res = await axiosInstance.get(`${baseURL}/users/${id}`);
-        return res
+        const res = await axiosInstance.get(`${apiURL}/tweets`);
+        return res.data;
     } catch (error) {
-        console.error("[Get user failed]", error.response.data.message)
+        console.error('[Get Tweets failed]:', error);
     }
-};
+}
 
-// put編輯個人資料
-export const putUserSelf = async (id, formData) => {
+// post tweets api
+export const postTweets = async ({description}) => {
     try {
-      const res = await axiosInstance.put(`${baseURL}/users/${id}`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      return res;
+        const res = await axiosInstance.post(`${apiURL}/tweets`, {
+            description
+        });
+        return res.data;
     } catch (error) {
-      console.error("[Put user failed]", error.response.data.message);
-      return error;
+        console.error('[Post Tweets failed]:', error);
+        throw error
     }
-};
+}
+
+// get tweet_id api
+export const getTweetId = async ({tweet_id}) => {
+    try {
+        const res = await axiosInstance.get(`${apiURL}/tweets/${tweet_id}`);
+        return res.data;
+    } catch (error) {
+        console.error('[Get Tweet_id failed]:', error);
+    }
+}
+
+// get tweets_id replies api
+export const getReplies = async ({tweet_id}) => {
+    try {
+        const res = await axiosInstance.get(`${apiURL}/tweets/${tweet_id}/replies`);
+        return res.data
+    } catch (error) {
+        console.error('[Get Tweets_id replies failed]:', error);
+    }
+}
