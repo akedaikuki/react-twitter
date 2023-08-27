@@ -3,7 +3,12 @@ import React, { useId, useState, useContext } from "react";
 import clsx from "clsx";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { FollowClickContext } from "../../Context/FollowClickContext";
-import { TurnbackIcon, MsgIcon, NotiIcon } from "../../assets/icons";
+import {
+  TurnbackIcon,
+  MsgIcon,
+  NotiIcon,
+  NotiIconActive,
+} from "../../assets/icons";
 import { StyledTabbar } from "../../components/common/tab.styled";
 import { PageStyle } from "../../components/common/page.styled";
 import { StyledButton } from "../../components/common/button.styled";
@@ -22,6 +27,7 @@ function OtherUserPage() {
   // { isFollowed }
   const [usersInfo, setUsersInfo] = useState(users[0]);
   const [editActive, setEditActive] = useState(false);
+  const [showNotice, setShowNotice] = useState(false);
   const [followState, setFollowState] = useState(
     usersInfo.data.user[0].isFollowed
   );
@@ -30,7 +36,12 @@ function OtherUserPage() {
 
   // const useId = useParams();
 
-  console.log(followState);
+  // console.log(followState);
+  // 切換小鈴鐺ICON
+  function handleShowNotice() {
+    setShowNotice(!showNotice);
+  }
+
   // 切換follow狀態
   function handleFollow(e) {
     e.stopPropagation();
@@ -49,12 +60,13 @@ function OtherUserPage() {
       }
     }
   }
-  const handleOpen = () => {
-    setEditActive(true);
-  };
-  const handleClose = () => {
-    setEditActive(false);
-  };
+
+  // const handleOpen = () => {
+  //   setEditActive(true);
+  // };
+  // const handleClose = () => {
+  //   setEditActive(false);
+  // };
 
   return (
     <>
@@ -62,7 +74,7 @@ function OtherUserPage() {
         className="userPageConainer"
         useId={usersInfo.data.user[0].id}
         active={editActive}
-        onClose={handleClose}
+        // onClose={handleClose}
       >
         {/* <div className="step_back" /> */}
 
@@ -98,9 +110,9 @@ function OtherUserPage() {
                 />
               </div>
 
-              <div className="editInfo" onClick={handleOpen}>
-                {/* <UserModal /> */}
-              </div>
+              {/* <div className="editInfo" >
+                <UserModal />
+              </div> */}
               <div
                 className="btnBox"
                 style={{
@@ -111,13 +123,23 @@ function OtherUserPage() {
                 <div className="msgIcon">
                   <MsgIcon />
                 </div>
-                <div
-                  className="notiIcon"
-                  style={{ position: "absolute", left: "40px" }}
-                >
-                  <NotiIcon />
-                </div>
-
+                {showNotice === true ? (
+                  <div
+                    className="notiIconActive"
+                    style={{ position: "absolute", left: "40px" }}
+                    onClick={handleShowNotice}
+                  >
+                    <NotiIconActive />
+                  </div>
+                ) : (
+                  <div
+                    className="notiIcon"
+                    style={{ position: "absolute", left: "40px" }}
+                    onClick={handleShowNotice}
+                  >
+                    <NotiIcon />
+                  </div>
+                )}
                 <StyledButton
                   className={
                     "following_btn" + clsx(" ", { active: followState })

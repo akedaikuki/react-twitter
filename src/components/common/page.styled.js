@@ -66,7 +66,8 @@ export const UserInfoPicture = styled.div`
     transform: translate(430px, 570%);
 
     .msgIcon,
-    .notiIcon {
+    .notiIcon,
+    .notiIconActive {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -76,6 +77,9 @@ export const UserInfoPicture = styled.div`
       border-radius: 50px;
       border: 1px solid var(--main_orange);
       cursor: pointer;
+    }
+    .notiIconActive {
+      background-color: var(--main_orange);
     }
   }
 `;
