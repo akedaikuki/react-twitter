@@ -16,6 +16,9 @@ import Popular from "../components/Popular";
 import UserControl from "../components/profile/UserControl";
 import user1 from "../API/user1";
 import UserModal from "../components/profile/UserModal";
+import { ShowModalContext } from "../Context/ShowModalContext";
+import SideBarModal from "../components/profile/SideBarModal";
+import TweetReplyModal from "../components/profile/TweetReplyModal";
 // import users from "../API/users";
 
 function UserPage() {
@@ -23,21 +26,21 @@ function UserPage() {
   // const [usersInfo, setUsersInfo] = useState(users);
   const [editActive, setEditActive] = useState(false);
   const { setActiveTab } = useContext(FollowClickContext);
+  const { showEditModal, toggleShowEditModal } = useContext(ShowModalContext);
+  const { showPostModal, toggleShowPostModal } = useContext(ShowModalContext);
+  const { showReplyModal, toggleShowReplyModal } = useContext(ShowModalContext);
   const navigate = useNavigate();
   // console.log(users[0].username);
-
-  // const handleOpen = () => {
-  //   setEditActive(true);
-  // };
-  // const handleClose = () => {
-  //   setEditActive(false);
-  // };
 
   useEffect(() => {}, [editActive]);
 
   return (
     <>
-      <div className="modal">{/* <UserModal /> */}</div>
+      <div className="modal">
+        {showEditModal && <UserModal />}
+        {showPostModal && <SideBarModal />}
+        {showReplyModal && <TweetReplyModal />}
+      </div>
       <UserPageConainer
         className="userPageConainer"
         active={editActive}
@@ -85,7 +88,7 @@ function UserPage() {
               <div className="btnBox" style={{ justifyContent: "flex-end" }}>
                 <StyledButton
                   className="editBtn "
-                  // onClick={handleOpen}
+                  onClick={toggleShowEditModal}
                 >
                   編輯個人資料
                 </StyledButton>

@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { ReplyIcon, LikedIcon, LikeIcon } from "../../assets/icons";
 import { TweetCardContainer } from "../common/tweet.styled";
 import { Link } from "react-router-dom";
 import relativeTime from "../../utilities/relativeTime";
+import { ShowModalContext } from "../../Context/ShowModalContext";
+import TweetReplyModal from "../profile/TweetReplyModal";
+
 // import users from "../../API/users";
 function TweetsCard({
   userId,
@@ -15,9 +18,11 @@ function TweetsCard({
   repliedTotal,
   likesTotal,
 }) {
+  const { showReplyModal, toggleShowReplyModal } = useContext(ShowModalContext);
   return (
     <>
       {/* users */}
+      {/* <div className="modal">{showReplyModal && <TweetReplyModal />}</div> */}
       <TweetCardContainer className="tweetCardContainer" id={userId}>
         <Link
           className="userAvatar"
@@ -48,7 +53,7 @@ function TweetsCard({
           </Link>
           <div className="user_action">
             <span className="replyIcon">
-              <ReplyIcon />
+              <ReplyIcon onClick={toggleShowReplyModal} />
               {repliedTotal}
             </span>
             <span className="likeIcon">

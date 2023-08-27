@@ -22,6 +22,9 @@ import Popular from "../../components/Popular";
 // import Tweetslist from "../../components/profile/Tweetslist";
 import UserControl from "../../components/profile/UserControl";
 import users from "../../API/users";
+import { ShowModalContext } from "../../Context/ShowModalContext";
+import SideBarModal from "../../components/profile/SideBarModal";
+import TweetReplyModal from "../../components/profile/TweetReplyModal";
 
 function OtherUserPage() {
   // { isFollowed }
@@ -32,6 +35,8 @@ function OtherUserPage() {
     usersInfo.data.user[0].isFollowed
   );
   const { setActiveTab } = useContext(FollowClickContext);
+  const { showPostModal, toggleShowPostModal } = useContext(ShowModalContext);
+  const { showReplyModal, toggleShowReplyModal } = useContext(ShowModalContext);
   const navigate = useNavigate();
 
   // const useId = useParams();
@@ -61,15 +66,12 @@ function OtherUserPage() {
     }
   }
 
-  // const handleOpen = () => {
-  //   setEditActive(true);
-  // };
-  // const handleClose = () => {
-  //   setEditActive(false);
-  // };
-
   return (
     <>
+      <div className="modal">
+        {showPostModal && <SideBarModal />}
+        {showReplyModal && <TweetReplyModal />}
+      </div>
       <UserPageConainer
         className="userPageConainer"
         useId={usersInfo.data.user[0].id}

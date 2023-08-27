@@ -3,13 +3,30 @@ import { createContext, useState } from "react";
 const ShowModalContext = createContext();
 
 function ShowModalContextProvider({ children }) {
-  const [showModal, setShowModal] = useState(false);
-
+  const [showPostModal, setShowPostModal] = useState(false);
+  const toggleShowPostModal = () => {
+    setShowPostModal(!showPostModal);
+  };
+  const [showReplyModal, setShowReplyModal] = useState(false);
+  const toggleShowReplyModal = () => {
+    setShowReplyModal(!showReplyModal);
+  };
+  const [showEditModal, setShowEditModal] = useState(false);
+  const toggleShowEditModal = () => {
+    setShowEditModal(!showEditModal);
+  };
   return (
     <ShowModalContext.Provider
       value={{
-        showModal,
-        setShowModal,
+        showPostModal,
+        setShowPostModal,
+        toggleShowPostModal,
+        showReplyModal,
+        setShowReplyModal,
+        toggleShowReplyModal,
+        showEditModal,
+        setShowEditModal,
+        toggleShowEditModal,
       }}
     >
       {children}

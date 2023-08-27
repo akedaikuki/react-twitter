@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useContext } from "react";
 import { styled } from "styled-components";
 import TweetsCard from "../components/Cards/TweetsCard";
 import { StyledButton } from "../components/common/button.styled";
@@ -9,6 +9,7 @@ import Popular from "../components/Popular";
 import relativeTime from "../utilities/relativeTime";
 import SideBarModal from "../components/profile/SideBarModal";
 import TweetReplyModal from "../components/profile/TweetReplyModal";
+import { ShowModalContext } from "../Context/ShowModalContext";
 
 const HomePageContainer = styled.div`
   width: 640px;
@@ -66,6 +67,9 @@ const Tweettextbox = styled.div`
       align-items: flex-start;
       color: var(--main_white);
       background-color: var(--main_orange);
+      &:hover {
+        background-color: var(--btn-hover-bg);
+      }
       &[disabled] {
         opacity: 65%;
       }
@@ -78,6 +82,8 @@ function HomePage() {
   const [usersInfo, setUsersInfo] = useState(users);
   const [tweetText, setTweetText] = useState("");
   const [errorMsg, setErrorMsg] = useState(null);
+  const { showPostModal, toggleShowPostModal } = useContext(ShowModalContext);
+  const { showReplyModal, toggleShowReplyModal } = useContext(ShowModalContext);
   // console.log(usersInfo[0].data.user[0].avatar);
   const handleChange = (e) => {
     setErrorMsg(null);
@@ -104,8 +110,8 @@ function HomePage() {
   return (
     <>
       <div className="modal">
-        {/* <SideBarModal /> */}
-        {/* {<TweetReplyModal />} */}
+        {showPostModal && <SideBarModal />}
+        {showReplyModal && <TweetReplyModal />}
       </div>
       <HomePageContainer className="homePageContainer">
         <PageStyle>
@@ -124,6 +130,7 @@ function HomePage() {
                 placeholder="有什麼新鮮事?"
                 value={tweetText}
                 onChange={handleChange}
+                // onClick={toggleShowPostModal}
               ></textarea>
 
               <div className="panel">
@@ -154,6 +161,7 @@ function HomePage() {
               likesTotal={usersInfo.data.likes[0].likesTotal}
               userId={usersInfo.data.user[0].id}
               createdAt={usersInfo.data.Tweets[0].createdAt}
+              onClick={toggleShowReplyModal}
             />
           ))}
         </PageStyle>

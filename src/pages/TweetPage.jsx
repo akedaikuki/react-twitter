@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { TurnbackIcon, LikedIcon, LikeIcon, ReplyIcon } from "../assets/icons";
 import TweetReplyCard from "../components/Cards/TweetReplyCard";
@@ -8,6 +8,8 @@ import { styled } from "styled-components";
 import user1 from "../API/user1";
 import users from "../API/users";
 import createTime from "../utilities/creatTime";
+import { ShowModalContext } from "../Context/ShowModalContext";
+import TweetReplyModal from "../components/profile/TweetReplyModal";
 
 const UsertweetContainer = styled.div`
   margin: 15px;
@@ -81,11 +83,12 @@ const UsertweetContainer = styled.div`
 function TweetPage() {
   const [userInfo, setUserInfo] = useState(user1);
   const [usersInfo, setUsersInfo] = useState(users);
-  const [showModal, setShowModal] = useState(false);
+  const { showReplyModal, toggleShowReplyModal } = useContext(ShowModalContext);
   const navigate = useNavigate();
-  const handleShow = () => setShowModal(true);
+
   return (
     <>
+      <div className="modal">{showReplyModal && <TweetReplyModal />}</div>
       <UserPageConainer className="tweetPageConainer">
         <PageStyle className="TweetPageStyle">
           <header>
@@ -129,7 +132,7 @@ function TweetPage() {
             </div>
             <div className="tweetline"></div>
             <div className="iconBox">
-              <ReplyIcon className="reply" onClick={handleShow} />
+              <ReplyIcon className="reply" onClick={toggleShowReplyModal} />
 
               <LikedIcon />
 
