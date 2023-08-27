@@ -1,6 +1,10 @@
 import React from "react";
 import { styled } from "styled-components";
 import { StyledButton } from "../components/common/button.styled";
+import { useState } from "react";
+import { getUser, putUserSelf } from "../API/tweets";
+import { useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const SettingPageConainer = styled.div`
   width: 640px;
@@ -72,6 +76,12 @@ const EmptyContainer = styled.div`
 `;
 
 function SettingPage() {
+  // 儲存onChange值
+  const [account, setAccount] = useState("")
+  const [name, setName] = useState("")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [checkPassword, setCheckPassword] = useState("")
   return (
     <>
       <SettingPageConainer className="SettingPageConainer">
@@ -91,7 +101,7 @@ function SettingPage() {
               <input
                 type={"text"}
                 label={"帳號"}
-                // value={"account"}
+                value={"account"}
                 placeholder={"請輸入帳號"}
                 errorMessage={null}
               />
@@ -99,7 +109,7 @@ function SettingPage() {
               <input
                 type={"text"}
                 label={"名稱"}
-                // value={"name"}
+                value={"name"}
                 placeholder={"請輸入名稱"}
                 errorMessage={null}
               />
@@ -107,7 +117,7 @@ function SettingPage() {
               <input
                 type={"email"}
                 label={"Email"}
-                // value={"email"}
+                value={"email"}
                 placeholder={"請輸入Email"}
                 errorMessage={null}
               />
@@ -115,7 +125,7 @@ function SettingPage() {
               <input
                 type={"password"}
                 label={"密碼"}
-                // value={"password"}
+                value={"password"}
                 placeholder={"請設定密碼"}
                 errorMessage={null}
               />
@@ -123,7 +133,7 @@ function SettingPage() {
               <input
                 type={"password"}
                 label={"密碼確認"}
-                // value={"checkPassword"}
+                value={"checkPassword"}
                 placeholder={"請再次輸入密碼"}
                 errorMessage={null}
               />
