@@ -26,7 +26,7 @@ axiosInstance.interceptors.request.use(
 // get使用者
 export const getUser = async () => {
     try {
-        const res = await axiosInstance.get(`${apiURL}/users/:id`);
+        const res = await axiosInstance.get(`${apiURL}/users/${userId}`);
         return res
     } catch (error) {
         console.error("[Get user failed]", error)
@@ -36,7 +36,7 @@ export const getUser = async () => {
 // put編輯個人資料
 export const putUser = async ({name, account, email, password, checkPassword}) => {
     try {
-      const res = await axiosInstance.put(`${apiURL}/users/:id`, {
+      const res = await axiosInstance.put(`${apiURL}/users/${userId}`, {
           name,
           account,
           email,
