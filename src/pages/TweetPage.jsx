@@ -88,7 +88,6 @@ function TweetPage() {
 
   return (
     <>
-      <div className="modal">{showReplyModal && <TweetReplyModal />}</div>
       <UserPageConainer className="tweetPageConainer">
         <PageStyle className="TweetPageStyle">
           <header>
@@ -158,6 +157,7 @@ function TweetPage() {
         </PageStyle>
       </UserPageConainer>
       <Popular />
+      {showReplyModal && <TweetReplyModal />}
     </>
   );
 }

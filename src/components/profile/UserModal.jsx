@@ -6,12 +6,14 @@ import Swal from "sweetalert2";
 import user1 from "../../API/user1";
 import { ShowModalContext } from "../../Context/ShowModalContext";
 
-const ModalStyle = styled.div`
+const ModalContainer = styled.div`
   box-sizing: border-box;
   height: 610px;
   width: 634px;
-  position: fixed;
+  position: absolute;
   top: 56px;
+  left: 50%;
+  transform: translateX(calc(-50% - 37px));
   border-radius: 14px;
   overflow: hidden;
   /* background-color: red; */
@@ -182,64 +184,68 @@ function UserModal() {
     }
   }
   return (
-    <ModalStyle>
-      <div className="header">
-        <CloseIcon className="close" onClick={toggleShowEditModal} />
-        <h5>編輯個人資料</h5>
-        <StyledButton className="save active">儲存</StyledButton>
-      </div>
-      <div className="modalUserInfoContainer">
-        <UserInfoPicture>
-          <div className="modalCover">
-            <img
-              width={640}
-              height={200}
-              src={tmpImg.cover}
-              alt=""
-              className="cover"
-            />
-            <div className="changeCoverActions">
-              <label htmlFor="cover" className="cameraIcon">
-                <CameraIcon />
-                <input type="file" name="cover" id="cover" />
-              </label>
-              <CloseIcon className="removeIcon" />
-            </div>
+    <div className="modal">
+      <div className="background">
+        <ModalContainer className="ModalContainer">
+          <div className="header">
+            <CloseIcon className="close" onClick={toggleShowEditModal} />
+            <h5>編輯個人資料</h5>
+            <StyledButton className="save active">儲存</StyledButton>
           </div>
-          <div className="modalAvatar">
-            <div className="imgBox">
-              <label htmlFor="avatar" className="cameraIcon">
-                <CameraIcon />
-                <input type="file" name="avatar" id="avatar" />
-              </label>
-              <img src={tmpImg.avatar} alt="" />
-            </div>
+          <div className="modalUserInfoContainer">
+            <UserInfoPicture>
+              <div className="modalCover">
+                <img
+                  width={640}
+                  height={200}
+                  src={tmpImg.cover}
+                  alt=""
+                  className="cover"
+                />
+                <div className="changeCoverActions">
+                  <label htmlFor="cover" className="cameraIcon">
+                    <CameraIcon />
+                    <input type="file" name="cover" id="cover" />
+                  </label>
+                  <CloseIcon className="removeIcon" />
+                </div>
+              </div>
+              <div className="modalAvatar">
+                <div className="imgBox">
+                  <label htmlFor="avatar" className="cameraIcon">
+                    <CameraIcon />
+                    <input type="file" name="avatar" id="avatar" />
+                  </label>
+                  <img src={tmpImg.avatar} alt="" />
+                </div>
+              </div>
+            </UserInfoPicture>
+            <UserInfoText>
+              <input
+                label={"名稱"}
+                value={name}
+                errorMessage={errorMessage.name || null}
+                onChange={(name) => {
+                  setName(name);
+                  setErrorMessage({ ...errorMessage, name: "" });
+                }}
+              />
+              <div className="caption">{name.length}/50</div>
+              <textarea
+                label={"自我介紹"}
+                value={introduction}
+                errorMessage={errorMessage.introduction || null}
+                onChange={(introduction) => {
+                  setIntroduction(introduction);
+                  setErrorMessage({ ...errorMessage, introduction: "" });
+                }}
+              />
+              <div className="caption">{introduction.length}/160</div>
+            </UserInfoText>
           </div>
-        </UserInfoPicture>
-        <UserInfoText>
-          <input
-            label={"名稱"}
-            value={name}
-            errorMessage={errorMessage.name || null}
-            onChange={(name) => {
-              setName(name);
-              setErrorMessage({ ...errorMessage, name: "" });
-            }}
-          />
-          <div className="caption">{name.length}/50</div>
-          <textarea
-            label={"自我介紹"}
-            value={introduction}
-            errorMessage={errorMessage.introduction || null}
-            onChange={(introduction) => {
-              setIntroduction(introduction);
-              setErrorMessage({ ...errorMessage, introduction: "" });
-            }}
-          />
-          <div className="caption">{introduction.length}/160</div>
-        </UserInfoText>
+        </ModalContainer>
       </div>
-    </ModalStyle>
+    </div>
   );
 }
 

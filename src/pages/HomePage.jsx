@@ -109,10 +109,6 @@ function HomePage() {
 
   return (
     <>
-      <div className="modal">
-        {showPostModal && <SideBarModal />}
-        {showReplyModal && <TweetReplyModal />}
-      </div>
       <HomePageContainer className="homePageContainer">
         <PageStyle>
           <div className="HomePage">
@@ -167,6 +163,9 @@ function HomePage() {
         </PageStyle>
       </HomePageContainer>
       <Popular />
+
+      {showPostModal && <SideBarModal />}
+      {showReplyModal && <TweetReplyModal />}
     </>
   );
 }
