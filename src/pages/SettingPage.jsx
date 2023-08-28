@@ -1,9 +1,8 @@
 import React from "react";
 import { styled } from "styled-components";
 import { StyledButton } from "../components/common/button.styled";
-import { useState } from "react";
-import { getUser, putUserSelf } from "../API/setting";
-import { useEffect, useRef } from 'react'
+import { useState, useEffect } from "react";
+import { getUser, putUser } from "../API/setting";
 import { useNavigate } from 'react-router-dom'
 
 const SettingPageConainer = styled.div`
@@ -75,13 +74,48 @@ const EmptyContainer = styled.div`
   width: 430px;
 `;
 
-function SettingPage() {
+const SettingPage = () => {
   // 儲存onChange值
-  const [account, setAccount] = useState("")
-  const [name, setName] = useState("")
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [checkPassword, setCheckPassword] = useState("")
+  const [account, setAccount] = useState("");
+  const [user, setUser] = useState({});
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [checkPassword, setCheckPassword] = useState("");
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const userData = await getUser();
+        setUser(userData);
+        setAccount(userData.account);
+        setName(userData.name);
+        setEmail(userData.email);
+      } catch (error) {
+        console.error("Get User Failed:", error);
+      }
+    };
+    fetchUser();
+  }, []);
+
+  const handleClick = async () => {
+    if (
+      account.length === 0 || name.length === 0 || email.length === 0 ||password.length === 0 || checkPassword.length === 0
+    ) {
+      return;
+    }
+    try {
+      if (password !== checkPassword) {
+        console.error("Passwords do not match");
+        return;
+      }
+      await putUser({ name, account, email, password, checkPassword });
+      console.log("Editing User Successful!");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
       <SettingPageConainer className="SettingPageConainer">
@@ -101,44 +135,58 @@ function SettingPage() {
               <input
                 type={"text"}
                 label={"帳號"}
-                value={"account"}
+                maxlength="30"
+                name={account}
                 placeholder={"請輸入帳號"}
-                errorMessage={null}
+                onChange={(accountInputValue) => setAccount(accountInputValue)}
               />
               名稱
               <input
                 type={"text"}
                 label={"名稱"}
-                value={"name"}
+                name={name}
+                maxlength="50"
+                defaultValue={user.name}
                 placeholder={"請輸入名稱"}
-                errorMessage={null}
+                onChange={(nameInputValue) => setName(nameInputValue)}
               />
               Email
               <input
                 type={"email"}
                 label={"Email"}
-                value={"email"}
+                name={email}
+                defaultValue={user.email}
                 placeholder={"請輸入Email"}
-                errorMessage={null}
+                onChange={(emailInputValue) => setEmail(emailInputValue)}
               />
               密碼
               <input
                 type={"password"}
                 label={"密碼"}
-                value={"password"}
+                minlength="5"
+                maxlength="20"
+                name={password}
+                value={user.password}
                 placeholder={"請設定密碼"}
-                errorMessage={null}
+                onChange={(passwordInputValue) => setPassword(passwordInputValue)}
+                required
               />
               密碼確認
               <input
                 type={"password"}
-                label={"密碼確認"}
-                value={"checkPassword"}
+                label={"密碼再確認"}
+                minlength="5"
+                maxlength="20"
+                name={checkPassword}
+                value={checkPassword}
                 placeholder={"請再次輸入密碼"}
-                errorMessage={null}
+                onChange={(checkPasswordInputValue) =>
+                  setCheckPassword(checkPasswordInputValue)
+                }
+                required
               />
               <div className="buttonBox">
-                <StyledButton className="saveButton">儲存</StyledButton>
+                <StyledButton className="saveButton" onClick={handleClick}>儲存</StyledButton>
               </div>
             </div>
           </div>
@@ -148,4 +196,5 @@ function SettingPage() {
     </>
   );
 }
+
 export default SettingPage;

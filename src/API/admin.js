@@ -38,7 +38,7 @@ export const adminLogin = async ({ account, password }) => {
   }
 }
 
-// 後臺操作部分
+
 const axiosInstance = axios.create({
   baseURL: apiURL
 })
@@ -56,3 +56,23 @@ axiosInstance.interceptors.request.use(
     console.error(error);
   },
 );
+
+// get 管理員 users
+export const getAdminUsers = async () => {
+  try {
+    const res = await axiosInstance.get(`${apiURL}/admin/users`);
+    return res.data
+  } catch (error) {
+    console.error('[GET AdminUsers failed]:', error)
+  }
+}
+
+// delete 管理員 tweets_id
+export const deleteAdminTweets = async ({id}) => {
+  try {
+    const res = await axiosInstance.delete(`${apiURL}/admin/tweets/${id}`);
+    return res.data
+  } catch (error) {
+    console.error('[Delete AdminTweets failed]:', error)
+  }
+}
