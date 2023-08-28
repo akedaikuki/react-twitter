@@ -83,20 +83,6 @@ const SettingPage = () => {
   const [password, setPassword] = useState("");
   const [checkPassword, setCheckPassword] = useState("");
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const userData = await getUser();
-        setUser(userData);
-        setAccount(userData.account);
-        setName(userData.name);
-        setEmail(userData.email);
-      } catch (error) {
-        console.error("Get User Failed:", error);
-      }
-    };
-    fetchUser();
-  }, []);
 
   const handleClick = async () => {
     if (
