@@ -132,77 +132,81 @@ function TweetReplyModal() {
   }, [tweetText]);
 
   return (
-    <ModalContainer className="ModalContainer">
-      <div className="modalHeader">
-        <CloseIcon className="close" onClick={toggleShowReplyModal} />
-        <div className="line"></div>
-        <TweetCardContainer
-          className="tweetCardContainer"
-          style={{ outline: "0" }}
-          id={usersInfo[0].data.user[0].id}
-        >
-          <div className="userAvatar">
-            <img
-              src={usersInfo[0].data.user[0].avatar}
-              alt="other User's avatar"
-              style={{ marginTop: "0" }}
-            />
-          </div>
-          <StyledConnectLine />
-          <div className="right">
-            <div className="name_link">
-              <span className="name">{usersInfo[0].data.user[0].name}</span>
-              <span className="account">
-                @{usersInfo[0].data.user[0].account}
-              </span>
-
-              <span className="time">
-                ・{relativeTime(usersInfo[0].data.Tweets[0].createdAt)}
-              </span>
-            </div>
-            <div className="tweetContent_link">
-              <p className="tweetP">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                Ducimus ex illo cupiditate. Nostrum fuga quos tempora ipsum
-                libero repellendus soluta?
-              </p>
-            </div>
-
-            {/*  */}
-            <p className="reply_to">
-              回覆 <span>@{usersInfo[0].data.user[0].name}</span>
-            </p>
-          </div>
-        </TweetCardContainer>
-        <Tweettextbox className="Tweettextbox">
-          <img src={userInfo[0].data.user[0].avatar} alt="user avatar" />
-
-          <textarea
-            className="tweettext"
-            id="tweettext"
-            rows="5"
-            placeholder="推你的回覆"
-            value={tweetText}
-            onChange={handleChange}
-          ></textarea>
-
-          <div className="panel">
-            <p className="error_msg">
-              {tweetText.length > 140 ? "字數不可超過 140 字" : ""}
-              {errorMsg !== null && errorMsg}
-            </p>
-
-            <StyledButton
-              className="tweet_post_btn"
-              onClick={handlePost}
-              disabled={!isValid}
+    <div className="modal">
+      <div className="background">
+        <ModalContainer className="ModalContainer">
+          <div className="modalHeader">
+            <CloseIcon className="close" onClick={toggleShowReplyModal} />
+            <div className="line"></div>
+            <TweetCardContainer
+              className="tweetCardContainer"
+              style={{ outline: "0" }}
+              id={usersInfo[0].data.user[0].id}
             >
-              推文
-            </StyledButton>
+              <div className="userAvatar">
+                <img
+                  src={usersInfo[0].data.user[0].avatar}
+                  alt="other User's avatar"
+                  style={{ marginTop: "0" }}
+                />
+              </div>
+              <StyledConnectLine />
+              <div className="right">
+                <div className="name_link">
+                  <span className="name">{usersInfo[0].data.user[0].name}</span>
+                  <span className="account">
+                    @{usersInfo[0].data.user[0].account}
+                  </span>
+
+                  <span className="time">
+                    ・{relativeTime(usersInfo[0].data.Tweets[0].createdAt)}
+                  </span>
+                </div>
+                <div className="tweetContent_link">
+                  <p className="tweetP">
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                    Ducimus ex illo cupiditate. Nostrum fuga quos tempora ipsum
+                    libero repellendus soluta?
+                  </p>
+                </div>
+
+                {/*  */}
+                <p className="reply_to">
+                  回覆 <span>@{usersInfo[0].data.user[0].name}</span>
+                </p>
+              </div>
+            </TweetCardContainer>
+            <Tweettextbox className="Tweettextbox">
+              <img src={userInfo[0].data.user[0].avatar} alt="user avatar" />
+
+              <textarea
+                className="tweettext"
+                id="tweettext"
+                rows="5"
+                placeholder="推你的回覆"
+                value={tweetText}
+                onChange={handleChange}
+              ></textarea>
+
+              <div className="panel">
+                <p className="error_msg">
+                  {tweetText.length > 140 ? "字數不可超過 140 字" : ""}
+                  {errorMsg !== null && errorMsg}
+                </p>
+
+                <StyledButton
+                  className="tweet_post_btn"
+                  onClick={handlePost}
+                  disabled={!isValid}
+                >
+                  推文
+                </StyledButton>
+              </div>
+            </Tweettextbox>
           </div>
-        </Tweettextbox>
+        </ModalContainer>
       </div>
-    </ModalContainer>
+    </div>
   );
 }
 

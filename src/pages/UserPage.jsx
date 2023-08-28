@@ -36,11 +36,6 @@ function UserPage() {
 
   return (
     <>
-      <div className="modal">
-        {showEditModal && <UserModal />}
-        {showPostModal && <SideBarModal />}
-        {showReplyModal && <TweetReplyModal />}
-      </div>
       <UserPageConainer
         className="userPageConainer"
         active={editActive}
@@ -152,6 +147,10 @@ function UserPage() {
         </PageStyle>
       </UserPageConainer>
       <Popular />
+
+      {showEditModal && <UserModal />}
+      {showPostModal && <SideBarModal />}
+      {showReplyModal && <TweetReplyModal />}
     </>
   );
 }

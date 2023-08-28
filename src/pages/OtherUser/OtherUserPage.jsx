@@ -68,10 +68,6 @@ function OtherUserPage() {
 
   return (
     <>
-      <div className="modal">
-        {showPostModal && <SideBarModal />}
-        {showReplyModal && <TweetReplyModal />}
-      </div>
       <UserPageConainer
         className="userPageConainer"
         useId={usersInfo.data.user[0].id}
@@ -195,6 +191,8 @@ function OtherUserPage() {
         </PageStyle>
       </UserPageConainer>
       <Popular />
+      {showPostModal && <SideBarModal />}
+      {showReplyModal && <TweetReplyModal />}
     </>
   );
 }

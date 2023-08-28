@@ -113,39 +113,43 @@ function SideBarModal() {
   }, [tweetText]);
 
   return (
-    <ModalContainer className="ModalContainer">
-      <div className="modalHeader">
-        <CloseIcon className="close" onClick={toggleShowPostModal} />
-        <div className="line"></div>
-        <Tweettextbox className="Tweettextbox">
-          <img src={userInfo[0].data.user[0].avatar} alt="user avatar" />
+    <div className="modal">
+      <div className="background">
+        <ModalContainer className="ModalContainer">
+          <div className="modalHeader">
+            <CloseIcon className="close" onClick={toggleShowPostModal} />
+            <div className="line"></div>
+            <Tweettextbox className="Tweettextbox">
+              <img src={userInfo[0].data.user[0].avatar} alt="user avatar" />
 
-          <textarea
-            className="tweettext"
-            id="tweettext"
-            rows="5"
-            placeholder="有什麼新鮮事?"
-            value={tweetText}
-            onChange={handleChange}
-          ></textarea>
+              <textarea
+                className="tweettext"
+                id="tweettext"
+                rows="5"
+                placeholder="有什麼新鮮事?"
+                value={tweetText}
+                onChange={handleChange}
+              ></textarea>
 
-          <div className="panel">
-            <p className="error_msg">
-              {tweetText.length > 140 ? "字數不可超過 140 字" : ""}
-              {errorMsg !== null && errorMsg}
-            </p>
+              <div className="panel">
+                <p className="error_msg">
+                  {tweetText.length > 140 ? "字數不可超過 140 字" : ""}
+                  {errorMsg !== null && errorMsg}
+                </p>
 
-            <StyledButton
-              className="tweet_post_btn"
-              onClick={handlePost}
-              disabled={!isValid}
-            >
-              推文
-            </StyledButton>
+                <StyledButton
+                  className="tweet_post_btn"
+                  onClick={handlePost}
+                  disabled={!isValid}
+                >
+                  推文
+                </StyledButton>
+              </div>
+            </Tweettextbox>
           </div>
-        </Tweettextbox>
+        </ModalContainer>
       </div>
-    </ModalContainer>
+    </div>
   );
 }
 
