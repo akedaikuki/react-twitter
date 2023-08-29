@@ -60,6 +60,7 @@ export const UserInfoPicture = styled.div`
     border: 5px solid white;
   }
   .btnBox {
+    padding-top: 2px;
     display: flex;
     justify-content: space-between;
     width: 180px;

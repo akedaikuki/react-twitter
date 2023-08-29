@@ -21,8 +21,6 @@ function TweetsCard({
   const { showReplyModal, toggleShowReplyModal } = useContext(ShowModalContext);
   return (
     <>
-      {/* users */}
-      {/* <div className="modal">{showReplyModal && <TweetReplyModal />}</div> */}
       <TweetCardContainer className="tweetCardContainer" id={userId}>
         <Link
           className="userAvatar"

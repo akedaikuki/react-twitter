@@ -2,7 +2,13 @@ import "./App.scss";
 import MainPage from "./pages/MainPage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState } from "react";
-import { AdminLoginPase, LoginPage, SignUpPage } from "./pages";
+import {
+  AdminLoginPase,
+  AdmainTweetPage,
+  AdmainUsertPage,
+  LoginPage,
+  SignUpPage,
+} from "./pages";
 import HomePage from "./pages/HomePage";
 import UserPage from "./pages/UserPage";
 import TweetPage from "./pages/TweetPage";
@@ -10,7 +16,7 @@ import UserFollowPage from "./pages/UserFollowPage";
 import OtheruserPage from "./pages/OtherUser/OtherUserPage";
 import OtherFollowPage from "./pages/OtherUser/OtherFollowPage";
 import SettingPage from "./pages/SettingPage";
-import AdminTweetPage from "./pages/AdminTweetPage";
+
 function App() {
   const [showModal, setShowModal] = useState(false);
   return (
@@ -57,10 +63,11 @@ function App() {
 
           <Route path="api/users/signin" element={<LoginPage />} />
           <Route path="api/users" element={<SignUpPage />} />
-          <Route path="api/admin/users" element={<AdminLoginPase />} />
-          <Route path="api/admin/login" element={<AdminTweetPage />} />
+          <Route path="api/admin/login" element={<AdminLoginPase />} />
+          <Route path="api/admin/tweets/:id" element={<AdmainTweetPage />} />
+          <Route path="api/admin/users" element={<AdmainUsertPage />} />
         </Routes>
-        {/* </FollowClickContextProvider> */} 
+        {/* </FollowClickContextProvider> */}
       </BrowserRouter>
     </div>
   );
