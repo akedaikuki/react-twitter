@@ -112,37 +112,6 @@ function HomePage({ token, active }) {
     setTweetText("");
   };
 
-  useEffect(() => {
-    const getTweets = async () => {
-      const { data } = await getAllTweets({ token });
-      setTweets([...data]);
-    };
-
-    if (!isAuthenticated || currentMember.role !== "user") return;
-    getTweets();
-  }, [handlePost, active]);
-
-  useEffect(() => {
-    const getPersonalInfo = async () => {
-      const userId = currentMember.id;
-      const data = await getUserInfo({ token, userId });
-      setPersonalInfo(data);
-    };
-    if (!isAuthenticated || currentMember.role !== "user") return;
-    getPersonalInfo();
-  }, []);
-
-  useEffect(() => {
-    const getCurrentUserAvatar = async () => {
-      const userId = currentMember.id;
-      const data = await getUserInfo({ token, userId });
-      setAvatar(data.avatar);
-    };
-    if (!isAuthenticated || currentMember.role !== "user") return;
-
-    getCurrentUserAvatar();
-  }, [isAuthenticated]);
-
   const isValid = useMemo(() => {
     if (!tweetText || tweetText.length > 140) {
       return false;

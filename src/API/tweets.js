@@ -19,19 +19,6 @@ axiosInstance.interceptors.request.use(
     console.error(error);
   }
 );
-//取得前台所有推文
-export const getAllTweets = async ({ token }) => {
-  try {
-    const { data } = await axios.get(`${apiURL}/tweets`, {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    });
-    return { data };
-  } catch (error) {
-    console.log(error);
-  }
-};
 
 // get tweets api
 export const getTweets = async () => {
