@@ -1,9 +1,12 @@
-import React, { useState, useMemo, useContext } from "react";
+import React, { useState, useMemo, useContext, useRef } from "react";
 import styled from "styled-components";
 import { CloseIcon } from "../../assets/icons";
 import { StyledButton } from "../common/button.styled";
-import user1 from "../../API/user1";
 import { ShowModalContext } from "../../Context/ShowModalContext";
+import Swal from "sweetalert2";
+
+// API
+import user1 from "../../API/user1";
 
 const ModalContainer = styled.div`
   position: absolute;
@@ -87,19 +90,51 @@ const Tweettextbox = styled.div`
 function SideBarModal() {
   const [userInfo, setUserInfo] = useState(user1);
   const [tweetText, setTweetText] = useState("");
+  const tweetRef = useRef(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const { toggleShowPostModal } = useContext(ShowModalContext);
   // console.log(usersInfo[0].data.user[0].avatar);
+
+  //Swal 彈窗提示
+  const successedAlert = () => {
+    Swal.fire({
+      position: "top",
+      title: "推文發送成功！",
+      timer: 1000,
+      icon: "success",
+      showConfirmButton: false,
+    });
+  };
+  const failedAlert = () => {
+    Swal.fire({
+      position: "top",
+      title: "推文發送失敗！",
+      timer: 1000,
+      icon: "error",
+      showConfirmButton: false,
+    });
+  };
+
   const handleChange = (e) => {
     setErrorMsg(null);
     setTweetText(e.target.value);
   };
 
   const handlePost = async () => {
-    if (tweetText.length === 0) {
+    if (tweetRef.current.value.length === 0) {
       return;
     }
     setTweetText("");
+
+    const tweet = { description: tweetRef.current.value };
+    // const status = await postTweet({ token, tweet });
+    tweetRef.current.value = "";
+
+    // if (status === 200) {
+    //   successedAlert();
+    // } else {
+    //   failedAlert();
+    // }
   };
   const isValid = useMemo(() => {
     if (!tweetText) {
@@ -127,6 +162,7 @@ function SideBarModal() {
                 id="tweettext"
                 rows="5"
                 placeholder="有什麼新鮮事?"
+                ref={tweetRef}
                 value={tweetText}
                 onChange={handleChange}
               ></textarea>

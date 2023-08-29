@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useContext } from "react";
+import React, { useState, useMemo, useContext, useEffect } from "react";
 import { styled } from "styled-components";
 import TweetsCard from "../components/Cards/TweetsCard";
 import { StyledButton } from "../components/common/button.styled";
@@ -10,6 +10,10 @@ import relativeTime from "../utilities/relativeTime";
 import SideBarModal from "../components/profile/SideBarModal";
 import TweetReplyModal from "../components/profile/TweetReplyModal";
 import { ShowModalContext } from "../Context/ShowModalContext";
+import { useAuth } from "../components/contexts/AuthContext";
+import { useTweetData } from "../components/contexts/DataContext";
+import { getAllTweets } from "../API/tweets";
+import { getUserInfo } from "../API/user";
 
 const HomePageContainer = styled.div`
   width: 640px;
@@ -77,7 +81,7 @@ const Tweettextbox = styled.div`
   }
 `;
 
-function HomePage() {
+function HomePage({ token, active }) {
   const [userInfo, setUserInfo] = useState(user1);
   const [usersInfo, setUsersInfo] = useState(users);
   const [tweetText, setTweetText] = useState("");
@@ -85,6 +89,15 @@ function HomePage() {
   const { showPostModal, toggleShowPostModal } = useContext(ShowModalContext);
   const { showReplyModal, toggleShowReplyModal } = useContext(ShowModalContext);
   // console.log(usersInfo[0].data.user[0].avatar);
+  // 串接
+  const [tweets, setTweets] = useState([]);
+  const [personalInfo, setPersonalInfo] = useState({});
+  const [replyToData, setReplyToData] = useState({});
+  const { isAuthenticated, currentMember } = useAuth();
+  const { isTweetDataUpdate, setIsTweetDataUpdate } = useTweetData();
+  const { isReplyDataUpdate, setIsReplyDataUpdate } = useTweetData();
+  const [avatar, setAvatar] = useState("");
+
   const handleChange = (e) => {
     setErrorMsg(null);
     setTweetText(e.target.value);
@@ -99,11 +112,41 @@ function HomePage() {
     setTweetText("");
   };
 
+  useEffect(() => {
+    const getTweets = async () => {
+      const { data } = await getAllTweets({ token });
+      setTweets([...data]);
+    };
+
+    if (!isAuthenticated || currentMember.role !== "user") return;
+    getTweets();
+  }, [handlePost, active]);
+
+  useEffect(() => {
+    const getPersonalInfo = async () => {
+      const userId = currentMember.id;
+      const data = await getUserInfo({ token, userId });
+      setPersonalInfo(data);
+    };
+    if (!isAuthenticated || currentMember.role !== "user") return;
+    getPersonalInfo();
+  }, []);
+
+  useEffect(() => {
+    const getCurrentUserAvatar = async () => {
+      const userId = currentMember.id;
+      const data = await getUserInfo({ token, userId });
+      setAvatar(data.avatar);
+    };
+    if (!isAuthenticated || currentMember.role !== "user") return;
+
+    getCurrentUserAvatar();
+  }, [isAuthenticated]);
+
   const isValid = useMemo(() => {
     if (!tweetText || tweetText.length > 140) {
       return false;
     }
-
     return true;
   }, [tweetText]);
 
@@ -117,7 +160,7 @@ function HomePage() {
             </header>
 
             <Tweettextbox className="tweettextbox">
-              <img src={userInfo[0].data.user[0].avatar} alt="user avatar" />
+              <img src={avatar} alt="user avatar" />
 
               <textarea
                 className="tweettext"
@@ -146,17 +189,19 @@ function HomePage() {
 
             <div className="divider"></div>
           </div>
-          {usersInfo.map((usersInfo) => (
+          {tweets.map((tweet) => (
             <TweetsCard
-              key={usersInfo.data.user[0].id}
-              account={usersInfo.data.user[0].account}
-              name={usersInfo.data.user[0].name}
-              avatar={usersInfo.data.user[0].avatar}
-              tweets={usersInfo.data.Tweets[0].description}
-              repliedTotal={usersInfo.data.repliedTweets[0].repliedTotal}
-              likesTotal={usersInfo.data.likes[0].likesTotal}
-              userId={usersInfo.data.user[0].id}
-              createdAt={usersInfo.data.Tweets[0].createdAt}
+              key={tweet.data.tweetOwnerId}
+              account={tweet.data.tweetOwnerAccount}
+              name={tweet.data.tweetOwnerName}
+              avatar={tweet.data.tweetOwnerAvatar}
+              tweets={tweet.data.description}
+              repliedTotal={tweet.data.replyCount}
+              likesTotal={tweet.data.likeCount}
+              userId={tweet.data.id}
+              createdAt={tweet.data.createdAt}
+              isLiked={tweet.data.isLiked}
+              personalInfo={personalInfo}
               onClick={toggleShowReplyModal}
             />
           ))}
