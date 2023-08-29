@@ -10,6 +10,7 @@ import UserFollowPage from "./pages/UserFollowPage";
 import OtheruserPage from "./pages/OtherUser/OtherUserPage";
 import OtherFollowPage from "./pages/OtherUser/OtherFollowPage";
 import SettingPage from "./pages/SettingPage";
+import AdminTweetPage from "./pages/AdminTweetPage";
 function App() {
   const [showModal, setShowModal] = useState(false);
   return (
@@ -57,6 +58,7 @@ function App() {
           <Route path="api/users/signin" element={<LoginPage />} />
           <Route path="api/users" element={<SignUpPage />} />
           <Route path="api/admin/users" element={<AdminLoginPase />} />
+          <Route path="api/admin/login" element={<AdminTweetPage />} />
         </Routes>
         {/* </FollowClickContextProvider> */} 
       </BrowserRouter>
