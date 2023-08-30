@@ -28,15 +28,15 @@ export const AuthProvider = ({ children }) => {
         setPayload(null);
         return;
       }
-      const result = await checkPermission(userToken);
-      if (!result) {
-        setIsAuthenticated(true);
-        const tempPayload = jwt_decode(userToken);
-        setPayload(tempPayload);
-      } else {
-        setIsAuthenticated(false);
-        setPayload(null);
-      }
+      // const result = await checkPermission(userToken);
+      // if (!result) {
+      //   setIsAuthenticated(true);
+      //   const tempPayload = jwt_decode(userToken);
+      //   setPayload(tempPayload);
+      // } else {
+      //   setIsAuthenticated(false);
+      //   setPayload(null);
+      // }
     };
 
     checkTokenIsValid();

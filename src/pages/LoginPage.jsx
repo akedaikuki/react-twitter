@@ -6,29 +6,35 @@ import {
 } from "../components/common/auth.styled";
 import { BrandLogo } from "../assets/icons";
 import AuthInput from "../components/AuthInput";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { login, checkPermission } from "../API/auth";
+import { login } from "../API/auth";
 import Swal from "sweetalert2";
 
 const LoginPage = () => {
   const [account, setAccount] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const [error, setError] = useState({
+    account: false,
+    password: false,
+  });
 
+  const resetError = (inputName) => {
+    setError({ ...error, [inputName]: false });
+  };
   const handleClick = async () => {
-    if (account.length === 0) {
+    if (account.length === 0 || password.length === 0) {
       return;
     }
-    if (password.length === 0) {
-      return;
-    }
-    const { success, userToken } = await login({
+    const data = await login({
       account,
       password,
     });
-    if (success) {
-      localStorage.setItem("userToken", userToken);
+    if (data.success) {
+      localStorage.setItem("authToken", data.token);
+      localStorage.setItem("id", data.id);
+      localStorage.setItem("avatar", data.avatar);
       Swal.fire({
         title: "登入成功",
         icon: "success",
@@ -38,32 +44,33 @@ const LoginPage = () => {
       });
       navigate("/");
       return;
+    } else {
+      Swal.fire({
+        title: "登入失敗",
+        icon: "error",
+        showConfirmButton: false,
+        timer: 1000,
+        position: "top",
+      });
+      return;
     }
-    Swal.fire({
-      title: "登入失敗",
-      icon: "error",
-      showConfirmButton: false,
-      timer: 1000,
-      position: "top",
-    });
-    return;
   };
 
-  useEffect(() => {
-    const checkTokenIsValid = async () => {
-      const userToken = localStorage.getItem("userToken");
+  // useEffect(() => {
+  //   const checkTokenIsValid = async () => {
+  //     const userToken = localStorage.getItem("userToken");
 
-      if (!userToken) {
-        return;
-      }
-      const result = await checkPermission(userToken);
+  //     if (!userToken) {
+  //       return;
+  //     }
+  //     const result = await checkPermission(userToken);
 
-      if (result) {
-        navigate("/");
-      }
-    };
-    checkTokenIsValid();
-  }, [navigate]);
+  //     if (result) {
+  //       navigate("/");
+  //     }
+  //   };
+  //   checkTokenIsValid();
+  // }, [navigate]);
 
   return (
     <AuthContainer>
