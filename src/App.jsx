@@ -1,12 +1,14 @@
 import "./App.scss";
 import MainPage from "./pages/MainPage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import { useState } from "react";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
 import AdminLoginPage from "./pages/AdminLoginPage";
 import AdminTweetPage from "./pages/AdminTweetPage";
 import AdminUsertPage from "./pages/AdminUserPage";
+
 import HomePage from "./pages/HomePage";
 import UserPage from "./pages/UserPage";
 import TweetPage from "./pages/TweetPage";
@@ -16,19 +18,13 @@ import OtherFollowPage from "./pages/OtherUser/OtherFollowPage";
 import SettingPage from "./pages/SettingPage";
 
 function App() {
-  const [showModal, setShowModal] = useState(false);
   return (
     <div className="App">
       <BrowserRouter>
         {/* <FollowClickContextProvider> */}
         <Routes>
           <Route path="/" element={<MainPage />}>
-            <Route
-              index
-              element={
-                <HomePage showModal={showModal} setShowModal={setShowModal} />
-              }
-            />
+            <Route index element={<HomePage />} />
             <Route path="api/users/:UserId/tweets" element={<UserPage />} />
             <Route
               path="api/users/:UserId/replied_tweets"
