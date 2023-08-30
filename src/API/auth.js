@@ -45,7 +45,7 @@ export const register = async ({
   checkPassword,
 }) => {
   try {
-    const res = await axios.post(`${apiURL}/users`, {
+    const { data } = await axios.post(`${apiURL}/users`, {
       account,
       name,
       email,
@@ -53,45 +53,53 @@ export const register = async ({
       checkPassword,
     });
 
-    console.log(res);
-
-    if (!res || !res.data) {
-      throw Error("nothing returned");
+    console.log(data);
+    const { status } = data;
+    if (status === "success") {
+      return { success: true, ...data };
     }
-
-    if (res.status >= 400 || res.data.status !== "success") {
-      throw Error("request has error");
-    }
-
-    const userData = res.data.data?.user;
-    const userToken = res.data.data?.token;
-
-    if (!userData) {
-      throw Error("no user data");
-    }
-
-    return { success: true, userData, userToken};
+    return data;
   } catch (error) {
-    console.error("[Login Failed]:", error);
-    return {
-      success: false,
-      errorMessage: error?.message,
-    };
+    console.error(error);
+    if (error.response) {
+      return error.response.data;
+    }
+
+    //   if (!res || !res.data) {
+    //     throw Error("nothing returned");
+    //   }
+
+    //   if (res.status >= 400 || res.data.status !== "success") {
+    //     throw Error("request has error");
+    //   }
+
+    //   const userData = res.data.data?.user;
+    //   const userToken = res.data.data?.token;
+
+    //   if (!userData) {
+    //     throw Error("no user data");
+    //   }
+
+    //   return { success: true, userData, userToken};
+    // } catch (error) {
+    //   console.error("[Login Failed]:", error);
+    //   return {
+    //     success: false,
+    //     errorMessage: error?.message,
+    //   };
   }
 };
 
- export const checkPermission = async (userToken) => {
-
+export const checkPermission = async (userToken) => {
   try {
- const response = await axios.get(`${apiURL}/test-token`, {
-    headers: {
-      Authorization: 'Bearer ' + userToken,
-    },
-  });
+    const response = await axios.get(`${apiURL}/test-token`, {
+      headers: {
+        Authorization: "Bearer " + userToken,
+      },
+    });
 
-  return response.data.success;
-
- }catch(error) {
-  console.log('[Check Permission Failed]:', error)
- }
- }
+    return response.data.success;
+  } catch (error) {
+    console.log("[Check Permission Failed]:", error);
+  }
+};

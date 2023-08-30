@@ -12,7 +12,7 @@ import TweetReplyModal from "../components/profile/TweetReplyModal";
 import { ShowModalContext } from "../Context/ShowModalContext";
 import { useAuth } from "../components/contexts/AuthContext";
 import { useTweetData } from "../components/contexts/DataContext";
-import { getAllTweets } from "../API/tweets";
+import { getTweets } from "../API/tweets";
 import { getUserInfo } from "../API/user";
 
 const HomePageContainer = styled.div`
@@ -113,14 +113,20 @@ function HomePage({ token, active }) {
   };
 
   useEffect(() => {
-    const getTweets = async () => {
-      const { data } = await getAllTweets({ token });
-      setTweets([...data]);
+    const fetchTweets = async () => {
+      try {
+        const { res } = await getTweets();
+        console.log(res);
+        setTweets(res);
+      } catch (error) {
+        // Handle error here if needed
+      }
     };
 
-    if (!isAuthenticated || currentMember.role !== "user") return;
-    getTweets();
-  }, [handlePost, active]);
+    if (isAuthenticated && currentMember.role === "user") {
+      fetchTweets();
+    }
+  }, [isAuthenticated, currentMember]);
 
   useEffect(() => {
     const getPersonalInfo = async () => {
@@ -191,7 +197,7 @@ function HomePage({ token, active }) {
           </div>
           {tweets.map((tweet) => (
             <TweetsCard
-              key={tweet.data.tweetOwnerId}
+              tweetOwnerId={tweet.data.tweetOwnerId}
               account={tweet.data.tweetOwnerAccount}
               name={tweet.data.tweetOwnerName}
               avatar={tweet.data.tweetOwnerAvatar}
