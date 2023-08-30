@@ -11,24 +11,26 @@ import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { adminLogin } from "../API/admin";
 
+
 const AdminLoginPase = () => {
   const [account, setAccount] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate("");
+  const [error, setError] = useState({
+    account: false,
+    password: false,
+  });
 
+  const resetError = (inputName) => {
+    setError({ ...error, [inputName]: false });
+  };
   const handleClick = async () => {
-    if (account.length === 0) {
+    if (account.length === 0 || password.length === 0) {
       return;
     }
-    if (password.length === 0) {
-      return;
-    }
-    const { success, userToken } = await adminLogin({
-      account,
-      password,
-    });
+    const { success, token } = await adminLogin({ account, password })
     if (success) {
-      localStorage.setItem("userToken", userToken);
+      localStorage.setItem('adminAuthToken', token)
       Swal.fire({
         title: "登入成功",
         icon: "success",
@@ -48,7 +50,28 @@ const AdminLoginPase = () => {
     });
     return;
   };
+  useEffect(() => {
+    const checkTokenIsValid = async () => {
+      const userToken = localStorage.getItem('userToken');
 
+      if(!userToken) {
+        return
+      }
+      const result = await checkPermission(userToken);
+
+      if(result) {
+        navigate('api/users/:id/tweets');
+      }
+    }
+    checkTokenIsValid();
+  }, [navigate])
+
+  //     if (result) {
+  //       navigate("api/users/:id/tweets");
+  //     }
+  //   };
+  //   checkTokenIsValid();
+  // }, [navigate]);
 
   return (
     <AuthContainer>
@@ -62,7 +85,10 @@ const AdminLoginPase = () => {
           label="帳號"
           placeholder="請輸入帳號"
           value={account}
-          onChange={(accountInputValue) => setAccount(accountInputValue)}
+          onChange={(accountInputValue, value) => {
+            resetError(value);
+            setAccount(accountInputValue);
+          }}
         />
       </AuthInputContainer>
 
@@ -71,7 +97,10 @@ const AdminLoginPase = () => {
           label="密碼"
           placeholder="請輸入密碼"
           value={password}
-          onChange={(passwordInputValue) => setPassword(passwordInputValue)}
+          onChange={(passwordInputValue, value) => {
+            resetError(value);
+            setPassword(passwordInputValue);
+          }}
         />
       </AuthInputContainer>
       <AuthButton onClick={handleClick}>登入</AuthButton>

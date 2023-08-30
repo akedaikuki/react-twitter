@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useContext } from "react";
+import React, { useState, useMemo, useContext, useEffect } from "react";
 import { styled } from "styled-components";
 import TweetsCard from "../components/Cards/TweetsCard";
 import { StyledButton } from "../components/common/button.styled";
@@ -10,6 +10,10 @@ import relativeTime from "../utilities/relativeTime";
 import SideBarModal from "../components/profile/SideBarModal";
 import TweetReplyModal from "../components/profile/TweetReplyModal";
 import { ShowModalContext } from "../Context/ShowModalContext";
+import { useAuth } from "../components/contexts/AuthContext";
+import { useTweetData } from "../components/contexts/DataContext";
+import { getTweets } from "../API/tweets";
+import { getUserInfo } from "../API/user";
 
 const HomePageContainer = styled.div`
   width: 640px;
@@ -85,6 +89,53 @@ function HomePage() {
   const { showPostModal, toggleShowPostModal } = useContext(ShowModalContext);
   const { showReplyModal, toggleShowReplyModal } = useContext(ShowModalContext);
   // console.log(usersInfo[0].data.user[0].avatar);
+  // 串接
+  const [tweets, setTweets] = useState([]);
+  const [personalInfo, setPersonalInfo] = useState({});
+  const [replyToData, setReplyToData] = useState({});
+  const { isAuthenticated, currentMember } = useAuth();
+  const [avatar, setAvatar] = useState("");
+
+  // 渲染畫面
+  useEffect(() => {
+    const getUserDataAsync = async (authToken) => {
+      try {
+        const data = await getTweets(authToken);
+        setTweets(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    if (localStorage.getItem("authToken")) {
+      getUserDataAsync(localStorage.getItem("authToken"));
+    }
+  }, []);
+
+  // 點擊愛心+1
+  const handleLike = (TweetId) => {
+    setTweets((pre) => {
+      return pre.map((item) => {
+        if (item.TweetId === TweetId) {
+          return { ...item, isLiked: true, likeCount: item.likeCount + 1 };
+        } else {
+          return item;
+        }
+      });
+    });
+  };
+  // 點擊愛心-1
+  const handleUnLike = (TweetId) => {
+    setTweets((pre) => {
+      return pre.map((item) => {
+        if (item.TweetId === TweetId) {
+          return { ...item, isLiked: false, likeCount: item.likeCount - 1 };
+        } else {
+          return item;
+        }
+      });
+    });
+  };
+
   const handleChange = (e) => {
     setErrorMsg(null);
     setTweetText(e.target.value);
@@ -103,7 +154,6 @@ function HomePage() {
     if (!tweetText || tweetText.length > 140) {
       return false;
     }
-
     return true;
   }, [tweetText]);
 
@@ -117,7 +167,7 @@ function HomePage() {
             </header>
 
             <Tweettextbox className="tweettextbox">
-              <img src={userInfo[0].data.user[0].avatar} alt="user avatar" />
+              <img src={avatar} alt="user avatar" />
 
               <textarea
                 className="tweettext"
@@ -146,17 +196,19 @@ function HomePage() {
 
             <div className="divider"></div>
           </div>
-          {usersInfo.map((usersInfo) => (
+          {tweets.map((tweet) => (
             <TweetsCard
-              key={usersInfo.data.user[0].id}
-              account={usersInfo.data.user[0].account}
-              name={usersInfo.data.user[0].name}
-              avatar={usersInfo.data.user[0].avatar}
-              tweets={usersInfo.data.Tweets[0].description}
-              repliedTotal={usersInfo.data.repliedTweets[0].repliedTotal}
-              likesTotal={usersInfo.data.likes[0].likesTotal}
-              userId={usersInfo.data.user[0].id}
-              createdAt={usersInfo.data.Tweets[0].createdAt}
+              tweetOwnerId={tweet.data.tweetOwnerId}
+              account={tweet.data.tweetOwnerAccount}
+              name={tweet.data.tweetOwnerName}
+              avatar={tweet.data.tweetOwnerAvatar}
+              tweets={tweet.data.description}
+              repliedTotal={tweet.data.replyCount}
+              likesTotal={tweet.data.likeCount}
+              userId={tweet.data.id}
+              createdAt={tweet.data.createdAt}
+              isLiked={tweet.data.isLiked}
+              personalInfo={personalInfo}
               onClick={toggleShowReplyModal}
             />
           ))}
