@@ -1,8 +1,11 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import AdminPostCard from "../components/Cards/AdminPostCard";
 import * as style from "../components/common/admin.styled";
+
+// get delete api
+import { getAdminTweets, deleteAdminTweets, checkAdminPermission } from "../API/admin";
 
 const Container = styled.div`
   width: 83%;
@@ -34,6 +37,50 @@ const CardContainer = styled.div`
 export default function AdminTweetPage() {
     const [posts, setPosts] = useState([])
     const navigate = useNavigate()
+    // 驗證 token
+    useEffect(() => {
+      const checkTokenIsValid = async () => {
+        const authToken = localStorage.getItem('AdminToken');
+        if (!authToken) {
+          navigate('/api/admin/login');
+        }
+        const result = await checkAdminPermission(authToken);
+        if (!result) {
+          navigate('/api/admin/login');
+        }
+      }
+      checkTokenIsValid();
+    }, [navigate])
+
+    // get Tweets
+    useEffect(() => {
+      const fetchTweets = async () => {
+          try {
+            const tweetData = await getAdminTweets()
+            const sortedTweets = tweetData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+            setPosts(sortedTweets)
+          } catch (error) {
+            console.error("Get Admin Tweets Failed:", error);
+          }
+        };
+        fetchTweets();
+      }, [])
+  
+      const handleDelete = async (id)=>{
+        try{
+          const success = await deleteAdminTweets({ id });
+          if (success) {
+            setPosts((prevPosts) =>
+              prevPosts.filter((post) =>
+                post.id !== id));
+            console.log('Delete successful');
+          } else {
+            console.log('Delete failed');
+          }
+        } catch (error){
+          console.error("Delete Admin Tweet Failed:", error)
+        }
+      }
 
 
     return (
@@ -52,6 +99,8 @@ export default function AdminTweetPage() {
                                account={data.User.name}
                                avatar={data.User.avatar}
                                content={data.description}
+                               timestamp={data.createdAt}
+                               onClick={() => handleDelete(data.id)}
                             />
                         )
                     })}

@@ -57,6 +57,16 @@ axiosInstance.interceptors.request.use(
   },
 );
 
+// get admin tweets
+export const getAdminTweets = async () => {
+  try {
+    const res = await axiosInstance.get(`${apiURL}/admin/tweets`);
+    return res.data
+  } catch (error) {
+    console.error('[GET AdminTweets failed]:', error)
+  }
+}
+
 // get 管理員 users
 export const getAdminUsers = async () => {
   try {
@@ -74,5 +84,15 @@ export const deleteAdminTweets = async ({id}) => {
     return res.data
   } catch (error) {
     console.error('[Delete AdminTweets failed]:', error)
+  }
+}
+
+
+export const checkAdminPermission  = async () => {
+  try {
+    const res = await axiosInstance.get(`${apiURL}/auth/test-token-admin`);
+    return res.data.status
+  } catch (error) {
+    console.error('[Check Permission Failed]: ', error);
   }
 }

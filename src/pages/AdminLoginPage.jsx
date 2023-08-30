@@ -10,7 +10,6 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { adminLogin } from "../API/admin";
-import { checkPermission } from "../API/auth";
 
 const AdminLoginPase = () => {
   const [account, setAccount] = useState("");
@@ -49,21 +48,6 @@ const AdminLoginPase = () => {
     });
     return;
   };
-  useEffect(() => {
-    const checkTokenIsValid = async () => {
-      const userToken = localStorage.getItem('userToken');
-
-      if(!userToken) {
-        return
-      }
-      const result = await checkPermission(userToken);
-
-      if(result) {
-        navigate('api/users/:id/tweets');
-      }
-    }
-    checkTokenIsValid();
-  }, [navigate])
 
 
   return (
