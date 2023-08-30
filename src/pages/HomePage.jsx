@@ -81,7 +81,7 @@ const Tweettextbox = styled.div`
   }
 `;
 
-function HomePage({ token, active }) {
+function HomePage() {
   const [userInfo, setUserInfo] = useState(user1);
   const [usersInfo, setUsersInfo] = useState(users);
   const [tweetText, setTweetText] = useState("");
@@ -94,9 +94,47 @@ function HomePage({ token, active }) {
   const [personalInfo, setPersonalInfo] = useState({});
   const [replyToData, setReplyToData] = useState({});
   const { isAuthenticated, currentMember } = useAuth();
-  const { isTweetDataUpdate, setIsTweetDataUpdate } = useTweetData();
-  const { isReplyDataUpdate, setIsReplyDataUpdate } = useTweetData();
   const [avatar, setAvatar] = useState("");
+
+  // 渲染畫面
+  useEffect(() => {
+    const getUserDataAsync = async (authToken) => {
+      try {
+        const data = await getTweets(authToken);
+        setTweets(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    if (localStorage.getItem("authToken")) {
+      getUserDataAsync(localStorage.getItem("authToken"));
+    }
+  }, []);
+
+  // 點擊愛心+1
+  const handleLike = (TweetId) => {
+    setTweets((pre) => {
+      return pre.map((item) => {
+        if (item.TweetId === TweetId) {
+          return { ...item, isLiked: true, likeCount: item.likeCount + 1 };
+        } else {
+          return item;
+        }
+      });
+    });
+  };
+  // 點擊愛心-1
+  const handleUnLike = (TweetId) => {
+    setTweets((pre) => {
+      return pre.map((item) => {
+        if (item.TweetId === TweetId) {
+          return { ...item, isLiked: false, likeCount: item.likeCount - 1 };
+        } else {
+          return item;
+        }
+      });
+    });
+  };
 
   const handleChange = (e) => {
     setErrorMsg(null);
@@ -111,7 +149,6 @@ function HomePage({ token, active }) {
 
     setTweetText("");
   };
-
 
   const isValid = useMemo(() => {
     if (!tweetText || tweetText.length > 140) {
