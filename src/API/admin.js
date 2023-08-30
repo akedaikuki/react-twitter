@@ -57,42 +57,35 @@ axiosInstance.interceptors.request.use(
   },
 );
 
-// get admin tweets
-export const getAdminTweets = async () => {
+// get 管理員 tweets
+export const getTweets = async (authToken) => {
   try {
-    const res = await axiosInstance.get(`${apiURL}/admin/tweets`);
-    return res.data
+    const { data } = await axios.get(`${apiURL}/admin/tweets`, { headers: { Authorization: 'Bearer ' + authToken } })
+    return data
   } catch (error) {
-    console.error('[GET AdminTweets failed]:', error)
+    console.error('[GET USERS FAILED]', error)
   }
 }
 
 // get 管理員 users
-export const getAdminUsers = async () => {
+export const getUsers = async (authToken) => {
   try {
-    const res = await axiosInstance.get(`${apiURL}/admin/users`);
-    return res.data
+    const { data } = await axios.get(`${apiURL}/admin/users`, { headers: { Authorization: 'Bearer ' + authToken } })
+    return data
   } catch (error) {
-    console.error('[GET AdminUsers failed]:', error)
+    console.error('[GET USERS FAILED]', error)
   }
 }
 
 // delete 管理員 tweets_id
-export const deleteAdminTweets = async ({id}) => {
+export const deleteTweet = async (id, authToken) => {
   try {
-    const res = await axiosInstance.delete(`${apiURL}/admin/tweets/${id}`);
-    return res.data
+    const { data } = await axios.delete(`${apiURL}/admin/tweets/${id}`, {
+      headers: { Authorization: 'Bearer ' + authToken }
+    })
+    return data
   } catch (error) {
-    console.error('[Delete AdminTweets failed]:', error)
+    console.error('[deleteTweet failed]', error)
   }
 }
 
-
-export const checkAdminPermission  = async () => {
-  try {
-    const res = await axiosInstance.get(`${apiURL}/auth/test-token-admin`);
-    return res.data.status
-  } catch (error) {
-    console.error('[Check Permission Failed]: ', error);
-  }
-}

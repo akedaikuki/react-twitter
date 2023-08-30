@@ -5,7 +5,8 @@ import AdminPostCard from "../components/Cards/AdminPostCard";
 import * as style from "../components/common/admin.styled";
 
 // get delete api
-import { getAdminTweets, deleteAdminTweets, checkAdminPermission } from "../API/admin";
+import { deleteTweet } from "../API/admin";
+import { getTweets } from "../API/tweets";
 
 const Container = styled.div`
   width: 83%;
@@ -35,52 +36,35 @@ const CardContainer = styled.div`
 `
 
 export default function AdminTweetPage() {
-    const [posts, setPosts] = useState([])
+    const [tweetList, setTweetList] = useState([])
+    const [status, setStatus] = useState('tweetList')
     const navigate = useNavigate()
-    // 驗證 token
-    useEffect(() => {
-      const checkTokenIsValid = async () => {
-        const authToken = localStorage.getItem('AdminToken');
-        if (!authToken) {
-          navigate('/api/admin/login');
-        }
-        const result = await checkAdminPermission(authToken);
-        if (!result) {
-          navigate('/api/admin/login');
-        }
-      }
-      checkTokenIsValid();
-    }, [navigate])
 
-    // get Tweets
     useEffect(() => {
-      const fetchTweets = async () => {
-          try {
-            const tweetData = await getAdminTweets()
-            const sortedTweets = tweetData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-            setPosts(sortedTweets)
-          } catch (error) {
-            console.error("Get Admin Tweets Failed:", error);
-          }
-        };
-        fetchTweets();
-      }, [])
-  
-      const handleDelete = async (id)=>{
-        try{
-          const success = await deleteAdminTweets({ id });
-          if (success) {
-            setPosts((prevPosts) =>
-              prevPosts.filter((post) =>
-                post.id !== id));
-            console.log('Delete successful');
-          } else {
-            console.log('Delete failed');
-          }
-        } catch (error){
-          console.error("Delete Admin Tweet Failed:", error)
+      const getUserDataAsync = async (authToken) => {
+        try {
+          const data = await getTweets(authToken)
+          setTweetList(data)
+        } catch (error) {
+          console.error(error)
         }
       }
+      if (localStorage.getItem('adminAuthToken')) {
+        getUserDataAsync(localStorage.getItem('adminAuthToken'))
+      }
+    }, [])
+
+  
+    const handleDelete = async (id) => {
+      try {
+        const authToken = localStorage.getItem('adminAuthToken')
+        await deleteTweet(id, authToken)
+        console.log('刪除成功')
+        setTweetList(tweetList.filter(item => item.TweetId !== id))
+      } catch (error) {
+        console.error(error)
+      }
+    }
 
 
     return (
@@ -88,10 +72,9 @@ export default function AdminTweetPage() {
            <Container>
                 <Header>
                     <h4>推文清單</h4>
-                    <h5>Test</h5>
                 </Header>
                 <CardContainer>
-                    {posts.map(data => {
+                    {tweetList.map(data => {
                         return(
                             <AdminPostCard
                                key={data.id}

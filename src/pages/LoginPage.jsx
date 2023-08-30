@@ -16,9 +16,6 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const resetError = (inputName) => {
-    setError({ ...error, [inputName]: false });
-  };
   const handleClick = async () => {
     if (account.length === 0 || password.length === 0) {
       return;
@@ -28,7 +25,7 @@ const LoginPage = () => {
     }
     const data = await login({ account, password })
 
-    if (success) {
+    if (data.success) {
       localStorage.setItem('authToken', data.token)
       localStorage.setItem('id', data.id)
       localStorage.setItem('avatar', data.avatar)
