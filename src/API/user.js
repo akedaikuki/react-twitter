@@ -82,17 +82,3 @@ export const getUser = async () => {
     console.error("[Get UserId failed]:", error);
   }
 };
-
-export const getUserInfo = async ({ Token }) => {
-  try {
-    const { data } = await axiosInstance.get(`${apiURL}/api/users/${userId}/`, {
-      headers: {
-        Authorization: "Bearer " + Token,
-      },
-    });
-    return data;
-  } catch (error) {
-    console.log(error);
-    return false;
-  }
-};

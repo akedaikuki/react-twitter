@@ -112,42 +112,6 @@ function HomePage({ token, active }) {
     setTweetText("");
   };
 
-  useEffect(() => {
-    const fetchTweets = async () => {
-      try {
-        const { res } = await getTweets();
-        console.log(res);
-        setTweets(res);
-      } catch (error) {
-        // Handle error here if needed
-      }
-    };
-
-    if (isAuthenticated && currentMember.role === "user") {
-      fetchTweets();
-    }
-  }, [isAuthenticated, currentMember]);
-
-  useEffect(() => {
-    const getPersonalInfo = async () => {
-      const userId = currentMember.id;
-      const data = await getUserInfo({ token, userId });
-      setPersonalInfo(data);
-    };
-    if (!isAuthenticated || currentMember.role !== "user") return;
-    getPersonalInfo();
-  }, []);
-
-  useEffect(() => {
-    const getCurrentUserAvatar = async () => {
-      const userId = currentMember.id;
-      const data = await getUserInfo({ token, userId });
-      setAvatar(data.avatar);
-    };
-    if (!isAuthenticated || currentMember.role !== "user") return;
-
-    getCurrentUserAvatar();
-  }, [isAuthenticated]);
 
   const isValid = useMemo(() => {
     if (!tweetText || tweetText.length > 140) {
