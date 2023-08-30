@@ -12,11 +12,9 @@ export const login = async ({ account, password }) => {
     if (!res || !res.data) {
       throw Error("nothing returned");
     }
-    return data
-  } catch (error) {
-    if (error.response) {
-      console.error(error)
-      return (error.response.data)
+
+    if (res.status >= 400 || res.data.status !== "success") {
+      throw Error("request has error");
     }
 
     const userData = res.data.data?.user;
@@ -28,14 +26,14 @@ export const login = async ({ account, password }) => {
     if (!userToken) {
       throw Error("no user token");
     }
-    return data
+
+    return { success: true, userData, userToken };
   } catch (error) {
-    console.error(error)
-    if (error.response) {
-      return (error.response.data)
-    }
+    console.error("[Login Failed]:", error);
+    throw error
   }
-}
+};
+
 
 export const adminLogin = async ({ account, password }) => {
   try {
