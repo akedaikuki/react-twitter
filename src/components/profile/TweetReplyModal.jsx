@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useContext, useEffect } from "react";
+import React, { useState, useMemo, useContext, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { CloseIcon } from "../../assets/icons";
 import { StyledButton } from "../common/button.styled";
@@ -8,12 +8,15 @@ import users from "../../API/users";
 import { Link } from "react-router-dom";
 import userImg from "../../assets/images/img.png";
 import relativeTime from "../../utilities/relativeTime";
-import {
-  ShowModalContext,
-  useUserPostModal,
-} from "../../Context/ShowModalContext";
+import { ShowModalContext } from "../../Context/ShowModalContext";
 import Swal from "sweetalert2";
-import { userAddTweets } from "../../API/tweets";
+import {
+  userAddTweets,
+  userLikeTweet,
+  userUnLikeTweet,
+} from "../../API/tweets";
+import { useUserPostModal } from "../../Context/MainPageContext";
+import { useReplyList } from "../contexts/DataContext";
 
 const ModalContainer = styled.div`
   position: absolute;
@@ -107,26 +110,59 @@ const StyledConnectLine = styled.div`
   }
 `;
 
+const handleSubmit = ({ onUserReply, text, tweet }) => {
+  if (text.trim().length > 0) {
+    onUserReply?.({ TweetId: tweet.TweetId, text });
+
+    localStorage.setItem("TweetId", tweet.TweetId);
+  }
+};
+
 function TweetReplyModal({
-  onAddHomeList,
-  userTextNothing,
-  onChange,
-  TweetId,
+  onPostList,
+  onUserLikeList,
+  onAvatarClick,
+  // onUserReply,
+  // text,
+  // setText,
   tweet,
-  id,
 }) {
   const [userInfo, setUserInfo] = useState(user1);
   const [usersInfo, setUsersInfo] = useState(users);
-  const [tweetText, setTweetText] = useState("");
+  // const [text, setTweetText] = useState("");
   const [errorMsg, setErrorMsg] = useState(null);
+  const [text, setText] = useState("");
+  const tweetRef = useRef(null);
   const { toggleShowReplyModal } = useContext(ShowModalContext);
-
+  const { onTheTweetId } = useReplyList();
+  const { onUserReply } = useUserPostModal();
   const { homeList, onHomeList } = useUserPostModal();
+  const { onLike, onUnLike } = useUserPostModal();
+
+  const handleLikeIcon = async (TweetId) => {
+    const userToken = localStorage.getItem("userToken");
+    try {
+      if (tweet.isLiked === true) {
+        await userUnLikeTweet({ userToken, TweetId });
+        onUnLike(TweetId);
+        onPostList?.({ TweetId, count: -1 });
+        onUserLikeList?.({ TweetId, count: -1 });
+      } else {
+        await userLikeTweet({ userToken, TweetId });
+        onLike(TweetId);
+        onPostList?.({ TweetId, count: 1 });
+        onUserLikeList?.({ TweetId, count: 1 });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const getUserDataAsync = async (description) => {
     try {
       const data = await userAddTweets(description);
       onHomeList(data);
+      console.log(homeList);
     } catch (error) {
       console.error(error);
     }
@@ -138,45 +174,19 @@ function TweetReplyModal({
   // console.log(usersInfo[0].data.user[0].avatar);
   const handleChange = (e) => {
     setErrorMsg(null);
-    setTweetText(e.target.value);
+    setText(e.target.value);
   };
 
-  // const handleSubmit = ({
-  //   onAddHomeList,
-  //   onClose,
-  //   text,
-  //   onUserTextWarning,
-  // }) => {
-  //   if (text.trim().length > 0 && text.length <= 140) {
-  //     onAddHomeList(text);
-  //     onClose();
-
-  //     setTimeout(() => {
-  //       Swal.fire({
-  //         position: "top-right",
-  //         timer: 1000,
-  //         title: `推文發送成功`,
-  //         showConfirmButton: false,
-  //       });
-  //     }, 1000);
-  //   }
-  //   if (text.trim().length === 0) {
-  //     onUserTextWarning(true);
-  //   } else {
-  //     onUserTextWarning(false);
-  //   }
-  // };
-
   const isValid = useMemo(() => {
-    if (!tweetText) {
+    if (!text) {
       setErrorMsg("內容不可空白");
       return false;
-    } else if (tweetText.length > 140) {
+    } else if (text.length > 140) {
       return false;
     }
 
     return true;
-  }, [tweetText]);
+  }, [text]);
   const avatar = localStorage.getItem("avatar");
 
   return (
@@ -189,7 +199,7 @@ function TweetReplyModal({
             <TweetCardContainer
               className="tweetCardContainer"
               style={{ outline: "0" }}
-              id={TweetId}
+              id={tweet.tweetOwnerId}
             >
               <div className="userAvatar">
                 <img
@@ -205,20 +215,16 @@ function TweetReplyModal({
                   <span className="account">@{tweet.account}</span>
 
                   <span className="time">
-                    ・{relativeTime(usersInfo[0].data.Tweets[0].createdAt)}
+                    ・{relativeTime(tweet.createdAt)}
                   </span>
                 </div>
                 <div className="tweetContent_link">
-                  <p className="tweetP">
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                    Ducimus ex illo cupiditate. Nostrum fuga quos tempora ipsum
-                    libero repellendus soluta?
-                  </p>
+                  <p className="tweetP">{tweet.description}</p>
                 </div>
 
                 {/*  */}
                 <p className="reply_to">
-                  回覆 <span>@{usersInfo[0].data.user[0].name}</span>
+                  回覆 <span>@{tweet.name}</span>
                 </p>
               </div>
             </TweetCardContainer>
@@ -230,24 +236,26 @@ function TweetReplyModal({
                 id="tweettext"
                 rows="5"
                 placeholder="推你的回覆"
-                value={tweetText}
+                ref={tweetRef}
+                value={text}
                 onChange={handleChange}
               ></textarea>
 
               <div className="panel">
                 <p className="error_msg">
-                  {tweetText.length > 140 ? "字數不可超過 140 字" : ""}
+                  {text.length > 140 ? "字數不可超過 140 字" : ""}
                   {errorMsg !== null && errorMsg}
                 </p>
 
                 <StyledButton
                   className="tweet_post_btn"
-                  // onClick={() =>
-                  //   handleSubmit({
-                  //     onAddHomeList,
-                  //     userTextNothing,
-                  //   })
-                  // }
+                  onClick={() =>
+                    handleSubmit({
+                      tweet,
+                      text,
+                      onUserReply,
+                    })
+                  }
                   disabled={!isValid}
                 >
                   推文

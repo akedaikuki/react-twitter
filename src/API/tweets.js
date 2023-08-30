@@ -12,7 +12,7 @@ export const getTweets = async (userToken) => {
     const res = await axios.get(`${apiURL}/tweets`, {
       headers: { Authorization: "Bearer " + userToken },
     });
-    console.log(res);
+    // console.log(res);
     return res.data;
   } catch (error) {
     console.error("[Get Tweets failed]", error);

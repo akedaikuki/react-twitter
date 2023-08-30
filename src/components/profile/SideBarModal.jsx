@@ -4,9 +4,10 @@ import { CloseIcon } from "../../assets/icons";
 import { StyledButton } from "../common/button.styled";
 import { ShowModalContext } from "../../Context/ShowModalContext";
 import Swal from "sweetalert2";
+import { useUserPostModal } from "../../Context/MainPageContext";
 
 // API
-import user1 from "../../API/user1";
+// import user1 from "../../API/user1";
 
 const ModalContainer = styled.div`
   position: absolute;
@@ -87,25 +88,22 @@ const Tweettextbox = styled.div`
     }
   }
 `;
-function SideBarModal() {
-  const [userInfo, setUserInfo] = useState(user1);
-  const [tweetText, setTweetText] = useState("");
-  const tweetRef = useRef(null);
-  const [errorMsg, setErrorMsg] = useState(null);
-  const { toggleShowPostModal } = useContext(ShowModalContext);
-  // console.log(usersInfo[0].data.user[0].avatar);
-  const avatar = localStorage.getItem("avatar");
-  //Swal 彈窗提示
-  const successedAlert = () => {
-    Swal.fire({
-      position: "top",
-      title: "推文發送成功！",
-      timer: 1000,
-      icon: "success",
-      showConfirmButton: false,
+
+const handleSubmit = ({ onAddHomeList, text, toggleShowPostModal }) => {
+  if (text.trim().length > 0 && text.length <= 140) {
+    onAddHomeList(text);
+    toggleShowPostModal();
+    setTimeout(() => {
+      Swal.fire({
+        position: "top",
+        title: "推文發送成功！",
+        timer: 1000,
+        icon: "success",
+        showConfirmButton: false,
+      });
     });
-  };
-  const failedAlert = () => {
+  }
+  if (text.trim().length === 0) {
     Swal.fire({
       position: "top",
       title: "推文發送失敗！",
@@ -113,40 +111,35 @@ function SideBarModal() {
       icon: "error",
       showConfirmButton: false,
     });
-  };
+  }
+};
+
+function SideBarModal() {
+  // const [userInfo, setUserInfo] = useState(user1);
+  const [text, setText] = useState("");
+  const tweetRef = useRef(null);
+  const [errorMsg, setErrorMsg] = useState(null);
+  const { toggleShowPostModal } = useContext(ShowModalContext);
+  const { onAddHomeList } = useUserPostModal();
+  // console.log(usersInfo[0].data.user[0].avatar);
+  const avatar = localStorage.getItem("avatar");
 
   const handleChange = (e) => {
     setErrorMsg(null);
-    setTweetText(e.target.value);
+    setText(e.target.value);
   };
 
-  const handlePost = async () => {
-    if (tweetRef.current.value.length === 0) {
-      return;
-    }
-    setTweetText("");
-
-    const tweet = { description: tweetRef.current.value };
-    // const status = await postTweet({ token, tweet });
-    tweetRef.current.value = "";
-
-    // if (status === 200) {
-    //   successedAlert();
-    // } else {
-    //   failedAlert();
-    // }
-  };
   const isValid = useMemo(() => {
-    if (!tweetText) {
+    if (!text) {
       setErrorMsg("內容不可空白");
       return false;
-    } else if (tweetText.length > 140) {
+    } else if (text.length > 140) {
       return false;
     }
 
     return true;
-  }, [tweetText]);
-
+  }, [text]);
+  // console.log(onAddHomeList);
   return (
     <div className="modal">
       <div className="background">
@@ -163,19 +156,25 @@ function SideBarModal() {
                 rows="5"
                 placeholder="有什麼新鮮事?"
                 ref={tweetRef}
-                value={tweetText}
+                value={text}
                 onChange={handleChange}
               ></textarea>
 
               <div className="panel">
                 <p className="error_msg">
-                  {tweetText.length > 140 ? "字數不可超過 140 字" : ""}
+                  {text.length > 140 ? "字數不可超過 140 字" : ""}
                   {errorMsg !== null && errorMsg}
                 </p>
 
                 <StyledButton
                   className="tweet_post_btn"
-                  onClick={handlePost}
+                  onClick={() =>
+                    handleSubmit({
+                      onAddHomeList,
+                      text,
+                      toggleShowPostModal,
+                    })
+                  }
                   disabled={!isValid}
                 >
                   推文

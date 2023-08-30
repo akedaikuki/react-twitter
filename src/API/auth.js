@@ -21,8 +21,10 @@ export const login = async ({ account, password }) => {
     const userToken = res.data.data?.token;
     const avatar = res.data.data.user.avatar;
     const id = res.data.data.user.id;
-
-    console.log(res.data.token);
+    console.log(userData);
+    console.log(userToken);
+    console.log(avatar);
+    console.log(id);
     if (!userData) {
       throw Error("no user data");
     }
