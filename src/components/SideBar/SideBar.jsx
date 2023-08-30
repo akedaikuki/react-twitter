@@ -11,9 +11,10 @@ import {
   HomeIconActive,
   LogoutIcon,
 } from "../../assets/icons";
-// import SideBarModal from "../profile/SideBarModal";
+import SideBarModal from "../profile/SideBarModal";
 import { StyledNavbarButton } from "../common/button.styled";
 import { ShowModalContext } from "../../Context/ShowModalContext";
+import { useUserPostModal } from "../../Context/MainPageContext";
 
 const NavbarContainer = styled.div`
   /* width: 350px; */
@@ -64,7 +65,11 @@ const LinkStyle = styled.div`
 `;
 
 function Navbar() {
-  const { toggleShowPostModal } = useContext(ShowModalContext);
+  // const [text, setText] = useState("");
+  // const [userTextNothing, setUserTextNoting] = useState(false);
+  const { showPostModal, toggleShowPostModal } = useContext(ShowModalContext);
+  const { onAddHomeList } = useUserPostModal();
+  const id = localStorage.getItem("id");
 
   return (
     <NavbarContainer className="NavbarContainer">
@@ -94,7 +99,11 @@ function Navbar() {
         <LinkStyle>
           <NavLink
             className="user_icon"
-            to={"api/users/:UserId/tweets"}
+            to={`api/users/${id}/tweets`}
+            onClick={() => {
+              localStorage.setItem("otherId", id);
+              return;
+            }}
             style={({ isActive }) => ({ color: isActive && "#FF6600" })}
           >
             {({ isActive }) =>
@@ -143,7 +152,7 @@ function Navbar() {
           </Link>
         </LinkStyle>
       </div>
-      {/* <SideBarModal show={show} setShow={setShow} /> */}
+      {showPostModal && <SideBarModal onAddHomeList={onAddHomeList} />}
     </NavbarContainer>
   );
 }

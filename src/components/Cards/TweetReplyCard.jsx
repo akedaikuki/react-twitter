@@ -3,44 +3,53 @@ import { TweetCardContainer } from "../common/tweet.styled";
 import { Link } from "react-router-dom";
 import relativeTime from "../../utilities/relativeTime";
 
-function TweetReplyList({
-  key,
-  account,
-  name,
-  avatar,
-  tweets,
-  repliedTweets,
-  repliedTotal,
-  likesTotal,
-  userId,
-  createdAt,
-  user1account,
-}) {
+// const handleSubmit = ({ onUserReply, onClose, text, tweet }) => {
+//   if (text.trim().length > 0) {
+//     onUserReply?.({ TweetId: tweet.TweetId, text });
+//     onClose();
+//     localStorage.setItem("TweetId", tweet.TweetId);
+//   }
+// };
+
+function TweetReplyList({ tweet, id, reply, onAvatarClick }) {
+  let Avatar;
+  let ReplyerName;
+  let ReplyerAccount;
+
+  if (reply) {
+    Avatar = tweet.replyOwnerAvatar;
+    ReplyerName = tweet.replyOwnerName;
+    ReplyerAccount = tweet.replyOwnerAccount;
+  } else {
+    Avatar = tweet.replyerAvatar;
+    ReplyerName = tweet.replyerName;
+    ReplyerAccount = tweet.replyerAccount;
+  }
+
   return (
     <>
       {/* reoly */}
-      <TweetCardContainer className="tweetCardContainer" id={userId}>
-        <Link
-          className="userAvatar"
-          to={`/api/otherusers/:UserId/?id=${userId}`}
-        >
-          <img src={avatar} alt="avatar" style={{ marginTop: "0" }} />
+      <TweetCardContainer className="tweetCardContainer">
+        <Link className="userAvatar" to={`/api/otherusers/${id}/?id=${id}`}>
+          <img
+            src={Avatar}
+            onClick={() => onAvatarClick?.(tweet.replyOwnerId)}
+            alt="avatar"
+            style={{ marginTop: "0" }}
+          />
         </Link>
         <div className="right">
-          <Link
-            className="name_link"
-            to={`/api/otherusers/:UserId/?id=${userId}`}
-          >
-            <span className="name">{name}</span>
-            <span className="account">@{account}</span>
+          <Link className="name_link" to={`/api/otherusers/${id}/?id=${id}`}>
+            <span className="name">{ReplyerName}</span>
+            <span className="account">@{ReplyerAccount}</span>
 
-            <span className="time"> · {relativeTime(createdAt)}</span>
+            <span className="time"> · {relativeTime(tweet.createdAt)}</span>
           </Link>
 
           <p className="reply_to">
-            回覆 <span>@{user1account}</span>
+            回覆 <span>@{tweet.tweetOwnerAccount}</span>
           </p>
-          <p className="tweetP">{repliedTweets}</p>
+          <p className="tweetP">{tweet.comment}</p>
           {/*  */}
         </div>
       </TweetCardContainer>

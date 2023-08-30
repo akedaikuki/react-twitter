@@ -1,35 +1,20 @@
-// import { createContext, useState, useContext } from "react";
+import { createContext, useState, useContext } from "react";
+const replyListContext = createContext("");
 
-// const defaultTweetContext = {
-//   isReplyDataUpdate: false,
-//   isUserDataUpdate: false,
-//   isTweetDataUpdate: false,
-// };
+export const useReplyList = () => useContext(replyListContext);
+export const ReplyListContextProvider = ({ children }) => {
+  const [theTweetId, setTheTweetId] = useState("");
+  const handleTheTweetId = (TweetId) => {
+    setTheTweetId(TweetId);
+    localStorage.setItem("TweetId", TweetId);
+    console.log(theTweetId);
+  };
 
-// //
-// const TweetDataContext = createContext(defaultTweetContext);
-// const useTweetData = () => useContext(TweetDataContext);
-
-// //
-// function TweetDataProvider({ children }) {
-//   const [isUserDataUpdate, setIsUserDataUpdate] = useState(true);
-//   const [isTweetDataUpdate, setIsTweetDataUpdate] = useState(true);
-//   const [isReplyDataUpdate, setIsReplyDataUpdate] = useState(true);
-
-//   return (
-//     <TweetDataContext.Provider
-//       value={{
-//         isUserDataUpdate,
-//         setIsUserDataUpdate,
-//         isTweetDataUpdate,
-//         setIsTweetDataUpdate,
-//         isReplyDataUpdate,
-//         setIsReplyDataUpdate,
-//       }}
-//     >
-//       {children}
-//     </TweetDataContext.Provider>
-//   );
-// }
-
-// export { useTweetData, TweetDataProvider };
+  return (
+    <replyListContext.Provider
+      value={{ theTweetId, onTheTweetId: handleTheTweetId }}
+    >
+      {children}
+    </replyListContext.Provider>
+  );
+};
