@@ -1,7 +1,8 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useContext } from "react";
 import { userAddTweets, userReplyTweets } from "../API/tweets";
 // import { useNavigate } from "react-router-dom";
 const ShowModalContext = createContext();
+export const useUserPostModal = () => useContext(ShowModalContext);
 
 function ShowModalContextProvider({ children }) {
   const [showPostModal, setShowPostModal] = useState(false);
