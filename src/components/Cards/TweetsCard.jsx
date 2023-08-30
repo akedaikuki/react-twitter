@@ -96,7 +96,7 @@ function TweetsCard({
       >
         <Link
           className="userAvatar"
-          to={`/api/otherusers/:UserId/?id=${userId}`}
+          to={`/api/otherusers/${userId}/?id=${userId}`}
         >
           <img
             src={tweet.tweetOwnerAvatar}
@@ -108,7 +108,7 @@ function TweetsCard({
         <div className="right">
           <Link
             className="name_link"
-            to={`/api/otherusers/:UserId/?id=${userId}`}
+            to={`/api/otherusers/${userId}/?id=${userId}`}
           >
             <span className="name">{tweet.tweetOwnerName}</span>
             <span className="account">@{tweet.tweetOwnerAccount}</span>

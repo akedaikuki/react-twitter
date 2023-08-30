@@ -89,16 +89,16 @@ const Tweettextbox = styled.div`
 function HomeList({ toggleShowReplyModal }) {
   const { homeList, onHomeList } = useUserPostModal();
   useEffect(() => {
-    const getUserDataAsync = async (authToken) => {
+    const getUserDataAsync = async (userToken) => {
       try {
-        const data = await getTweets(authToken);
+        const data = await getTweets(userToken);
         onHomeList(data);
       } catch (error) {
         console.error(error);
       }
     };
-    if (localStorage.getItem("authToken")) {
-      getUserDataAsync(localStorage.getItem("authToken"));
+    if (localStorage.getItem("userToken")) {
+      getUserDataAsync(localStorage.getItem("userToken"));
     }
   }, []);
 
@@ -217,8 +217,8 @@ function HomePage() {
             </Tweettextbox>
 
             <div className="divider"></div>
-            <HomeList onAddHomeList={onAddHomeList} />
           </div>
+          <HomeList onAddHomeList={onAddHomeList} />
         </PageStyle>
       </HomePageContainer>
       <Popular />

@@ -8,7 +8,7 @@ export const login = async ({ account, password }) => {
       account,
       password,
     });
-
+    console.log();
     if (!res || !res.data) {
       throw Error("nothing returned");
     }
@@ -19,7 +19,7 @@ export const login = async ({ account, password }) => {
 
     const userData = res.data.data?.user;
     const userToken = res.data.data?.token;
-
+    console.log(res.data.token);
     if (!userData) {
       throw Error("no user data");
     }
@@ -90,16 +90,16 @@ export const register = async ({
   }
 };
 
-// export const checkPermission = async (userToken) => {
-//   try {
-//     const response = await axios.get(`${apiURL}/test-token`, {
-//       headers: {
-//         Authorization: "Bearer " + userToken,
-//       },
-//     });
+export const checkPermission = async (userToken) => {
+  try {
+    const response = await axios.get(`${apiURL}/test-token`, {
+      headers: {
+        Authorization: "Bearer " + userToken,
+      },
+    });
 
-//     return response.data.success;
-//   } catch (error) {
-//     console.log("[Check Permission Failed]:", error);
-//   }
-// };
+    return response.data.success;
+  } catch (error) {
+    console.log("[Check Permission Failed]:", error);
+  }
+};

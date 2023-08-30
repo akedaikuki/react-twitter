@@ -13,7 +13,6 @@ const StyledLabel = styled.label`
   color: "#696974";
   text-align: start;
 `;
-
 const StyledInput = styled.input`
   outline: none;
   border: none;
