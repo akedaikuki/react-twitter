@@ -65,9 +65,7 @@ const LinkStyle = styled.div`
 
 function Navbar() {
   const { toggleShowPostModal } = useContext(ShowModalContext);
-  // const [show, setShow] = useState(false);
-  // 開啟跟關閉modal
-  // const handleShow = () => setShow(true);
+
   return (
     <NavbarContainer className="NavbarContainer">
       <div className="navbarStyle">

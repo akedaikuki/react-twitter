@@ -86,8 +86,9 @@ const Tweettextbox = styled.div`
   }
 `;
 
-function HomeList({ toggleShowReplyModal }) {
+function HomeList({ toggleShowReplyModal, handleAvatarClick }) {
   const { homeList, onHomeList } = useUserPostModal();
+
   useEffect(() => {
     const getUserDataAsync = async (userToken) => {
       try {
@@ -122,6 +123,7 @@ function HomeList({ toggleShowReplyModal }) {
           // isLiked={item.data.isLiked}
           // personalInfo={personalInfo}
           onClick={toggleShowReplyModal}
+          onAvatarClick={handleAvatarClick}
         />
       ))}
     </>
@@ -134,31 +136,32 @@ function HomePage() {
   const [tweetText, setTweetText] = useState("");
   const [errorMsg, setErrorMsg] = useState(null);
   const { showPostModal, toggleShowPostModal } = useContext(ShowModalContext);
-  const { showReplyModal, toggleShowReplyModal } = useContext(ShowModalContext);
+  const { showReplyModal } = useContext(ShowModalContext);
   // console.log(usersInfo[0].data.user[0].avatar);
   // 串接
   // const [tweets, setTweets] = useState([]);
   // const [personalInfo, setPersonalInfo] = useState({});
   // const [replyToData, setReplyToData] = useState({});
   // const { isAuthenticated, currentMember } = useAuth();
-  const [avatar, setAvatar] = useState("");
+  // const [avatar, setAvatar] = useState("");
   const [userTextNothing, setUserTextNoting] = useState(false);
   const navigate = useNavigate();
   const { onAddHomeList } = useUserPostModal();
-
+  const avatar = localStorage.getItem("avatar");
   // 點擊 avatar 後移至 other
   const handleAvatarClick = (clickId) => {
     const userId = localStorage.getItem("id");
     if (Number(clickId) === Number(userId)) {
-      navigate("/user/personalinfo/main");
+      navigate("/api/users/:UserId/tweets");
     } else {
       localStorage.setItem("otherId", clickId);
-      navigate("/user/other/main");
+      navigate("/api/otherusers/:UserId/tweets");
     }
   };
   const handleChange = (e) => {
     setErrorMsg(null);
     setTweetText(e.target.value);
+    setUserTextNoting(false);
   };
 
   const handlePost = async () => {
@@ -196,6 +199,7 @@ function HomePage() {
                 rows="5"
                 placeholder="有什麼新鮮事?"
                 value={tweetText}
+                onAddHomeList={onAddHomeList}
                 onChange={handleChange}
                 userTextNothing={userTextNothing}
                 // onClick={toggleShowPostModal}
@@ -218,7 +222,10 @@ function HomePage() {
 
             <div className="divider"></div>
           </div>
-          <HomeList onAddHomeList={onAddHomeList} />
+          <HomeList
+            onAddHomeList={onAddHomeList}
+            onAvatarClick={handleAvatarClick}
+          />
         </PageStyle>
       </HomePageContainer>
       <Popular />

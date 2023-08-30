@@ -34,7 +34,7 @@ const LoginPage = () => {
     });
     if (data.success) {
       localStorage.setItem("userToken", data.userToken);
-      localStorage.setItem("id", data.id);
+      localStorage.setItem("userData", data.userData);
       localStorage.setItem("avatar", data.avatar);
       Swal.fire({
         title: "登入成功",
