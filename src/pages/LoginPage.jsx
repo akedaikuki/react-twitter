@@ -30,7 +30,7 @@ const LoginPage = () => {
 
 
       localStorage.setItem("userToken", data.userToken);
-      localStorage.setItem("id", data.id);
+      localStorage.setItem("userData", data.userData);
       localStorage.setItem("avatar", data.avatar);
 
       Swal.fire({

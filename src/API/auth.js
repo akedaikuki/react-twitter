@@ -41,6 +41,9 @@ export const register = async ({ account, name, email, password, checkPassword }
 
     const userData = res.data.data?.user;
     const userToken = res.data.data?.token;
+    const avatar = res.data.data.user.avatar;
+    const id = res.data.data.user.id;
+
     console.log(res.data.token);
     if (!userData) {
       throw Error("no user data");
@@ -48,8 +51,12 @@ export const register = async ({ account, name, email, password, checkPassword }
     if (!userToken) {
       throw Error("no user token");
 
+
     }
     return data
+
+    return { success: true, userData, userToken, avatar, id };
+
   } catch (error) {
     console.error(error)
     if (error.response) {
