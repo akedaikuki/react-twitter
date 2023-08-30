@@ -12,7 +12,7 @@ import TweetReplyModal from "../components/profile/TweetReplyModal";
 import { ShowModalContext } from "../Context/ShowModalContext";
 import { useAuth } from "../components/contexts/AuthContext";
 import { useTweetData } from "../components/contexts/DataContext";
-import { getAllTweets } from "../API/tweets";
+import { getTweets } from "../API/tweets";
 import { getUserInfo } from "../API/user";
 
 const HomePageContainer = styled.div`
@@ -112,6 +112,7 @@ function HomePage({ token, active }) {
     setTweetText("");
   };
 
+
   const isValid = useMemo(() => {
     if (!tweetText || tweetText.length > 140) {
       return false;
@@ -160,7 +161,7 @@ function HomePage({ token, active }) {
           </div>
           {tweets.map((tweet) => (
             <TweetsCard
-              key={tweet.data.tweetOwnerId}
+              tweetOwnerId={tweet.data.tweetOwnerId}
               account={tweet.data.tweetOwnerAccount}
               name={tweet.data.tweetOwnerName}
               avatar={tweet.data.tweetOwnerAvatar}

@@ -18,70 +18,77 @@ const SignUpPage = () => {
   const [password, setPassword] = useState("");
   const [checkPassword, setCheckPassword] = useState("");
   const navigate = useNavigate("");
-
-  const handleClick = async () => {
-    if (account.length === 0) {
-      return;
-    }
-    if (name.length ===0) {
-      return;
-    }
-    if (email.length === 0) {
-      return;
-    }
-    if (password.length === 0) {
-      return;
-    }
-    if (checkPassword.length === 0) {
-      return;
-    }
-
-    const { success, userToken } = await register({
-        account, 
-        name, 
-        email, 
-        password, 
-        checkPassword,
-    })
-
-    if (success) {
-        localStorage.setItem('userToken', userToken)
-        Swal.fire({
-            title: '註冊成功',
-            icon: 'success',
-            showConfirmButton: false,
-            timer: 1000,
-            position: 'top',
-        });
-        navigate('api/users/:id/tweets')
-        return;
-    }
-    Swal.fire({
-        title: '註冊失敗',
-        icon: 'error',
-        showConfirmButton: false,
-        timer: 1000,
-        position: 'top',
-    })
-    return;
+  const [error, setError] = useState({
+    account: false,
+    name: false,
+    email: false,
+    password: false,
+    checkPassword: false,
+  });
+  const resetError = (inputname) => {
+    setError({ ...error, [inputname]: false });
   };
 
-  useEffect(() => {
-    const checkTokenIsValid = async () => {
-      const userToken = localStorage.getItem('userToken');
-
-      if(!userToken) {
-        return
-      }
-      const result = await checkPermission(userToken);
-
-      if(result) {
-        navigate('api/users/:id/tweets');
-      }
+  const handleClick = async () => {
+    resetError();
+    if (
+      account.length === 0 ||
+      name.length === 0 ||
+      email.length === 0 ||
+      password.length === 0 ||
+      checkPassword.length === 0
+    ) {
+      return;
     }
-    checkTokenIsValid();
-  }, [navigate])
 
+    const { success } = await register({
+      account,
+      name,
+      email,
+      password,
+      checkPassword,
+    });
+
+    if (success) {
+      console.log("註冊成功");
+      navigate("/api/users/signin");
+      // localStorage.setItem("userToken");
+      Swal.fire({
+        title: "註冊成功",
+        icon: "success",
+        showConfirmButton: false,
+        timer: 1000,
+        position: "top",
+      });
+
+      return;
+    } else {
+      Swal.fire({
+        title: "註冊失敗",
+        icon: "error",
+        showConfirmButton: false,
+        timer: 1000,
+        position: "top",
+      });
+      return;
+    }
+  };
+
+  // useEffect(() => {
+  //   const checkTokenIsValid = async () => {
+  //     const userToken = localStorage.getItem("userToken");
+
+  //     if (!userToken) {
+  //       return;
+  //     }
+  //     const result = await checkPermission(userToken);
+
+  //     if (result) {
+  //       navigate("api/users/:id/tweets");
+  //     }
+  //   };
+  //   checkTokenIsValid();
+  // }, [navigate]);
 
   return (
     <AuthContainer>

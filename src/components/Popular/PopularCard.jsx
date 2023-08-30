@@ -48,7 +48,6 @@ const FollowBtnBox = styled.div`
 
 function PopularCard({
   userId,
-  key,
   account,
   name,
   avatar,

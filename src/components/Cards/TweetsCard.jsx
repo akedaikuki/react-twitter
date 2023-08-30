@@ -43,7 +43,7 @@ const LikeIconStyle = styled.div`
 // import users from "../../API/users";
 function TweetsCard({
   userId,
-  key,
+  tweetOwnerId,
   account,
   createdAt,
   name,
@@ -84,7 +84,7 @@ function TweetsCard({
 
   return (
     <>
-      <TweetCardContainer className="tweetCardContainer" id={userId}>
+      <TweetCardContainer className="tweetCardContainer" id={tweetOwnerId}>
         <Link
           className="userAvatar"
           to={`/api/otherusers/:UserId/?id=${userId}`}
