@@ -7,10 +7,10 @@ const apiURL = "https://secure-beach-58251-e97c6ff22f2e.herokuapp.com/api";
 //   headers: { "Content-Type": "application/json" },
 // });
 
-export const getTweets = async (authToken) => {
+export const getTweets = async (userToken) => {
   try {
     const res = await axios.get(`${apiURL}/tweets`, {
-      headers: { Authorization: "Bearer " + authToken },
+      headers: { Authorization: "Bearer " + userToken },
     });
     console.log(res);
     return res.data;
@@ -21,12 +21,12 @@ export const getTweets = async (authToken) => {
 
 export const userAddTweets = async (payload) => {
   const { description } = payload;
-  const authToken = localStorage.getItem("authToken");
+  const userToken = localStorage.getItem("userToken");
   try {
     const res = await axios.post(
       `${apiURL}/tweets`,
       { description },
-      { headers: { Authorization: "Bearer " + authToken } }
+      { headers: { Authorization: "Bearer " + userToken } }
     );
     return res.data;
   } catch (error) {
@@ -36,12 +36,12 @@ export const userAddTweets = async (payload) => {
 
 export const userReplyTweets = async (payload) => {
   const { comment, TweetId } = payload;
-  const authToken = localStorage.getItem("authToken");
+  const userToken = localStorage.getItem("userToken");
   try {
     const res = await axios.post(
       `${apiURL}/tweets/${TweetId}/replies`,
       { comment },
-      { headers: { Authorization: "Bearer " + authToken } }
+      { headers: { Authorization: "Bearer " + userToken } }
     );
     return res.data;
   } catch (error) {
@@ -49,10 +49,10 @@ export const userReplyTweets = async (payload) => {
   }
 };
 
-export const userLikeTweet = async ({ authToken, TweetId }) => {
+export const userLikeTweet = async ({ userToken, TweetId }) => {
   try {
     const res = await axios.post(`${apiURL}/tweets/${TweetId}/like/`, null, {
-      headers: { Authorization: "Bearer " + authToken },
+      headers: { Authorization: "Bearer " + userToken },
     });
     return res.data;
   } catch (error) {
@@ -60,10 +60,10 @@ export const userLikeTweet = async ({ authToken, TweetId }) => {
   }
 };
 
-export const userUnLikeTweet = async ({ authToken, TweetId }) => {
+export const userUnLikeTweet = async ({ userToken, TweetId }) => {
   try {
     const res = await axios.post(`${apiURL}/tweets/${TweetId}/unlike`, null, {
-      headers: { Authorization: "Bearer " + authToken },
+      headers: { Authorization: "Bearer " + userToken },
     });
     return res.data;
   } catch (error) {
