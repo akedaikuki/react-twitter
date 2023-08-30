@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useContext } from "react";
+import React, { useState, useMemo, useContext, useEffect } from "react";
 import styled from "styled-components";
 import { CloseIcon } from "../../assets/icons";
 import { StyledButton } from "../common/button.styled";
@@ -6,9 +6,14 @@ import user1 from "../../API/user1";
 import { TweetCardContainer } from "../common/tweet.styled";
 import users from "../../API/users";
 import { Link } from "react-router-dom";
-
+import userImg from "../../assets/images/img.png";
 import relativeTime from "../../utilities/relativeTime";
-import { ShowModalContext } from "../../Context/ShowModalContext";
+import {
+  ShowModalContext,
+  useUserPostModal,
+} from "../../Context/ShowModalContext";
+import Swal from "sweetalert2";
+import { userAddTweets } from "../../API/tweets";
 
 const ModalContainer = styled.div`
   position: absolute;
@@ -102,24 +107,66 @@ const StyledConnectLine = styled.div`
   }
 `;
 
-function TweetReplyModal() {
+function TweetReplyModal({
+  onAddHomeList,
+  userTextNothing,
+  onChange,
+  TweetId,
+  tweet,
+  id,
+}) {
   const [userInfo, setUserInfo] = useState(user1);
   const [usersInfo, setUsersInfo] = useState(users);
   const [tweetText, setTweetText] = useState("");
   const [errorMsg, setErrorMsg] = useState(null);
   const { toggleShowReplyModal } = useContext(ShowModalContext);
+
+  const { homeList, onHomeList } = useUserPostModal();
+
+  const getUserDataAsync = async (description) => {
+    try {
+      const data = await userAddTweets(description);
+      onHomeList(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  if (localStorage.getItem("userToken")) {
+    getUserDataAsync(localStorage.getItem("userToken"));
+  }
+
   // console.log(usersInfo[0].data.user[0].avatar);
   const handleChange = (e) => {
     setErrorMsg(null);
     setTweetText(e.target.value);
   };
 
-  const handlePost = async () => {
-    if (tweetText.length === 0) {
-      return;
-    }
-    setTweetText("");
-  };
+  // const handleSubmit = ({
+  //   onAddHomeList,
+  //   onClose,
+  //   text,
+  //   onUserTextWarning,
+  // }) => {
+  //   if (text.trim().length > 0 && text.length <= 140) {
+  //     onAddHomeList(text);
+  //     onClose();
+
+  //     setTimeout(() => {
+  //       Swal.fire({
+  //         position: "top-right",
+  //         timer: 1000,
+  //         title: `推文發送成功`,
+  //         showConfirmButton: false,
+  //       });
+  //     }, 1000);
+  //   }
+  //   if (text.trim().length === 0) {
+  //     onUserTextWarning(true);
+  //   } else {
+  //     onUserTextWarning(false);
+  //   }
+  // };
+
   const isValid = useMemo(() => {
     if (!tweetText) {
       setErrorMsg("內容不可空白");
@@ -130,6 +177,7 @@ function TweetReplyModal() {
 
     return true;
   }, [tweetText]);
+  const avatar = localStorage.getItem("avatar");
 
   return (
     <div className="modal">
@@ -141,11 +189,11 @@ function TweetReplyModal() {
             <TweetCardContainer
               className="tweetCardContainer"
               style={{ outline: "0" }}
-              id={usersInfo[0].data.user[0].id}
+              id={TweetId}
             >
               <div className="userAvatar">
                 <img
-                  src={usersInfo[0].data.user[0].avatar}
+                  src={avatar}
                   alt="other User's avatar"
                   style={{ marginTop: "0" }}
                 />
@@ -153,10 +201,8 @@ function TweetReplyModal() {
               <StyledConnectLine />
               <div className="right">
                 <div className="name_link">
-                  <span className="name">{usersInfo[0].data.user[0].name}</span>
-                  <span className="account">
-                    @{usersInfo[0].data.user[0].account}
-                  </span>
+                  <span className="name">{tweet.name}</span>
+                  <span className="account">@{tweet.account}</span>
 
                   <span className="time">
                     ・{relativeTime(usersInfo[0].data.Tweets[0].createdAt)}
@@ -177,7 +223,7 @@ function TweetReplyModal() {
               </div>
             </TweetCardContainer>
             <Tweettextbox className="Tweettextbox">
-              <img src={userInfo[0].data.user[0].avatar} alt="user avatar" />
+              <img src={avatar} alt="user avatar" />
 
               <textarea
                 className="tweettext"
@@ -196,7 +242,12 @@ function TweetReplyModal() {
 
                 <StyledButton
                   className="tweet_post_btn"
-                  onClick={handlePost}
+                  // onClick={() =>
+                  //   handleSubmit({
+                  //     onAddHomeList,
+                  //     userTextNothing,
+                  //   })
+                  // }
                   disabled={!isValid}
                 >
                   推文

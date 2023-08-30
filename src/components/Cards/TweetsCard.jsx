@@ -48,6 +48,7 @@ function TweetsCard({
   onPostList,
   onUserLikeList,
   onAvatarClick,
+
   // userId,
   // tweetOwnerId,
   // account,
@@ -63,6 +64,8 @@ function TweetsCard({
   const [showLike, setShowLike] = useState(tweet.isLiked);
   const [countLike, setCountLike] = useState(tweet.likeCount);
   const userId = id;
+  const tweet_id = Number(TweetId);
+  console.log(tweet_id);
   async function handleLikeClick(type) {
     if (type === "increment") {
       setCountLike(countLike + 1);
@@ -96,7 +99,7 @@ function TweetsCard({
       >
         <Link
           className="userAvatar"
-          to={`/api/otherusers/${userId}/?id=${userId}`}
+          to={`/api/users/${userId}/tweets?id=${userId}`}
         >
           <img
             src={tweet.tweetOwnerAvatar}
@@ -108,7 +111,7 @@ function TweetsCard({
         <div className="right">
           <Link
             className="name_link"
-            to={`/api/otherusers/${userId}/?id=${userId}`}
+            to={`/api/users/${userId}/tweets?id=${userId}`}
           >
             <span className="name">{tweet.tweetOwnerName}</span>
             <span className="account">@{tweet.tweetOwnerAccount}</span>
@@ -116,10 +119,7 @@ function TweetsCard({
             <span className="time">・{relativeTime(tweet.createdAt)}</span>
           </Link>
 
-          <Link
-            className="tweetContent_link"
-            to={"/api/tweets/:tweet_id/replies"}
-          >
+          <Link className="tweetContent_link" to={"/api/tweets/replies"}>
             <p className="tweetP">{tweet.description}</p>
           </Link>
           <div className="card-footer" style={{ display: "flex" }}>
@@ -135,7 +135,7 @@ function TweetsCard({
                   handleLikeClick("decrement");
                 }}
               >
-                <LikeIcon className="like active" />
+                <LikedIcon className="like active" />
                 <span className="en-font-family">{countLike}</span>
               </LikeIconStyle>
             ) : (

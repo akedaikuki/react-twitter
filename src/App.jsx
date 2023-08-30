@@ -35,7 +35,10 @@ function App() {
               path="api/tweets/:tweet_id/replies"
               element={<TweetPage />}
             />
-            <Route path="api/otherusers/:UserId" element={<OtheruserPage />} />
+            <Route
+              path="api/users/:UserId/tweets"
+              element={<OtheruserPage />}
+            />
             <Route
               path="api/users/:UserId/followers"
               element={<UserFollowPage />}
@@ -45,11 +48,11 @@ function App() {
               element={<UserFollowPage />}
             />
             <Route
-              path="api/otherusers/:UserId/followers"
+              path="api/users/:UserId/followers"
               element={<OtherFollowPage />}
             />
             <Route
-              path="api/otherusers/:UserId/followings"
+              path="api/users/:UserId/followings"
               element={<OtherFollowPage />}
             />
             <Route path="setting" element={<SettingPage />} />

@@ -94,7 +94,7 @@ function SideBarModal() {
   const [errorMsg, setErrorMsg] = useState(null);
   const { toggleShowPostModal } = useContext(ShowModalContext);
   // console.log(usersInfo[0].data.user[0].avatar);
-
+  const avatar = localStorage.getItem("avatar");
   //Swal 彈窗提示
   const successedAlert = () => {
     Swal.fire({
@@ -155,7 +155,7 @@ function SideBarModal() {
             <CloseIcon className="close" onClick={toggleShowPostModal} />
             <div className="line"></div>
             <Tweettextbox className="Tweettextbox">
-              <img src={userInfo[0].data.user[0].avatar} alt="user avatar" />
+              <img src={avatar} alt="user avatar" />
 
               <textarea
                 className="tweettext"

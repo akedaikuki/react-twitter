@@ -19,12 +19,14 @@ import UserModal from "../components/profile/UserModal";
 import { ShowModalContext } from "../Context/ShowModalContext";
 import SideBarModal from "../components/profile/SideBarModal";
 import TweetReplyModal from "../components/profile/TweetReplyModal";
+import { getAccountInfo } from "../API/usercopy";
+import jwtDecode from "jwt-decode";
 // import users from "../API/users";
 
 function UserPage() {
-  const [userInfo, setUserInfo] = useState(user1);
+  const [userInfo, setUserInfo] = useState({});
   // const [usersInfo, setUsersInfo] = useState(users);
-  const [editActive, setEditActive] = useState(false);
+  // const [editActive, setEditActive] = useState(false);
   const { setActiveTab } = useContext(FollowClickContext);
   const { showEditModal, toggleShowEditModal } = useContext(ShowModalContext);
   const { showPostModal, toggleShowPostModal } = useContext(ShowModalContext);
@@ -32,13 +34,26 @@ function UserPage() {
   const navigate = useNavigate();
   // console.log(users[0].username);
 
-  useEffect(() => {}, [editActive]);
+  useEffect(() => {
+    const getPersonalInfo = async () => {
+      const userToken = localStorage.getItem("userToken");
+      // const id = jwtDecode(userToken).id;
+      const id = localStorage.getItem("id");
+      // const id = localStorage.getItem("id");
+      const data = await getAccountInfo(userToken, id);
+      setUserInfo(data);
+      console.log(setUserInfo);
+    };
+
+    getPersonalInfo();
+  }, [navigate]);
+  console.log(userInfo);
 
   return (
     <>
       <UserPageConainer
         className="userPageConainer"
-        active={editActive}
+        // active={editActive}
         // onClose={handleClose}
       >
         <PageStyle>
@@ -50,7 +65,7 @@ function UserPage() {
               }}
             />
             <div className="header_info">
-              <h5 className="username">{userInfo[0].data.user[0].name}</h5>
+              <h5 className="username">{userInfo.name}</h5>
               <p className="tweet_amount">
                 {userInfo[0].data.Tweets[0].tweetsTotal} 推文
               </p>
@@ -74,7 +89,7 @@ function UserPage() {
 
               <div
                 className="editInfo"
-                active={editActive}
+                // active={editActive}
                 // onClose={handleClose}
               >
                 {/* {editActive ? <UserModal onClose={handleClose} /> : null} */}
