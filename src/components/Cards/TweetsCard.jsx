@@ -42,21 +42,27 @@ const LikeIconStyle = styled.div`
 
 // import users from "../../API/users";
 function TweetsCard({
-  userId,
-  tweetOwnerId,
-  account,
-  createdAt,
-  name,
-  avatar,
-  tweets,
-  isLiked,
-  repliedTotal,
-  likesTotal,
+  TweetId,
+  tweet,
+  id,
+  onPostList,
+  onUserLikeList,
+  onAvatarClick,
+  // userId,
+  // tweetOwnerId,
+  // account,
+  // createdAt,
+  // name,
+  // avatar,
+  // tweets,
+  // isLiked,
+  // repliedTotal,
+  // likesTotal,
 }) {
   const { showReplyModal, toggleShowReplyModal } = useContext(ShowModalContext);
-  const [showLike, setShowLike] = useState(isLiked);
-  const [countLike, setCountLike] = useState(likesTotal);
-
+  const [showLike, setShowLike] = useState(tweet.isLiked);
+  const [countLike, setCountLike] = useState(tweet.likeCount);
+  const userId = id;
   async function handleLikeClick(type) {
     if (type === "increment") {
       setCountLike(countLike + 1);
@@ -74,25 +80,29 @@ function TweetsCard({
   }
 
   // 愛心狀態
-  function handleShowLike() {
-    if (showLike === 1) {
+  async function handleShowLike() {
+    if (showLike === true) {
       setShowLike(false);
-    } else if (showLike === 0) {
+    } else if (showLike === false) {
       setShowLike(true);
     }
   }
 
   return (
     <>
-      <TweetCardContainer className="tweetCardContainer" id={tweetOwnerId}>
+      <TweetCardContainer
+        className="tweetCardContainer"
+        id={tweet.tweetOwnerId}
+      >
         <Link
           className="userAvatar"
           to={`/api/otherusers/:UserId/?id=${userId}`}
         >
           <img
-            src={avatar}
+            src={tweet.tweetOwnerAvatar}
             alt="other User's avatar"
             style={{ marginTop: "0" }}
+            onClick={() => onAvatarClick?.(tweet.tweetOwnerId)}
           />
         </Link>
         <div className="right">
@@ -100,22 +110,22 @@ function TweetsCard({
             className="name_link"
             to={`/api/otherusers/:UserId/?id=${userId}`}
           >
-            <span className="name">{name}</span>
-            <span className="account">@{account}</span>
+            <span className="name">{tweet.tweetOwnerName}</span>
+            <span className="account">@{tweet.tweetOwnerAccount}</span>
 
-            <span className="time">・{relativeTime(createdAt)}</span>
+            <span className="time">・{relativeTime(tweet.createdAt)}</span>
           </Link>
 
           <Link
             className="tweetContent_link"
             to={"/api/tweets/:tweet_id/replies"}
           >
-            <p className="tweetP">{tweets}</p>
+            <p className="tweetP">{tweet.description}</p>
           </Link>
           <div className="card-footer" style={{ display: "flex" }}>
             <ReplyIconStyle>
               <ReplyIcon className="reply" onClick={toggleShowReplyModal} />
-              <span className="en-font-family">{repliedTotal}</span>
+              <span className="en-font-family">{tweet.replyCount}</span>
             </ReplyIconStyle>
             {showLike ? (
               <LikeIconStyle

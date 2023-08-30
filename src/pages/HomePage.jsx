@@ -9,11 +9,16 @@ import Popular from "../components/Popular";
 import relativeTime from "../utilities/relativeTime";
 import SideBarModal from "../components/profile/SideBarModal";
 import TweetReplyModal from "../components/profile/TweetReplyModal";
-import { ShowModalContext } from "../Context/ShowModalContext";
-import { useAuth } from "../components/contexts/AuthContext";
+import {
+  ShowModalContext,
+  useUserPostModal,
+  ShowModalContextProvider,
+} from "../Context/ShowModalContext";
+// import { useAuth } from "../components/contexts/AuthContext";
 import { useTweetData } from "../components/contexts/DataContext";
 import { getTweets } from "../API/tweets";
 import { getUserInfo } from "../API/user";
+import { useNavigate } from "react-router-dom";
 
 const HomePageContainer = styled.div`
   width: 640px;
@@ -81,27 +86,13 @@ const Tweettextbox = styled.div`
   }
 `;
 
-function HomePage() {
-  const [userInfo, setUserInfo] = useState(user1);
-  const [usersInfo, setUsersInfo] = useState(users);
-  const [tweetText, setTweetText] = useState("");
-  const [errorMsg, setErrorMsg] = useState(null);
-  const { showPostModal, toggleShowPostModal } = useContext(ShowModalContext);
-  const { showReplyModal, toggleShowReplyModal } = useContext(ShowModalContext);
-  // console.log(usersInfo[0].data.user[0].avatar);
-  // 串接
-  const [tweets, setTweets] = useState([]);
-  const [personalInfo, setPersonalInfo] = useState({});
-  const [replyToData, setReplyToData] = useState({});
-  const { isAuthenticated, currentMember } = useAuth();
-  const [avatar, setAvatar] = useState("");
-
-  // 渲染畫面
+function HomeList({ toggleShowReplyModal }) {
+  const { homeList, onHomeList } = useUserPostModal();
   useEffect(() => {
     const getUserDataAsync = async (authToken) => {
       try {
         const data = await getTweets(authToken);
-        setTweets(data);
+        onHomeList(data);
       } catch (error) {
         console.error(error);
       }
@@ -111,31 +102,60 @@ function HomePage() {
     }
   }, []);
 
-  // 點擊愛心+1
-  const handleLike = (TweetId) => {
-    setTweets((pre) => {
-      return pre.map((item) => {
-        if (item.TweetId === TweetId) {
-          return { ...item, isLiked: true, likeCount: item.likeCount + 1 };
-        } else {
-          return item;
-        }
-      });
-    });
-  };
-  // 點擊愛心-1
-  const handleUnLike = (TweetId) => {
-    setTweets((pre) => {
-      return pre.map((item) => {
-        if (item.TweetId === TweetId) {
-          return { ...item, isLiked: false, likeCount: item.likeCount - 1 };
-        } else {
-          return item;
-        }
-      });
-    });
-  };
+  return (
+    <>
+      {homeList.map((item) => (
+        <TweetsCard
+          tweet={item}
+          TweetId={item.TweetId}
+          key={item.TweetId}
+          id={item.tweetOwnerId}
+          // tweetOwnerId={item.data.tweetOwnerId}
+          // account={item.data.tweetOwnerAccount}
+          // name={item.data.tweetOwnerName}
+          // avatar={item.data.tweetOwnerAvatar}
+          // tweets={item.data.description}
+          // repliedTotal={item.data.replyCount}
+          // likesTotal={item.data.likeCount}
+          // userId={item.data.id}
+          // createdAt={item.data.createdAt}
+          // isLiked={item.data.isLiked}
+          // personalInfo={personalInfo}
+          onClick={toggleShowReplyModal}
+        />
+      ))}
+    </>
+  );
+}
 
+function HomePage() {
+  // const [userInfo, setUserInfo] = useState(user1);
+  // const [usersInfo, setUsersInfo] = useState(users);
+  const [tweetText, setTweetText] = useState("");
+  const [errorMsg, setErrorMsg] = useState(null);
+  const { showPostModal, toggleShowPostModal } = useContext(ShowModalContext);
+  const { showReplyModal, toggleShowReplyModal } = useContext(ShowModalContext);
+  // console.log(usersInfo[0].data.user[0].avatar);
+  // 串接
+  // const [tweets, setTweets] = useState([]);
+  // const [personalInfo, setPersonalInfo] = useState({});
+  // const [replyToData, setReplyToData] = useState({});
+  // const { isAuthenticated, currentMember } = useAuth();
+  const [avatar, setAvatar] = useState("");
+  const [userTextNothing, setUserTextNoting] = useState(false);
+  const navigate = useNavigate();
+  const { onAddHomeList } = useUserPostModal();
+
+  // 點擊 avatar 後移至 other
+  const handleAvatarClick = (clickId) => {
+    const userId = localStorage.getItem("id");
+    if (Number(clickId) === Number(userId)) {
+      navigate("/user/personalinfo/main");
+    } else {
+      localStorage.setItem("otherId", clickId);
+      navigate("/user/other/main");
+    }
+  };
   const handleChange = (e) => {
     setErrorMsg(null);
     setTweetText(e.target.value);
@@ -145,11 +165,12 @@ function HomePage() {
     if (tweetText.length === 0) {
       return;
     }
-    // const tweet = { description: tweetText };
 
     setTweetText("");
   };
-
+  const handleUserTextWarning = (value) => {
+    setUserTextNoting(value);
+  };
   const isValid = useMemo(() => {
     if (!tweetText || tweetText.length > 140) {
       return false;
@@ -176,6 +197,7 @@ function HomePage() {
                 placeholder="有什麼新鮮事?"
                 value={tweetText}
                 onChange={handleChange}
+                userTextNothing={userTextNothing}
                 // onClick={toggleShowPostModal}
               ></textarea>
 
@@ -195,29 +217,18 @@ function HomePage() {
             </Tweettextbox>
 
             <div className="divider"></div>
+            <HomeList onAddHomeList={onAddHomeList} />
           </div>
-          {tweets.map((tweet) => (
-            <TweetsCard
-              tweetOwnerId={tweet.data.tweetOwnerId}
-              account={tweet.data.tweetOwnerAccount}
-              name={tweet.data.tweetOwnerName}
-              avatar={tweet.data.tweetOwnerAvatar}
-              tweets={tweet.data.description}
-              repliedTotal={tweet.data.replyCount}
-              likesTotal={tweet.data.likeCount}
-              userId={tweet.data.id}
-              createdAt={tweet.data.createdAt}
-              isLiked={tweet.data.isLiked}
-              personalInfo={personalInfo}
-              onClick={toggleShowReplyModal}
-            />
-          ))}
         </PageStyle>
       </HomePageContainer>
       <Popular />
 
-      {showPostModal && <SideBarModal />}
-      {showReplyModal && <TweetReplyModal />}
+      {showPostModal && (
+        <SideBarModal onUserTextWarning={handleUserTextWarning} />
+      )}
+      {showReplyModal && (
+        <TweetReplyModal onUserTextWarning={handleUserTextWarning} />
+      )}
     </>
   );
 }
