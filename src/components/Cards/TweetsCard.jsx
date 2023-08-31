@@ -6,6 +6,9 @@ import relativeTime from "../../utilities/relativeTime";
 import { ShowModalContext } from "../../Context/ShowModalContext";
 import TweetReplyModal from "../profile/TweetReplyModal";
 import { styled } from "styled-components";
+import { userLikeTweet, userUnLikeTweet } from "../../API/usercopy";
+import { useUserPostModal } from "../../Context/MainPageContext";
+import { useReplyList } from "../contexts/DataContext";
 
 const ReplyIconStyle = styled.div`
   display: flex;
@@ -48,57 +51,39 @@ function TweetsCard({
   onPostList,
   onUserLikeList,
   onAvatarClick,
-
-  // userId,
-  // tweetOwnerId,
-  // account,
-  // createdAt,
-  // name,
-  // avatar,
-  // tweets,
-  // isLiked,
-  // repliedTotal,
-  // likesTotal,
 }) {
   const { showReplyModal, toggleShowReplyModal } = useContext(ShowModalContext);
-  const [showLike, setShowLike] = useState(tweet.isLiked);
-  const [countLike, setCountLike] = useState(tweet.likeCount);
+  // const [showLike, setShowLike] = useState(tweet.isLiked);
+  // const [countLike, setCountLike] = useState(tweet.likeCount);
+  const { onLike, onUnLike } = useUserPostModal();
+  const { onTheTweetId } = useReplyList();
+  const { onUserReply } = useUserPostModal();
   // const userId = TweetId;
   // const tweet_id = Number(TweetId);
-  // console.log(showLike);
-  // console.log(countLike);
-  console.log(tweet.isLiked);
-  async function handleLikeClick(type) {
-    if (type === "increment") {
-      setCountLike(countLike + 1);
-      try {
-      } catch (error) {
-        console.error(error);
-      }
-    } else if (type === "decrement") {
-      setCountLike(countLike - 1);
-      try {
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  }
 
-  // 愛心狀態
-  async function handleShowLike() {
-    if (showLike === true) {
-      setShowLike(false);
-    } else if (showLike === false) {
-      setShowLike(true);
+  const handleLikeIcon = async (TweetId) => {
+    const userToken = localStorage.getItem("userToken");
+    try {
+      if (tweet.isLiked === true) {
+        await userUnLikeTweet({ userToken, TweetId });
+        onUnLike(TweetId);
+        console.log(TweetId);
+        onPostList?.({ TweetId, count: -1 });
+        onUserLikeList?.({ TweetId, count: -1 });
+      } else {
+        await userLikeTweet({ userToken, TweetId });
+        onLike(TweetId);
+        onPostList?.({ TweetId, count: 1 });
+        onUserLikeList?.({ TweetId, count: 1 });
+      }
+    } catch (error) {
+      console.error(error);
     }
-  }
+  };
 
   return (
     <>
-      <TweetCardContainer
-        className="tweetCardContainer"
-        id={tweet.tweetOwnerId}
-      >
+      <TweetCardContainer className="tweetCardContainer" id={tweet.id}>
         <Link className="userAvatar" to={`/api/users/${id}/tweets`}>
           <img
             src={tweet.tweetOwnerAvatar}
@@ -115,41 +100,53 @@ function TweetsCard({
             <span className="time">・{relativeTime(tweet.createdAt)}</span>
           </Link>
 
-          <Link className="tweetContent_link" to={`/api/tweets/${TweetId}`}>
+          <Link
+            className="tweetContent_link"
+            onClick={() => {
+              onTheTweetId(TweetId);
+            }}
+            to={`/api/tweets/${TweetId}`}
+          >
             <p className="tweetP">{tweet.description}</p>
           </Link>
           <div className="card-footer" style={{ display: "flex" }}>
-            <ReplyIconStyle>
-              <ReplyIcon className="reply" onClick={toggleShowReplyModal} />
+            <ReplyIconStyle onClick={toggleShowReplyModal}>
+              <ReplyIcon
+                className="reply"
+                onClick={() => {
+                  onTheTweetId(TweetId);
+                }}
+              />
               <span className="en-font-family">{tweet.replyCount}</span>
             </ReplyIconStyle>
-            {showLike ? (
+            {tweet.isLiked === true ? (
               <LikeIconStyle
                 style={{ marginLeft: "15px" }}
                 onClick={() => {
-                  handleShowLike();
-                  handleLikeClick("decrement");
+                  handleLikeIcon();
+                  onTheTweetId(TweetId);
                 }}
               >
                 <LikedIcon className="like active" />
-                <span className="en-font-family">{countLike}</span>
+                <span className="en-font-family">{tweet.likeCount}</span>
               </LikeIconStyle>
             ) : (
               <LikeIconStyle
                 style={{ marginLeft: "15px" }}
                 onClick={() => {
-                  handleShowLike();
-                  handleLikeClick("increment");
+                  handleLikeIcon();
+                  onTheTweetId(TweetId);
                 }}
               >
                 <LikeIcon className="like" />
-                <span className="en-font-family">{countLike}</span>
+                <span className="en-font-family">{tweet.likeCount}</span>
               </LikeIconStyle>
             )}
           </div>
           {/*  */}
         </div>
       </TweetCardContainer>
+      {showReplyModal && <TweetReplyModal onUserReply={onUserReply} />}
     </>
   );
 }
