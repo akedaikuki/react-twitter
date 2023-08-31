@@ -8,7 +8,7 @@ import TweetReplyModal from "../profile/TweetReplyModal";
 import { styled } from "styled-components";
 import { userLikeTweet, userUnLikeTweet } from "../../API/usercopy";
 import { useUserPostModal } from "../../Context/MainPageContext";
-import { useReplyList } from "../contexts/DataContext";
+import { TweetIdContext } from "../contexts/DataContext";
 
 const ReplyIconStyle = styled.div`
   display: flex;
@@ -56,7 +56,7 @@ function TweetsCard({
   // const [showLike, setShowLike] = useState(tweet.isLiked);
   // const [countLike, setCountLike] = useState(tweet.likeCount);
   const { onLike, onUnLike } = useUserPostModal();
-  const { onTheTweetId } = useReplyList();
+  const { onTheTweetId } = TweetIdContext();
   const { onUserReply } = useUserPostModal();
   // const userId = TweetId;
   // const tweet_id = Number(TweetId);
@@ -67,7 +67,7 @@ function TweetsCard({
       if (tweet.isLiked === true) {
         await userUnLikeTweet({ userToken, TweetId });
         onUnLike(TweetId);
-        console.log(TweetId);
+        // console.log(TweetId);
         onPostList?.({ TweetId, count: -1 });
         onUserLikeList?.({ TweetId, count: -1 });
       } else {
@@ -103,7 +103,7 @@ function TweetsCard({
           <Link
             className="tweetContent_link"
             onClick={() => {
-              onTheTweetId(TweetId);
+              // onTheTweetId(TweetId);
             }}
             to={`/api/tweets/${TweetId}`}
           >
@@ -113,13 +113,13 @@ function TweetsCard({
             <ReplyIconStyle onClick={toggleShowReplyModal}>
               <ReplyIcon
                 className="reply"
-                onClick={() => {
-                  onTheTweetId(TweetId);
-                }}
+                // onClick={() => {
+                //   // onTheTweetId(TweetId);
+                // }}
               />
               <span className="en-font-family">{tweet.replyCount}</span>
             </ReplyIconStyle>
-            {tweet.isLiked === true ? (
+            {tweet.isLiked ? (
               <LikeIconStyle
                 style={{ marginLeft: "15px" }}
                 onClick={() => {
@@ -146,7 +146,7 @@ function TweetsCard({
           {/*  */}
         </div>
       </TweetCardContainer>
-      {showReplyModal && <TweetReplyModal onUserReply={onUserReply} />}
+      {showReplyModal && <TweetReplyModal />}
     </>
   );
 }

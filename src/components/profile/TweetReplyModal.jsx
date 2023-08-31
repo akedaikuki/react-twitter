@@ -16,7 +16,8 @@ import {
   userUnLikeTweet,
 } from "../../API/tweets";
 import { useUserPostModal } from "../../Context/MainPageContext";
-import { useReplyList } from "../contexts/DataContext";
+import { TweetIdContext } from "../contexts/DataContext";
+import Swal from "sweetalert2";
 
 const ModalContainer = styled.div`
   position: absolute;
@@ -110,11 +111,29 @@ const StyledConnectLine = styled.div`
   }
 `;
 
-const handleSubmit = ({ onUserReply, text, tweet }) => {
+const handleSubmit = ({ onUserReply, text, tweet, toggleShowReplyModal }) => {
   if (text.trim().length > 0) {
     onUserReply?.({ TweetId: tweet.TweetId, text });
-
     localStorage.setItem("TweetId", tweet.TweetId);
+    toggleShowReplyModal();
+    setTimeout(() => {
+      Swal.fire({
+        position: "top",
+        title: "推文發送成功！",
+        timer: 1000,
+        icon: "success",
+        showConfirmButton: false,
+      });
+    });
+  }
+  if (text.trim().length === 0) {
+    Swal.fire({
+      position: "top",
+      title: "推文發送失敗！",
+      timer: 1000,
+      icon: "error",
+      showConfirmButton: false,
+    });
   }
 };
 
@@ -126,7 +145,8 @@ function TweetReplyModal({ onUserReply, text, setText, tweet }) {
   // const [text, setText] = useState("");
   const tweetRef = useRef(null);
   const { toggleShowReplyModal } = useContext(ShowModalContext);
-  const { onTheTweetId } = useReplyList();
+  const { onTheTweetId } = TweetIdContext();
+
   // const { onUserReply } = useUserPostModal();
 
   // console.log(usersInfo[0].data.user[0].avatar);
