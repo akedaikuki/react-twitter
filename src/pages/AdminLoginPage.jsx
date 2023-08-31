@@ -6,34 +6,29 @@ import {
 } from "../components/common/auth.styled";
 import { BrandLogo } from "../assets/icons";
 import AuthInput from "../components/AuthInput";
-import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { adminLogin } from "../API/auth";
 import Swal from "sweetalert2";
-import { adminLogin } from "../API/admin";
-// import { checkPermission } from "../API/auth";
 
-const AdminLoginPase = () => {
+const AdminLoginPage = () => {
   const [account, setAccount] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate("");
-  const [error, setError] = useState({
-    account: false,
-    password: false,
-  });
+  const navigate = useNavigate();
 
-  const resetError = (inputName) => {
-    setError({ ...error, [inputName]: false });
-  };
   const handleClick = async () => {
     if (account.length === 0 || password.length === 0) {
       return;
     }
-    const { success, userToken } = await adminLogin({
-      account,
-      password,
-    });
-    if (success) {
-      localStorage.setItem("userToken", userToken);
+    if (password.length === 0) {
+      return;
+    }
+    const data = await adminLogin({ account, password })
+
+    if (data.success) {
+      localStorage.setItem('authToken', data.token)
+      localStorage.setItem('id', data.id)
+      localStorage.setItem('avatar', data.avatar)
       Swal.fire({
         title: "登入成功",
         icon: "success",
@@ -41,7 +36,7 @@ const AdminLoginPase = () => {
         timer: 1000,
         position: "top",
       });
-      navigate("/api/users/:id/tweets");
+      navigate("/");
       return;
     } else {
       Swal.fire({
@@ -54,21 +49,7 @@ const AdminLoginPase = () => {
       return;
     }
   };
-  // useEffect(() => {
-  //   const checkTokenIsValid = async () => {
-  //     const userToken = localStorage.getItem("userToken");
 
-  //     if (!userToken) {
-  //       return;
-  //     }
-  //     // const result = await checkPermission(userToken);
-
-  //     if (result) {
-  //       navigate("api/users/:id/tweets");
-  //     }
-  //   };
-  //   checkTokenIsValid();
-  // }, [navigate]);
 
   return (
     <AuthContainer>
@@ -82,31 +63,23 @@ const AdminLoginPase = () => {
           label="帳號"
           placeholder="請輸入帳號"
           value={account}
-          onChange={(accountInputValue, value) => {
-            resetError(value);
-            setAccount(accountInputValue);
-          }}
+          onChange={(accountInputValue) => setAccount(accountInputValue)}
         />
       </AuthInputContainer>
 
       <AuthInputContainer>
         <AuthInput
+          type="password"
           label="密碼"
           placeholder="請輸入密碼"
           value={password}
-          onChange={(passwordInputValue, value) => {
-            resetError(value);
-            setPassword(passwordInputValue);
-          }}
+          onChange={(passwordInputValue) => setPassword(passwordInputValue)}
         />
       </AuthInputContainer>
       <AuthButton onClick={handleClick}>登入</AuthButton>
 
-      <Link to="/api/users/signin">
-        <AuthLinkText>前台登入</AuthLinkText>
-      </Link>
     </AuthContainer>
   );
 };
 
-export default AdminLoginPase;
+export default AdminLoginPage;

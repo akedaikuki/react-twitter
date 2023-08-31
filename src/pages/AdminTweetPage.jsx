@@ -1,8 +1,12 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import AdminPostCard from "../components/Cards/AdminPostCard";
 import * as style from "../components/common/admin.styled";
+
+// get delete api
+import { deleteTweet } from "../API/admin";
+import { getTweets } from "../API/tweets";
 
 const Container = styled.div`
   width: 83%;
@@ -32,8 +36,35 @@ const CardContainer = styled.div`
 `
 
 export default function AdminTweetPage() {
-    const [posts, setPosts] = useState([])
+    const [tweetList, setTweetList] = useState([])
+    const [status, setStatus] = useState('tweetList')
     const navigate = useNavigate()
+
+    useEffect(() => {
+      const getUserDataAsync = async (authToken) => {
+        try {
+          const data = await getTweets(authToken)
+          setTweetList(data)
+        } catch (error) {
+          console.error(error)
+        }
+      }
+      if (localStorage.getItem('adminAuthToken')) {
+        getUserDataAsync(localStorage.getItem('adminAuthToken'))
+      }
+    }, [])
+
+  
+    const handleDelete = async (id) => {
+      try {
+        const authToken = localStorage.getItem('adminAuthToken')
+        await deleteTweet(id, authToken)
+        console.log('刪除成功')
+        setTweetList(tweetList.filter(item => item.TweetId !== id))
+      } catch (error) {
+        console.error(error)
+      }
+    }
 
 
     return (
@@ -41,10 +72,9 @@ export default function AdminTweetPage() {
            <Container>
                 <Header>
                     <h4>推文清單</h4>
-                    <h5>Test</h5>
                 </Header>
                 <CardContainer>
-                    {posts.map(data => {
+                    {tweetList.map(data => {
                         return(
                             <AdminPostCard
                                key={data.id}
@@ -52,6 +82,8 @@ export default function AdminTweetPage() {
                                account={data.User.name}
                                avatar={data.User.avatar}
                                content={data.description}
+                               timestamp={data.createdAt}
+                               onClick={() => handleDelete(data.id)}
                             />
                         )
                     })}

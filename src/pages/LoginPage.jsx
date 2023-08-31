@@ -16,23 +16,19 @@ const LoginPage = () => {
   const [account, setAccount] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const [error, setError] = useState({
-    account: false,
-    password: false,
-  });
 
-  const resetError = (inputName) => {
-    setError({ ...error, [inputName]: false });
-  };
   const handleClick = async () => {
     if (account.length === 0 || password.length === 0) {
       return;
     }
-    const data = await login({
-      account,
-      password,
-    });
+    if (password.length === 0) {
+      return;
+    }
+    const data = await login({ account, password })
+
     if (data.success) {
+
+
       localStorage.setItem("userToken", data.userToken);
       localStorage.setItem("userData", data.userData);
       localStorage.setItem("id", data.id);
@@ -74,6 +70,7 @@ const LoginPage = () => {
     };
     checkTokenIsValid();
   }, [navigate]);
+
 
   return (
     <AuthContainer>
