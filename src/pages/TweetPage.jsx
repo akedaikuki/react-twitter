@@ -1,13 +1,14 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { TurnbackIcon, LikedIcon, LikeIcon, ReplyIcon } from "../assets/icons";
-import TweetReplyCard from "../components/Cards/TweetReplyCard";
+import TweetReplyList from "../components/Cards/TweetReplyList";
 import { PageStyle, UserPageConainer } from "../components/common/page.styled";
 import Popular from "../components/Popular";
 import { styled } from "styled-components";
 // import user1 from "../API/user1";
 // import users from "../API/users";
 import createTime from "../utilities/creatTime";
+import relativeTime from "../utilities/relativeTime";
 import { ShowModalContext } from "../Context/ShowModalContext";
 import TweetReplyModal from "../components/profile/TweetReplyModal";
 import { getSingleTweetInfo } from "../API/usercopy";
@@ -116,37 +117,6 @@ const LikeIconStyle = styled.div`
   }
 `;
 
-const ContentItem = ({
-  text,
-  onPostList,
-  onUserReply,
-  // render,
-  onAvatarClick,
-  tweetOwnerInfo,
-}) => {
-  return tweetOwnerInfo.map((item) => (
-    <TweetReplyCard
-      text={text}
-      tweet={item}
-      key={item.Replies.id}
-      onPostList={onPostList}
-      onUserReply={onUserReply}
-      onAvatarClick={(clickId) => onAvatarClick?.(clickId)}
-      // key={usersInfo.data.user[0].id}
-      // account={usersInfo.data.user[0].account}
-      // name={usersInfo.data.user[0].name}
-      // avatar={usersInfo.data.user[0].avatar}
-      // tweets={usersInfo.data.Tweets[0].description}
-      // repliedTweets={usersInfo.data.repliedTweets[0].description}
-      // repliedTotal={usersInfo.data.repliedTweets[0].repliedTotal}
-      // likesTotal={usersInfo.data.likes[0].likesTotal}
-      // userId={usersInfo.data.user[0].id}
-      // createdAt={usersInfo.data.repliedTweets[0].createdAt}
-      // user1account={userInfo[0].data.user[0].account}
-    />
-  ));
-};
-
 function TweetPage() {
   // const [userInfo, setUserInfo] = useState(user1);
   // const [usersInfo, setUsersInfo] = useState(users);
@@ -217,7 +187,7 @@ function TweetPage() {
 
         setTweetOwnerInfo(data);
 
-        console.log(data);
+        console.log(data.Replies);
       } catch (error) {
         console.error(error);
       }
@@ -271,7 +241,10 @@ function TweetPage() {
               </div>
             </div>
             <p className="tweetContent">{tweetOwnerInfo.description}</p>
-            <p className="createdTime">上午 10:05・2020年6月10日</p>
+            <p className="createdTime">
+              {createTime(tweetOwnerInfo.createdAt)}・
+              {relativeTime(tweetOwnerInfo.createdAt)}
+            </p>
             <div className="tweetline"></div>
             <div className="qtyBox">
               <p className="replyQty">
@@ -315,9 +288,9 @@ function TweetPage() {
               )}
             </div>
           </UsertweetContainer>
-          <ContentItem
+          <TweetReplyList
             text={text}
-            tweetOwnerInfo={tweetOwnerInfo}
+            onAvatarClick={handleAvatarClick}
             onPostList={handlePostList}
             onUserReply={onUserReply}
           />

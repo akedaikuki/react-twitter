@@ -32,6 +32,7 @@ function UserPage({
   onPostList,
   onUserLikeList,
   onAvatarClick,
+  onAddHomeList,
 }) {
   const [userInfo, setUserInfo] = useState({});
   // const [usersInfo, setUsersInfo] = useState(users);
@@ -173,7 +174,7 @@ function UserPage({
       <Popular />
 
       {showEditModal && <UserModal />}
-      {showPostModal && <SideBarModal />}
+      {showPostModal && <SideBarModal onAddHomeList={onAddHomeList} />}
       {showReplyModal && <TweetReplyModal />}
     </>
   );
