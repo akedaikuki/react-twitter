@@ -19,7 +19,7 @@ export const login = async ({ account, password }) => {
 
     const userData = res.data.data?.user;
     const userToken = res.data.data?.token;
-
+    console.log(res.data.token);
     if (!userData) {
       throw Error("no user data");
     }
@@ -27,7 +27,7 @@ export const login = async ({ account, password }) => {
       throw Error("no user token");
     }
 
-    return { success: true, userData, userToken };
+    return { success: true, userData, userToken, avatar, id };
   } catch (error) {
     console.error("[Login Failed]:", error);
     throw error

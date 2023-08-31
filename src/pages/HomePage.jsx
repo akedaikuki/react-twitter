@@ -11,7 +11,7 @@ import SideBarModal from "../components/profile/SideBarModal";
 import TweetReplyModal from "../components/profile/TweetReplyModal";
 import {
   ShowModalContext,
-  useUserPostModal,
+  toggleShowReplyModal,
   ShowModalContextProvider,
 } from "../Context/ShowModalContext";
 // import { useAuth } from "../components/contexts/AuthContext";
@@ -19,6 +19,7 @@ import { useTweetData } from "../components/contexts/DataContext";
 import { getTweets } from "../API/tweets";
 import { getUserInfo } from "../API/user";
 import { useNavigate } from "react-router-dom";
+import { useUserPostModal } from "../Context/MainPageContext";
 
 const HomePageContainer = styled.div`
   width: 640px;
@@ -86,8 +87,9 @@ const Tweettextbox = styled.div`
   }
 `;
 
-function HomeList({ toggleShowReplyModal }) {
+function HomeList({ toggleShowReplyModal, handleAvatarClick }) {
   const { homeList, onHomeList } = useUserPostModal();
+
   useEffect(() => {
     const getUserDataAsync = async (userToken) => {
       try {
@@ -122,61 +124,61 @@ function HomeList({ toggleShowReplyModal }) {
           // isLiked={item.data.isLiked}
           // personalInfo={personalInfo}
           onClick={toggleShowReplyModal}
+          onAvatarClick={handleAvatarClick}
         />
       ))}
     </>
   );
 }
 
-function HomePage() {
+function HomePage({ tweet }) {
   // const [userInfo, setUserInfo] = useState(user1);
   // const [usersInfo, setUsersInfo] = useState(users);
-  const [tweetText, setTweetText] = useState("");
+  const [text, setText] = useState("");
   const [errorMsg, setErrorMsg] = useState(null);
   const { showPostModal, toggleShowPostModal } = useContext(ShowModalContext);
-  const { showReplyModal, toggleShowReplyModal } = useContext(ShowModalContext);
+  const { showReplyModal } = useContext(ShowModalContext);
   // console.log(usersInfo[0].data.user[0].avatar);
   // 串接
   // const [tweets, setTweets] = useState([]);
   // const [personalInfo, setPersonalInfo] = useState({});
   // const [replyToData, setReplyToData] = useState({});
   // const { isAuthenticated, currentMember } = useAuth();
-  const [avatar, setAvatar] = useState("");
-  const [userTextNothing, setUserTextNoting] = useState(false);
+  // const [avatar, setAvatar] = useState("");
+  // const [userTextNothing, setUserTextNoting] = useState(false);
   const navigate = useNavigate();
   const { onAddHomeList } = useUserPostModal();
-
+  const avatar = localStorage.getItem("avatar");
   // 點擊 avatar 後移至 other
-  const handleAvatarClick = (clickId) => {
+  const handleAvatarClick = (clickId, TweetId) => {
     const userId = localStorage.getItem("id");
     if (Number(clickId) === Number(userId)) {
-      navigate("/user/personalinfo/main");
+      navigate(`/api/users/${userId}/tweets`);
     } else {
       localStorage.setItem("otherId", clickId);
-      navigate("/user/other/main");
+      localStorage.setItem("TweetId", TweetId);
+      navigate(`/api/otherusers/${userId}/tweets`);
     }
   };
   const handleChange = (e) => {
     setErrorMsg(null);
-    setTweetText(e.target.value);
+    setText(e.target.value);
   };
 
   const handlePost = async () => {
-    if (tweetText.length === 0) {
+    if (text.length === 0) {
       return;
     }
+    setText("");
+    onAddHomeList(text);
+  };
 
-    setTweetText("");
-  };
-  const handleUserTextWarning = (value) => {
-    setUserTextNoting(value);
-  };
   const isValid = useMemo(() => {
-    if (!tweetText || tweetText.length > 140) {
+    if (!text || text.length > 140) {
       return false;
     }
     return true;
-  }, [tweetText]);
+  }, [text]);
 
   return (
     <>
@@ -195,15 +197,16 @@ function HomePage() {
                 id="tweettext"
                 rows="5"
                 placeholder="有什麼新鮮事?"
-                value={tweetText}
+                value={text}
+                onAddHomeList={onAddHomeList}
                 onChange={handleChange}
-                userTextNothing={userTextNothing}
+
                 // onClick={toggleShowPostModal}
               ></textarea>
 
               <div className="panel">
                 <p className="error_msg">
-                  {tweetText.length > 140 ? "字數不可超過 140 字" : ""}
+                  {text.length > 140 ? "字數不可超過 140 字" : ""}
                   {errorMsg !== null && errorMsg}
                 </p>
                 <StyledButton
@@ -218,16 +221,17 @@ function HomePage() {
 
             <div className="divider"></div>
           </div>
-          <HomeList onAddHomeList={onAddHomeList} />
+          <HomeList
+            onAddHomeList={onAddHomeList}
+            onAvatarClick={handleAvatarClick}
+          />
         </PageStyle>
       </HomePageContainer>
       <Popular />
 
-      {showPostModal && (
-        <SideBarModal onUserTextWarning={handleUserTextWarning} />
-      )}
+      {showPostModal && <SideBarModal />}
       {showReplyModal && (
-        <TweetReplyModal onUserTextWarning={handleUserTextWarning} />
+        <TweetReplyModal tweet={tweet} onAvatarClick={handleAvatarClick} />
       )}
     </>
   );

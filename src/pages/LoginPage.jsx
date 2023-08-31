@@ -27,9 +27,10 @@ const LoginPage = () => {
     const data = await login({ account, password })
 
     if (data.success) {
-      localStorage.setItem("authToken", data.token);
+      localStorage.setItem("userToken", data.userToken);
       localStorage.setItem("id", data.id);
       localStorage.setItem("avatar", data.avatar);
+
       Swal.fire({
         title: "登入成功",
         icon: "success",

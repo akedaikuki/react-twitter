@@ -15,7 +15,7 @@ import OtheruserPage from "./pages/OtherUser/OtherUserPage";
 import OtherFollowPage from "./pages/OtherUser/OtherFollowPage";
 import SettingPage from "./pages/SettingPage";
 
-function App() {
+function App({ TweetId, id }) {
   return (
     <div className="App">
       <BrowserRouter>
@@ -23,17 +23,14 @@ function App() {
         <Routes>
           <Route path="/" element={<MainPage />}>
             <Route index element={<HomePage />} />
-            <Route path="api/users/:UserId/tweets" element={<UserPage />} />
+            <Route path={`api/users/2/tweets`} element={<UserPage />} />
+            <Route path={`api/users/2/replied_tweets`} element={<UserPage />} />
+            <Route path={`api/users/2/likes`} element={<UserPage />} />
+            <Route path={`api/tweets/${TweetId}`} element={<TweetPage />} />
             <Route
-              path="api/users/:UserId/replied_tweets"
-              element={<UserPage />}
+              path={`api/users/${id}/tweets`}
+              element={<OtheruserPage />}
             />
-            <Route path="api/users/:UserId/likes" element={<UserPage />} />
-            <Route
-              path="api/tweets/:tweet_id/replies"
-              element={<TweetPage />}
-            />
-            <Route path="api/otherusers/:UserId" element={<OtheruserPage />} />
             <Route
               path="api/users/:UserId/followers"
               element={<UserFollowPage />}
@@ -43,11 +40,11 @@ function App() {
               element={<UserFollowPage />}
             />
             <Route
-              path="api/otherusers/:UserId/followers"
+              path="api/users/:UserId/followers"
               element={<OtherFollowPage />}
             />
             <Route
-              path="api/otherusers/:UserId/followings"
+              path="api/users/:UserId/followings"
               element={<OtherFollowPage />}
             />
             <Route path="setting" element={<SettingPage />} />

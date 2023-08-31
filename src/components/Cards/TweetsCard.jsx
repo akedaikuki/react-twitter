@@ -48,6 +48,7 @@ function TweetsCard({
   onPostList,
   onUserLikeList,
   onAvatarClick,
+
   // userId,
   // tweetOwnerId,
   // account,
@@ -62,7 +63,11 @@ function TweetsCard({
   const { showReplyModal, toggleShowReplyModal } = useContext(ShowModalContext);
   const [showLike, setShowLike] = useState(tweet.isLiked);
   const [countLike, setCountLike] = useState(tweet.likeCount);
-  const userId = id;
+  // const userId = TweetId;
+  // const tweet_id = Number(TweetId);
+  // console.log(showLike);
+  // console.log(countLike);
+  console.log(tweet.isLiked);
   async function handleLikeClick(type) {
     if (type === "increment") {
       setCountLike(countLike + 1);
@@ -94,10 +99,7 @@ function TweetsCard({
         className="tweetCardContainer"
         id={tweet.tweetOwnerId}
       >
-        <Link
-          className="userAvatar"
-          to={`/api/otherusers/${userId}/?id=${userId}`}
-        >
+        <Link className="userAvatar" to={`/api/users/${id}/tweets`}>
           <img
             src={tweet.tweetOwnerAvatar}
             alt="other User's avatar"
@@ -106,20 +108,14 @@ function TweetsCard({
           />
         </Link>
         <div className="right">
-          <Link
-            className="name_link"
-            to={`/api/otherusers/${userId}/?id=${userId}`}
-          >
+          <Link className="name_link" to={`/api/users/${id}/tweets`}>
             <span className="name">{tweet.tweetOwnerName}</span>
             <span className="account">@{tweet.tweetOwnerAccount}</span>
 
             <span className="time">・{relativeTime(tweet.createdAt)}</span>
           </Link>
 
-          <Link
-            className="tweetContent_link"
-            to={"/api/tweets/:tweet_id/replies"}
-          >
+          <Link className="tweetContent_link" to={`/api/tweets/${TweetId}`}>
             <p className="tweetP">{tweet.description}</p>
           </Link>
           <div className="card-footer" style={{ display: "flex" }}>
@@ -135,7 +131,7 @@ function TweetsCard({
                   handleLikeClick("decrement");
                 }}
               >
-                <LikeIcon className="like active" />
+                <LikedIcon className="like active" />
                 <span className="en-font-family">{countLike}</span>
               </LikeIconStyle>
             ) : (

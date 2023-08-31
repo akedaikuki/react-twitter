@@ -19,12 +19,23 @@ import UserModal from "../components/profile/UserModal";
 import { ShowModalContext } from "../Context/ShowModalContext";
 import SideBarModal from "../components/profile/SideBarModal";
 import TweetReplyModal from "../components/profile/TweetReplyModal";
+import { getAccountInfo, putPersonalInfo } from "../API/usercopy";
+import jwtDecode from "jwt-decode";
 // import users from "../API/users";
 
-function UserPage() {
-  const [userInfo, setUserInfo] = useState(user1);
+function UserPage({
+  activeTab,
+  render,
+  postList,
+  replyList,
+  userLikeList,
+  onPostList,
+  onUserLikeList,
+  onAvatarClick,
+}) {
+  const [userInfo, setUserInfo] = useState({});
   // const [usersInfo, setUsersInfo] = useState(users);
-  const [editActive, setEditActive] = useState(false);
+  // const [editActive, setEditActive] = useState(false);
   const { setActiveTab } = useContext(FollowClickContext);
   const { showEditModal, toggleShowEditModal } = useContext(ShowModalContext);
   const { showPostModal, toggleShowPostModal } = useContext(ShowModalContext);
@@ -32,13 +43,31 @@ function UserPage() {
   const navigate = useNavigate();
   // console.log(users[0].username);
 
-  useEffect(() => {}, [editActive]);
+  useEffect(() => {
+    const getAccountInfoAsync = async () => {
+      try {
+        const userToken = localStorage.getItem("userToken");
+        const id = localStorage.getItem("id");
+        const data = await getAccountInfo(userToken, id);
+
+        setUserInfo(data);
+
+        localStorage.setItem("tweetCount", data.tweetCount);
+        localStorage.setItem("userName", data.name);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getAccountInfoAsync();
+  }, [navigate]);
+
+  // console.log(userInfo);
 
   return (
     <>
       <UserPageConainer
         className="userPageConainer"
-        active={editActive}
+        // active={editActive}
         // onClose={handleClose}
       >
         <PageStyle>
@@ -50,31 +79,21 @@ function UserPage() {
               }}
             />
             <div className="header_info">
-              <h5 className="username">{userInfo[0].data.user[0].name}</h5>
-              <p className="tweet_amount">
-                {userInfo[0].data.Tweets[0].tweetsTotal} 推文
-              </p>
+              <h5 className="username">{userInfo.name}</h5>
+              <p className="tweet_amount">{userInfo.tweetCount} 推文</p>
             </div>
           </header>
 
           <div className="userInfoContainer">
             <UserInfoPicture className="userInfoPicture">
               <div className="image_area">
-                <img
-                  src={userInfo[0].data.user[0].coverImage}
-                  alt="cover"
-                  className="coverImg"
-                />
-                <img
-                  src={userInfo[0].data.user[0].avatar}
-                  alt="avatar"
-                  className="avatarImg"
-                />
+                <img src={userInfo.cover} alt="cover" className="coverImg" />
+                <img src={userInfo.avatar} alt="avatar" className="avatarImg" />
               </div>
 
               <div
                 className="editInfo"
-                active={editActive}
+                // active={editActive}
                 // onClose={handleClose}
               >
                 {/* {editActive ? <UserModal onClose={handleClose} /> : null} */}
@@ -90,34 +109,30 @@ function UserPage() {
               </div>
             </UserInfoPicture>
             <UserInfoText className="userInfoText">
-              <h5 className="username">{userInfo[0].data.user[0].name}</h5>
-              <div className="useraccount">
-                @{userInfo[0].data.user[0].account}
-              </div>
-              <p className="intro">{userInfo[0].data.user[0].introduction}</p>
+              <h5 className="username">{userInfo.name}</h5>
+              <div className="useraccount">@{userInfo.account}</div>
+              <p className="intro">{userInfo.introduction}</p>
               <div className="followInfo">
                 <Link
-                  to="/api/users/:UserId/followings"
+                  to={`/api/users/${userInfo.id}/followings`}
                   className="followingText"
                   onClick={() => {
                     setActiveTab("followings");
                     // navigate("followings");
                   }}
                 >
-                  <span>
-                    {userInfo[0].data.followings[0].followingTotal} 個
-                  </span>
+                  <span>{userInfo.followingCount} 個</span>
                   跟隨中
                 </Link>
                 <Link
-                  to="/api/users/:UserId/followers"
+                  to={`/api/users/${userInfo.id}/followers`}
                   className="followerText"
                   onClick={() => {
                     setActiveTab("followers");
                     // navigate("followers");
                   }}
                 >
-                  <span> {userInfo[0].data.followers[0].followerTotal} 位</span>
+                  <span> {userInfo.followerCount} 位</span>
                   跟隨者
                 </Link>
               </div>
@@ -125,7 +140,16 @@ function UserPage() {
           </div>
 
           <StyledTabbar>
-            <UserControl />
+            <UserControl
+              activeTab={activeTab}
+              // render={render}
+              postList={postList}
+              replyList={replyList}
+              userLikeList={userLikeList}
+              onPostList={onPostList}
+              onUserLikeList={onUserLikeList}
+              onAvatarClick={onAvatarClick}
+            />
             {/* <button className={"userTab"}>推文</button> */}
             {/* <button className={"userTab"}>回覆</button> */}
             {/* <button className={"userTab"}>喜歡的內容</button> */}
