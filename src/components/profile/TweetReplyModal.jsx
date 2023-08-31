@@ -2,14 +2,14 @@ import React, { useState, useMemo, useContext, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { CloseIcon } from "../../assets/icons";
 import { StyledButton } from "../common/button.styled";
-import user1 from "../../API/user1";
+// import user1 from "../../API/user1";
 import { TweetCardContainer } from "../common/tweet.styled";
-import users from "../../API/users";
+// import users from "../../API/users";
 import { Link } from "react-router-dom";
 import userImg from "../../assets/images/img.png";
 import relativeTime from "../../utilities/relativeTime";
 import { ShowModalContext } from "../../Context/ShowModalContext";
-import Swal from "sweetalert2";
+// import Swal from "sweetalert2";
 import {
   userAddTweets,
   userLikeTweet,
@@ -118,58 +118,16 @@ const handleSubmit = ({ onUserReply, text, tweet }) => {
   }
 };
 
-function TweetReplyModal({
-  onPostList,
-  onUserLikeList,
-  onAvatarClick,
-  // onUserReply,
-  // text,
-  // setText,
-  tweet,
-}) {
-  const [userInfo, setUserInfo] = useState(user1);
-  const [usersInfo, setUsersInfo] = useState(users);
+function TweetReplyModal({ onUserReply, text, setText, tweet }) {
+  // const [userInfo, setUserInfo] = useState(user1);
+  // const [usersInfo, setUsersInfo] = useState(users);
   // const [text, setTweetText] = useState("");
   const [errorMsg, setErrorMsg] = useState(null);
-  const [text, setText] = useState("");
+  // const [text, setText] = useState("");
   const tweetRef = useRef(null);
   const { toggleShowReplyModal } = useContext(ShowModalContext);
   const { onTheTweetId } = useReplyList();
-  const { onUserReply } = useUserPostModal();
-  const { homeList, onHomeList } = useUserPostModal();
-  const { onLike, onUnLike } = useUserPostModal();
-
-  const handleLikeIcon = async (TweetId) => {
-    const userToken = localStorage.getItem("userToken");
-    try {
-      if (tweet.isLiked === true) {
-        await userUnLikeTweet({ userToken, TweetId });
-        onUnLike(TweetId);
-        onPostList?.({ TweetId, count: -1 });
-        onUserLikeList?.({ TweetId, count: -1 });
-      } else {
-        await userLikeTweet({ userToken, TweetId });
-        onLike(TweetId);
-        onPostList?.({ TweetId, count: 1 });
-        onUserLikeList?.({ TweetId, count: 1 });
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const getUserDataAsync = async (description) => {
-    try {
-      const data = await userAddTweets(description);
-      onHomeList(data);
-      console.log(homeList);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  if (localStorage.getItem("userToken")) {
-    getUserDataAsync(localStorage.getItem("userToken"));
-  }
+  // const { onUserReply } = useUserPostModal();
 
   // console.log(usersInfo[0].data.user[0].avatar);
   const handleChange = (e) => {
@@ -187,7 +145,7 @@ function TweetReplyModal({
 
     return true;
   }, [text]);
-  const avatar = localStorage.getItem("avatar");
+  // const avatar = localStorage.getItem("avatar");
 
   return (
     <div className="modal">
@@ -199,11 +157,11 @@ function TweetReplyModal({
             <TweetCardContainer
               className="tweetCardContainer"
               style={{ outline: "0" }}
-              id={tweet.tweetOwnerId}
+              id={tweet.TweetId}
             >
               <div className="userAvatar">
                 <img
-                  src={avatar}
+                  src={tweet.tweetOwnerAvatar}
                   alt="other User's avatar"
                   style={{ marginTop: "0" }}
                 />
@@ -211,8 +169,8 @@ function TweetReplyModal({
               <StyledConnectLine />
               <div className="right">
                 <div className="name_link">
-                  <span className="name">{tweet.name}</span>
-                  <span className="account">@{tweet.account}</span>
+                  <span className="name">{tweet.tweetOwnerName}</span>
+                  <span className="account">@{tweet.tweetOwnerAccount}</span>
 
                   <span className="time">
                     ・{relativeTime(tweet.createdAt)}
@@ -224,17 +182,17 @@ function TweetReplyModal({
 
                 {/*  */}
                 <p className="reply_to">
-                  回覆 <span>@{tweet.name}</span>
+                  回覆 <span>@{tweet.tweetOwnerAccount}</span>
                 </p>
               </div>
             </TweetCardContainer>
             <Tweettextbox className="Tweettextbox">
-              <img src={avatar} alt="user avatar" />
+              <img src={tweet.tweetOwnerAvatar} alt="user avatar" />
 
               <textarea
                 className="tweettext"
                 id="tweettext"
-                rows="5"
+                rows="3"
                 placeholder="推你的回覆"
                 ref={tweetRef}
                 value={text}
