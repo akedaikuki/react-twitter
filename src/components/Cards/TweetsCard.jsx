@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useMemo } from "react";
 import { ReplyIcon, LikedIcon, LikeIcon } from "../../assets/icons";
 import { TweetCardContainer } from "../common/tweet.styled";
 import { Link } from "react-router-dom";
@@ -55,11 +55,33 @@ function TweetsCard({
   const { showReplyModal, toggleShowReplyModal } = useContext(ShowModalContext);
   // const [showLike, setShowLike] = useState(tweet.isLiked);
   // const [countLike, setCountLike] = useState(tweet.likeCount);
+  const [errorMsg, setErrorMsg] = useState(null);
   const { onLike, onUnLike } = useUserPostModal();
   const { onTheTweetId } = TweetIdContext();
   const { onUserReply } = useUserPostModal();
+  const { onAddHomeList } = useUserPostModal();
   // const userId = TweetId;
   // const tweet_id = Number(TweetId);
+  const [text, setText] = useState("");
+  const handleChange = (e) => {
+    setErrorMsg(null);
+    setText(e.target.value);
+  };
+
+  const handlePost = async () => {
+    if (text.length === 0) {
+      return;
+    }
+    setText("");
+    onAddHomeList(text);
+  };
+
+  const isValid = useMemo(() => {
+    if (!text || text.length > 140) {
+      return false;
+    }
+    return true;
+  }, [text]);
 
   const handleLikeIcon = async (TweetId) => {
     const userToken = localStorage.getItem("userToken");
@@ -68,13 +90,13 @@ function TweetsCard({
         await userUnLikeTweet({ userToken, TweetId });
         onUnLike(TweetId);
         // console.log(TweetId);
-        onPostList?.({ TweetId, count: -1 });
-        onUserLikeList?.({ TweetId, count: -1 });
+        onPostList?.({ TweetId, likeCount: -1 });
+        onUserLikeList?.({ TweetId, likeCount: -1 });
       } else {
         await userLikeTweet({ userToken, TweetId });
         onLike(TweetId);
-        onPostList?.({ TweetId, count: 1 });
-        onUserLikeList?.({ TweetId, count: 1 });
+        onPostList?.({ TweetId, likeCount: 1 });
+        onUserLikeList?.({ TweetId, likeCount: 1 });
       }
     } catch (error) {
       console.error(error);
@@ -103,20 +125,15 @@ function TweetsCard({
           <Link
             className="tweetContent_link"
             onClick={() => {
-              // onTheTweetId(TweetId);
+              onTheTweetId(TweetId);
             }}
             to={`/api/tweets/${TweetId}`}
           >
             <p className="tweetP">{tweet.description}</p>
           </Link>
           <div className="card-footer" style={{ display: "flex" }}>
-            <ReplyIconStyle onClick={toggleShowReplyModal}>
-              <ReplyIcon
-                className="reply"
-                // onClick={() => {
-                //   // onTheTweetId(TweetId);
-                // }}
-              />
+            <ReplyIconStyle>
+              <ReplyIcon className="reply" onClick={toggleShowReplyModal} />
               <span className="en-font-family">{tweet.replyCount}</span>
             </ReplyIconStyle>
             {tweet.isLiked ? (
@@ -146,7 +163,14 @@ function TweetsCard({
           {/*  */}
         </div>
       </TweetCardContainer>
-      {showReplyModal && <TweetReplyModal />}
+      {showReplyModal && (
+        <TweetReplyModal
+          text={text}
+          tweet={tweet}
+          onUserReply={onUserReply}
+          errorMsg={errorMsg}
+        />
+      )}
     </>
   );
 }

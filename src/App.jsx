@@ -18,9 +18,9 @@ import OtherFollowPage from "./pages/OtherUser/OtherFollowPage";
 import SettingPage from "./pages/SettingPage";
 
 function App() {
-  const TweetId = localStorage.getItem("TweetId");
-  console.log(TweetId);
-  const id = localStorage.getItem("id");
+  // const TweetId = localStorage.getItem("TweetId");
+  // console.log(TweetId);
+  // const id = localStorage.getItem("id");
   return (
     <div className="App">
       <BrowserRouter>
@@ -33,6 +33,11 @@ function App() {
             <Route path="api/users/:id/likes" element={<UserPage />} />
             <Route path="api/tweets/:TweetId" element={<TweetPage />} />
             <Route path="api/users/:id/tweets" element={<OtheruserPage />} />
+            <Route
+              path="api/users/:id/replied_tweets"
+              element={<OtheruserPage />}
+            />
+            <Route path="api/users/:id/likes" element={<OtheruserPage />} />
             <Route
               path="api/users/:id/followers"
               element={<UserFollowPage />}

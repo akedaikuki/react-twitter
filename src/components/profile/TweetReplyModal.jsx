@@ -126,26 +126,24 @@ const handleSubmit = ({ onUserReply, text, tweet, toggleShowReplyModal }) => {
       });
     });
   }
-  if (text.trim().length === 0) {
-    Swal.fire({
-      position: "top",
-      title: "推文發送失敗！",
-      timer: 1000,
-      icon: "error",
-      showConfirmButton: false,
-    });
-  }
 };
 
-function TweetReplyModal({ onUserReply, text, setText, tweet }) {
+function TweetReplyModal({
+  onUserReply,
+  text,
+  setText,
+  tweet,
+  toggleShowReplyModal,
+  onAddHomeList,
+  onTheTweetId,
+}) {
   // const [userInfo, setUserInfo] = useState(user1);
   // const [usersInfo, setUsersInfo] = useState(users);
   // const [text, setTweetText] = useState("");
   const [errorMsg, setErrorMsg] = useState(null);
   // const [text, setText] = useState("");
   const tweetRef = useRef(null);
-  const { toggleShowReplyModal } = useContext(ShowModalContext);
-  const { onTheTweetId } = TweetIdContext();
+  // const { toggleShowReplyModal } = useContext(ShowModalContext);
 
   // const { onUserReply } = useUserPostModal();
 
@@ -153,7 +151,16 @@ function TweetReplyModal({ onUserReply, text, setText, tweet }) {
   const handleChange = (e) => {
     setErrorMsg(null);
     setText(e.target.value);
+    onAddHomeList(text);
   };
+
+  // const handlePost = async () => {
+  //   if (text.length === 0) {
+  //     return;
+  //   }
+  //   setText("");
+  //   onAddHomeList(text);
+  // };
 
   const isValid = useMemo(() => {
     if (!text) {
@@ -177,7 +184,7 @@ function TweetReplyModal({ onUserReply, text, setText, tweet }) {
             <TweetCardContainer
               className="tweetCardContainer"
               style={{ outline: "0" }}
-              id={tweet.TweetId}
+              // id={tweet.TweetId}
             >
               <div className="userAvatar">
                 <img
@@ -232,8 +239,10 @@ function TweetReplyModal({ onUserReply, text, setText, tweet }) {
                       tweet,
                       text,
                       onUserReply,
+                      toggleShowReplyModal,
                     })
                   }
+                  onAddHomeList={onAddHomeList}
                   disabled={!isValid}
                 >
                   推文
