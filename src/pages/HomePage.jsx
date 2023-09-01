@@ -87,7 +87,7 @@ const Tweettextbox = styled.div`
   }
 `;
 
-function HomeList({ toggleShowReplyModal, handleAvatarClick }) {
+function HomeList({ toggleShowReplyModal, onAvatarClick }) {
   const { homeList, onHomeList } = useUserPostModal();
 
   useEffect(() => {
@@ -124,7 +124,7 @@ function HomeList({ toggleShowReplyModal, handleAvatarClick }) {
           // isLiked={item.data.isLiked}
           // personalInfo={personalInfo}
           onClick={toggleShowReplyModal}
-          handleAvatarClick={handleAvatarClick}
+          onAvatarClick={onAvatarClick}
         />
       ))}
     </>
@@ -151,14 +151,15 @@ function HomePage({ tweet }) {
 
   const avatar = localStorage.getItem("avatar");
   // 點擊 avatar 後移至 other
-  const handleAvatarClick = (clickId, TweetId) => {
+  const handleAvatarClick = (clickId) => {
     const id = localStorage.getItem("id");
+    // const otherId = localStorage.getItem("otherId");
     if (Number(clickId) === Number(id)) {
-      navigate(`/api/users/${id}/tweets`);
+      navigate(`/api/users`);
     } else {
       localStorage.setItem("otherId", clickId);
-      localStorage.setItem("TweetId", TweetId);
-      navigate(`/api/otherusers/${id}/tweets`);
+      // localStorage.setItem("TweetId", TweetId);
+      navigate(`/api/other`);
     }
   };
   const handleChange = (e) => {

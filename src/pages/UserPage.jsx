@@ -27,6 +27,7 @@ function UserPage({
   tweet,
   onAvatarClick,
   handleAvatarClick,
+  handleUserLikeList,
   text,
   activeTab,
   render,
@@ -38,6 +39,8 @@ function UserPage({
   onAddHomeList,
 }) {
   const [userInfo, setUserInfo] = useState({});
+  const [followerCount, setFollowerCount] = useState("");
+  const [followingCount, setFollowingCount] = useState("");
   // const [usersInfo, setUsersInfo] = useState(users);
   // const [editActive, setEditActive] = useState(false);
   const { setActiveTab } = useContext(FollowClickContext);
@@ -55,7 +58,8 @@ function UserPage({
         const data = await getAccountInfo(userToken, id);
 
         setUserInfo(data);
-
+        setFollowerCount(data.followerCount);
+        setFollowingCount(data.followingCount);
         localStorage.setItem("tweetCount", data.tweetCount);
         localStorage.setItem("userName", data.name);
       } catch (error) {
@@ -118,7 +122,7 @@ function UserPage({
               <p className="intro">{userInfo.introduction}</p>
               <div className="followInfo">
                 <Link
-                  to={`/api/users/${userInfo.id}/followings`}
+                  to="followings"
                   className="followingText"
                   onClick={() => {
                     setActiveTab("followings");
@@ -129,7 +133,7 @@ function UserPage({
                   跟隨中
                 </Link>
                 <Link
-                  to={`/api/users/${userInfo.id}/followers`}
+                  to="followers"
                   className="followerText"
                   onClick={() => {
                     setActiveTab("followers");
@@ -152,7 +156,7 @@ function UserPage({
               userLikeList={userLikeList}
               onPostList={onPostList}
               onUserLikeList={onUserLikeList}
-              onAvatarClick={handleAvatarClick}
+              onAvatarClick={onAvatarClick}
             />
             {/* <button className={"userTab"}>推文</button> */}
             {/* <button className={"userTab"}>回覆</button> */}
@@ -181,6 +185,8 @@ function UserPage({
           // userToken={userToken}
           userInfo={userInfo}
           setUserInfo={setUserInfo}
+          followerCount={followerCount}
+          followingCount={followingCount}
         />
       )}
       {showPostModal && <SideBarModal onAddHomeList={onAddHomeList} />}

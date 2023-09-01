@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef } from "react";
+import React, { useState, useContext, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { CloseIcon, CameraIcon } from "../../assets/icons";
 import { StyledButton } from "../common/button.styled";
@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 // import user1 from "../../API/user1";
 import { ShowModalContext } from "../../Context/ShowModalContext";
 import { useNavigate } from "react-router-dom";
-import { putPersonalInfo } from "../../API/usercopy";
+import { getAccountInfo, putPersonalInfo } from "../../API/usercopy";
 
 const ModalContainer = styled.div`
   box-sizing: border-box;
@@ -174,12 +174,12 @@ function UserModal({ userInfo, setUserInfo }) {
   // });
 
   // 編輯資料頭像狀態
-  const [user, setUser] = useState({ userInfo });
-  const [userName, setUserName] = useState(userInfo.name);
-  const [inroduction, setIntorduction] = useState(userInfo.introduction);
+  const [user, setUser] = useState({});
+  const [userName, setUserName] = useState("");
+  const [inroduction, setIntorduction] = useState("");
 
-  const [userAvatar, setUserAvatar] = useState(userInfo.avatar);
-  const [userCover, setUserCover] = useState(userInfo.cover);
+  const [userAvatar, setUserAvatar] = useState("");
+  const [userCover, setUserCover] = useState("");
 
   // 上傳照片
   const [coverStatus, setCoverStatus] = useState(false);
@@ -320,6 +320,33 @@ function UserModal({ userInfo, setUserInfo }) {
     }
   };
 
+  useEffect(() => {
+    const getAccountInfoAsync = async () => {
+      try {
+        const userToken = localStorage.getItem("userToken");
+        const id = localStorage.getItem("id");
+        const data = await getAccountInfo(userToken, id);
+        setUser(data);
+        setUserName(data.name);
+        if (data.introduction === null) {
+          setIntorduction("請輸入自我介紹");
+        } else {
+          setIntorduction(data.introduction);
+        }
+
+        setImageSrc(data.cover);
+        setUserCover(data.cover);
+        setModalAvatar(data.avatar);
+        setUserAvatar(data.avatar);
+        localStorage.setItem("tweetCount", data.tweetCount);
+        localStorage.setItem("userName", data.name);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getAccountInfoAsync();
+  }, [navigate]);
+
   return (
     <div className="modal">
       <div className="background">
@@ -331,7 +358,11 @@ function UserModal({ userInfo, setUserInfo }) {
               onClick={toggleShowEditModal}
             />
             <h5>編輯個人資料</h5>
-            <StyledButton className="save active" onSaveInfo={handleSaveClick}>
+            <StyledButton
+              className="save active"
+              onClick={handleSaveInfo}
+              onSaveInfo={handleSaveClick}
+            >
               儲存
             </StyledButton>
           </div>
@@ -375,10 +406,11 @@ function UserModal({ userInfo, setUserInfo }) {
                       name="avatar"
                       id="avatar"
                       src={userAvatar}
+                      onOnAvatar={handleOnAvatar}
                       onClickUpload={handleOnClickUpload}
                     />
                   </label>
-                  <img src={userAvatar} alt="" onhandleOnAvatar />
+                  <img src={userAvatar} alt="" />
                 </div>
               </div>
             </UserInfoPicture>

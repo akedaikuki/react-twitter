@@ -99,7 +99,7 @@ function Navbar() {
         <LinkStyle>
           <NavLink
             className="user_icon"
-            to={`api/users/${id}/tweets`}
+            to={`api/users`}
             onClick={() => {
               localStorage.setItem("otherId", id);
               return;
