@@ -296,7 +296,7 @@ function TweetPage() {
           />
         </PageStyle>
       </UserPageConainer>
-      <Popular />
+      <Popular onAvatarClick={handleAvatarClick} />
       {showReplyModal && <TweetReplyModal />}
     </>
   );

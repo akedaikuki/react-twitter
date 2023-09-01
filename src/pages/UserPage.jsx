@@ -25,8 +25,6 @@ import { getAccountInfo, putPersonalInfo } from "../API/usercopy";
 
 function UserPage({
   tweet,
-  onAvatarClick,
-  handleAvatarClick,
   handleUserLikeList,
   text,
   activeTab,
@@ -69,6 +67,17 @@ function UserPage({
     getAccountInfoAsync();
   }, [navigate]);
 
+  const handleAvatarClick = (clickId) => {
+    const id = localStorage.getItem("id");
+    // const otherId = localStorage.getItem("otherId");
+    if (Number(clickId) === Number(id)) {
+      navigate(`/api/users`);
+    } else {
+      localStorage.setItem("otherId", clickId);
+      // localStorage.setItem("TweetId", TweetId);
+      navigate(`/api/other`);
+    }
+  };
   // console.log(userInfo);
 
   return (
@@ -156,7 +165,7 @@ function UserPage({
               userLikeList={userLikeList}
               onPostList={onPostList}
               onUserLikeList={onUserLikeList}
-              onAvatarClick={onAvatarClick}
+              onAvatarClick={handleAvatarClick}
             />
             {/* <button className={"userTab"}>推文</button> */}
             {/* <button className={"userTab"}>回覆</button> */}
@@ -178,7 +187,7 @@ function UserPage({
           {/* ))} */}
         </PageStyle>
       </UserPageConainer>
-      <Popular />
+      <Popular onAvatarClick={handleAvatarClick} />
 
       {showEditModal && (
         <UserModal

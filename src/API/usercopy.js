@@ -213,15 +213,15 @@ export const deleteUserFollow = async (userToken, id) => {
   }
 };
 
-// -- sideBar 取得資料
-export const getSidebarData = async (userToken) => {
+// -- popular 取得資料
+export const getpopularData = async (userToken) => {
   try {
-    const { data } = await axios.get(`${apiURL}/followships/top`, {
+    const { data } = await axios.get(`${apiURL}/followships/topFollowers`, {
       headers: { Authorization: "Bearer " + userToken },
     });
     return data;
   } catch (error) {
-    console.error("[getSidebarData failed]", error);
+    console.error("[getpopularData failed]", error);
   }
 };
 
