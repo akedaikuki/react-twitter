@@ -8,7 +8,7 @@ export const login = async ({ account, password }) => {
       account,
       password,
     });
-    console.log();
+
     if (!res || !res.data) {
       throw Error("nothing returned");
     }
@@ -19,12 +19,7 @@ export const login = async ({ account, password }) => {
 
     const userData = res.data.data?.user;
     const userToken = res.data.data?.token;
-    const avatar = res.data.data.user.avatar;
-    const id = res.data.data.user.id;
-    console.log(userData);
-    console.log(userToken);
-    console.log(avatar);
-    console.log(id);
+    console.log(res.data.token);
     if (!userData) {
       throw Error("no user data");
     }
@@ -32,79 +27,78 @@ export const login = async ({ account, password }) => {
       throw Error("no user token");
     }
 
-    return { success: true, userData, userToken, avatar, id };
+    return { success: true, userData, userToken };
   } catch (error) {
     console.error("[Login Failed]:", error);
-    return {
-      success: false,
-      errorMessage: error?.message,
-    };
+    throw error
   }
 };
 
 export const register = async ({
-  account,
   name,
+  account,
   email,
   password,
   checkPassword,
 }) => {
   try {
-    const { data } = await axios.post(`${apiURL}/users`, {
-      account,
+    const res = await axios.post(`${apiURL}/users`, {
       name,
+      account,
       email,
       password,
       checkPassword,
     });
 
-    console.log(data);
-    const { status } = data;
-    if (status === "success") {
-      return { success: true, ...data };
+    if (!res || !res.data) {
+      throw Error("nothing returned");
     }
-    return data;
+
+    if (res.status >= 400 || res.data.status !== "success") {
+      throw Error("request has error");
+    }
+
+    const userData = res.data.data?.user;
+
+    if (!userData) {
+      throw Error("no user data");
+    }
+
+    return { success: true };
   } catch (error) {
-    console.error(error);
-    if (error.response) {
-      return error.response.data;
-    }
-
-    //   if (!res || !res.data) {
-    //     throw Error("nothing returned");
-    //   }
-
-    //   if (res.status >= 400 || res.data.status !== "success") {
-    //     throw Error("request has error");
-    //   }
-
-    //   const userData = res.data.data?.user;
-    //   const userToken = res.data.data?.token;
-
-    //   if (!userData) {
-    //     throw Error("no user data");
-    //   }
-
-    //   return { success: true, userData, userToken};
-    // } catch (error) {
-    //   console.error("[Login Failed]:", error);
-    //   return {
-    //     success: false,
-    //     errorMessage: error?.message,
-    //   };
+    console.error("[Sign up Failed]:", error);
+    throw error
   }
 };
 
-export const checkPermission = async (userToken) => {
+
+export const adminLogin = async ({ account, password }) => {
   try {
-    const response = await axios.get(`${apiURL}/test-token`, {
-      headers: {
-        Authorization: "Bearer " + userToken,
-      },
-    });
-
-    return response.data.success;
+    const { data } = await axios.post(`${apiURL}/admin/login`, { account, password })
+    const { status } = data
+    const token = data.data.token
+    if (status === 'success') {
+      return { success: true, token, ...data }
+    }
+    return data
   } catch (error) {
-    console.log("[Check Permission Failed]:", error);
+    console.error(error)
+    if (error.response) {
+      return (error.response.data)
+    }
   }
 };
+
+// export const checkPermission = async (userToken) => {
+//   try {
+//     const response = await axios.get(`${apiURL}/test-token`, {
+//       headers: {
+//         Authorization: "Bearer " + userToken,
+//       },
+//     });
+
+//     return response.data.success;
+//   } catch (error) {
+//     console.log("[Check Permission Failed]:", error);
+//   }
+// };

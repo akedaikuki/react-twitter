@@ -13,6 +13,7 @@ const styledImg = `
     width: 50px;
     height: 50px;
     border-radius: 50%;
+    object-fit: cover;
 `
 
 const styledName = `
@@ -55,6 +56,7 @@ const StyledBtn = styled.button`
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.3) inset
   }
 `
+
 
 
 

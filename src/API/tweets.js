@@ -7,10 +7,10 @@ const apiURL = "https://secure-beach-58251-e97c6ff22f2e.herokuapp.com/api";
 //   headers: { "Content-Type": "application/json" },
 // });
 
-export const getTweets = async (userToken) => {
+export const getTweets = async (authToken) => {
   try {
     const res = await axios.get(`${apiURL}/tweets`, {
-      headers: { Authorization: "Bearer " + userToken },
+      headers: { Authorization: "Bearer " + authToken },
     });
     // console.log(res);
     return res.data;

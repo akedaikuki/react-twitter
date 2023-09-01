@@ -5,6 +5,9 @@ import { useState, useEffect } from "react";
 import { getUser, putUser } from "../API/setting";
 import { useNavigate } from 'react-router-dom'
 
+// api
+ import { patchAccountInfo } from "../API/usercopy";
+
 const SettingPageConainer = styled.div`
   width: 640px;
 `;
@@ -95,7 +98,7 @@ const SettingPage = () => {
         console.error("Passwords do not match");
         return;
       }
-      await putUser({ name, account, email, password, checkPassword });
+      await patchAccountInfo({ name, account, email, password, checkPassword });
       console.log("Editing User Successful!");
     } catch (error) {
       console.error(error);
