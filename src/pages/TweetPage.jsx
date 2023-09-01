@@ -202,10 +202,10 @@ function TweetPage() {
     // console.log(clickId);
     const id = localStorage.getItem("id");
     if (Number(clickId) === Number(id)) {
-      navigate(`/api/users`);
+      navigate("/users");
     } else {
       localStorage.setItem("clickId", clickId);
-      navigate(`/api/other`);
+      navigate("/other");
     }
   };
 

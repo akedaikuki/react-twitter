@@ -78,7 +78,7 @@ function Navbar() {
         <LinkStyle>
           <NavLink
             className="home_icon"
-            to={`/`}
+            to={`home`}
             style={({ isActive }) => ({ color: isActive && "#FF6600" })}
           >
             {({ isActive }) =>
@@ -99,7 +99,7 @@ function Navbar() {
         <LinkStyle>
           <NavLink
             className="user_icon"
-            to={`api/users`}
+            to={`users`}
             onClick={() => {
               localStorage.setItem("otherId", id);
               return;
@@ -124,7 +124,7 @@ function Navbar() {
         <LinkStyle>
           <NavLink
             className="setting_icon"
-            to={"/setting"}
+            to={"setting"}
             style={({ isActive }) => ({ color: isActive && "#FF6600" })}
           >
             {({ isActive }) =>
@@ -147,7 +147,7 @@ function Navbar() {
         </StyledNavbarButton>
         <LinkStyle className="logout">
           <LogoutIcon />
-          <Link className="outIcon" to="api/login">
+          <Link className="outIcon" to="login">
             登出
           </Link>
         </LinkStyle>

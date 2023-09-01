@@ -127,7 +127,7 @@ function TweetsCard({
             onClick={() => {
               onTheTweetId(TweetId);
             }}
-            to={`/api/tweets/${TweetId}`}
+            to={`/tweets/${TweetId}`}
           >
             <p className="tweetP">{tweet.description}</p>
           </Link>

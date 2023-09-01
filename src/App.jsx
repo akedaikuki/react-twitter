@@ -25,32 +25,32 @@ function App() {
       <BrowserRouter>
         {/* <FollowClickContextProvider> */}
         <Routes>
-          <Route path="/" element={<MainPage />}>
-            <Route index element={<HomePage />} />
-            <Route path="api/users" element={<UserPage />} />
+          <Route element={<MainPage />}>
+            <Route path="home" element={<HomePage />} />
+            <Route path="users" element={<UserPage />} />
             {/* <Route path="api/users/:id/replied_tweets" element={<UserPage />} /> */}
             {/* <Route path="api/users/:id/likes" element={<UserPage />} /> */}
-            <Route path="api/tweets/:TweetId" element={<TweetPage />} />
-            <Route path="api/other" element={<OtheruserPage />} />
+            <Route path="tweets/:TweetId" element={<TweetPage />} />
+            <Route path="other" element={<OtheruserPage />} />
             {/* <Route
               path="api/users/:id/replied_tweets"
               element={<OtheruserPage />}
             /> */}
             {/* <Route path="api/users/:id/likes" element={<OtheruserPage />} /> */}
-            <Route path="api/users/followers" element={<UserFollowPage />} />
-            <Route path="api/users/followings" element={<UserFollowPage />} />
-            <Route path="api/other/followers" element={<OtherFollowPage />} />
-            <Route path="api/other/followings" element={<OtherFollowPage />} />
+            <Route path="users/followers" element={<UserFollowPage />} />
+            <Route path="users/followings" element={<UserFollowPage />} />
+            <Route path="other/followers" element={<OtherFollowPage />} />
+            <Route path="other/followings" element={<OtherFollowPage />} />
             <Route path="setting" element={<SettingPage />} />
           </Route>
 
-          <Route path="api/login" element={<LoginPage />} />
-          <Route path="api/users/signin" element={<SignUpPage />} />
-          <Route path="api/admin/login" element={<AdminLoginPage />} />
-          <Route path="api/admin/tweets" element={<AdminTweetPage />} />
-          <Route path="api/admin/users" element={<AdminUserPage />} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="users/signin" element={<SignUpPage />} />
+          <Route path="admin/login" element={<AdminLoginPage />} />
+          <Route path="admin/tweets" element={<AdminTweetPage />} />
+          <Route path="admin/users" element={<AdminUserPage />} />
 
-          <Route path="*" element={<RaectPage />} />
+          <Route path="/" element={<RaectPage />} />
         </Routes>
         {/* </FollowClickContextProvider> */}
       </BrowserRouter>
