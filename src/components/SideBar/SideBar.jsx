@@ -147,7 +147,7 @@ function Navbar() {
         </StyledNavbarButton>
         <LinkStyle className="logout">
           <LogoutIcon />
-          <Link className="outIcon" to="api/users/signin">
+          <Link className="outIcon" to="api/login">
             登出
           </Link>
         </LinkStyle>

@@ -24,7 +24,7 @@ const LoginPage = () => {
     if (password.length === 0) {
       return;
     }
-    const data = await login({ account, password })
+    const data = await login({ account, password });
 
     if (data.success) {
       localStorage.setItem("userToken", data.userToken);

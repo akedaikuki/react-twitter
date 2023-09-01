@@ -19,6 +19,8 @@ export const login = async ({ account, password }) => {
 
     const userData = res.data.data?.user;
     const userToken = res.data.data?.token;
+    const id = res.data.data.user.id;
+    const avatar = res.data.data.user.avatar;
     console.log(res.data.token);
     if (!userData) {
       throw Error("no user data");
@@ -27,10 +29,10 @@ export const login = async ({ account, password }) => {
       throw Error("no user token");
     }
 
-    return { success: true, userData, userToken };
+    return { success: true, userData, userToken, id, avatar };
   } catch (error) {
     console.error("[Login Failed]:", error);
-    throw error
+    throw error;
   }
 };
 
@@ -67,24 +69,26 @@ export const register = async ({
     return { success: true };
   } catch (error) {
     console.error("[Sign up Failed]:", error);
-    throw error
+    throw error;
   }
 };
 
-
 export const adminLogin = async ({ account, password }) => {
   try {
-    const { data } = await axios.post(`${apiURL}/admin/login`, { account, password })
-    const { status } = data
-    const token = data.data.token
-    if (status === 'success') {
-      return { success: true, token, ...data }
+    const { data } = await axios.post(`${apiURL}/admin/login`, {
+      account,
+      password,
+    });
+    const { status } = data;
+    const token = data.data.token;
+    if (status === "success") {
+      return { success: true, token, ...data };
     }
-    return data
+    return data;
   } catch (error) {
-    console.error(error)
+    console.error(error);
     if (error.response) {
-      return (error.response.data)
+      return error.response.data;
     }
   }
 };

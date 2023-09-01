@@ -23,12 +23,12 @@ const AdminLoginPage = () => {
     if (password.length === 0) {
       return;
     }
-    const data = await adminLogin({ account, password })
+    const data = await adminLogin({ account, password });
 
     if (data.success) {
-      localStorage.setItem('authToken', data.token)
-      localStorage.setItem('id', data.id)
-      localStorage.setItem('avatar', data.avatar)
+      localStorage.setItem("authToken", data.token);
+      localStorage.setItem("id", data.id);
+      localStorage.setItem("avatar", data.avatar);
       Swal.fire({
         title: "登入成功",
         icon: "success",
@@ -37,7 +37,7 @@ const AdminLoginPage = () => {
         position: "top",
       });
       navigate("/api/admin/tweets");
-      console.log(data.tweetOwnerName)
+      console.log(data.tweetOwnerName);
       return;
     } else {
       Swal.fire({
@@ -50,7 +50,6 @@ const AdminLoginPage = () => {
       return;
     }
   };
-
 
   return (
     <AuthContainer>
@@ -79,10 +78,9 @@ const AdminLoginPage = () => {
       </AuthInputContainer>
       <AuthButton onClick={handleClick}>登入</AuthButton>
 
-      <Link to="/api/users">
+      <Link to="/api/login">
         <AuthLinkText>前台登入</AuthLinkText>
       </Link>
-
     </AuthContainer>
   );
 };
