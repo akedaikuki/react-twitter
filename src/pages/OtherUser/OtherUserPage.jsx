@@ -33,7 +33,6 @@ import {
 
 function OtherUserPage({
   tweet,
-  onAvatarClick,
   handleUserLikeList,
   text,
   activeTab,
@@ -81,7 +80,7 @@ function OtherUserPage({
     getAccountInfoAsync();
   }, [localStorage.getItem("otherId")]);
   //
-  console.log(otherUser.isFollowed);
+  // console.log(otherUser.isFollowed);
   // console.log(followState);
   // 切換小鈴鐺ICON
   function handleShowNotice() {
@@ -122,6 +121,19 @@ function OtherUserPage({
       console.error(error);
     }
   };
+
+  const handleAvatarClick = (clickId) => {
+    const id = localStorage.getItem("id");
+    // const otherId = localStorage.getItem("otherId");
+    if (Number(clickId) === Number(id)) {
+      navigate(`/api/users`);
+    } else {
+      localStorage.setItem("otherId", clickId);
+      // localStorage.setItem("TweetId", TweetId);
+      navigate(`/api/other`);
+    }
+  };
+
   return (
     <>
       <UserPageConainer
@@ -238,7 +250,7 @@ function OtherUserPage({
               userLikeList={userLikeList}
               onPostList={onPostList}
               onUserLikeList={onUserLikeList}
-              onAvatarClick={onAvatarClick}
+              onAvatarClick={handleAvatarClick}
             />
             {/* <button className={"userTab"}>推文</button> */}
             {/* <button className={"userTab"}>回覆</button> */}
@@ -247,12 +259,15 @@ function OtherUserPage({
           {/* <Tweetslist /> */}
         </PageStyle>
       </UserPageConainer>
-      <Popular />
+      <Popular
+        onAvatarClick={handleAvatarClick}
+        onFollowClick={handleFollowClick}
+      />
       {showPostModal && <SideBarModal onAddHomeList={onAddHomeList} />}
       {showReplyModal && (
         <TweetReplyModal
           tweet={tweet}
-          onAvatarClick={onAvatarClick}
+          onAvatarClick={handleAvatarClick}
           text={text}
         />
       )}

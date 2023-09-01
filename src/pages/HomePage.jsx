@@ -229,7 +229,7 @@ function HomePage({ tweet }) {
           />
         </PageStyle>
       </HomePageContainer>
-      <Popular />
+      <Popular onAvatarClick={handleAvatarClick} />
 
       {showPostModal && <SideBarModal onAddHomeList={onAddHomeList} />}
       {showReplyModal && (

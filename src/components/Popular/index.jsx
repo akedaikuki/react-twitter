@@ -4,10 +4,13 @@ import styled from "styled-components";
 const PopularContainer = styled.div`
   width: 430px;
 `;
-function index() {
+function index({ onAvatarClick, onFollowClick }) {
   return (
     <PopularContainer className="popularContainer">
-      <PopularList />
+      <PopularList
+        onAvatarClick={onAvatarClick}
+        onFollowClick={onFollowClick}
+      />
     </PopularContainer>
   );
 }

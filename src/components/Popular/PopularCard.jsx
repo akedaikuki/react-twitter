@@ -4,12 +4,17 @@ import { StyledButton } from "../common/button.styled";
 import { styled } from "styled-components";
 import clsx from "clsx";
 import { Link } from "react-router-dom";
-import users from "../../API/users";
+// import users from "../../API/users";
 
 const PopularCardstyled = styled.li`
   display: flex;
   justify-content: flex-start;
   align-items: center;
+
+  .userAvatar {
+    /* display: flex; */
+    cursor: pointer;
+  }
 
   .user_text {
     width: 32%;
@@ -47,53 +52,68 @@ const FollowBtnBox = styled.div`
 `;
 
 function PopularCard({
-  userId,
-  account,
-  name,
-  avatar,
-  isFollowed,
+  item,
+  onClick,
+  onImgClick,
+  onAvatarClick,
+  onFollowClick,
   // setIsFollowed,
   // handleFollow,
   // onBtnClicked,
 }) {
   // const [isFollowed, setIsFollowed] = useState(false);
-  const [followState, setFollowState] = useState(isFollowed);
+  // const [followState, setFollowState] = useState(item.isFollowed);
+  const id = item.FollowerId;
+  const followState = item.isFollowed;
   // console.log(followState);
   // 切換follow狀態
-  function handleFollow(e) {
-    e.stopPropagation();
-    e.preventDefault();
-    if (followState === 0) {
-      setFollowState(1);
-      try {
-      } catch (error) {
-        console.error(error);
-      }
-    } else if (followState === 1) {
-      setFollowState(0);
-      try {
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  }
+  // function handleFollow(e) {
+  //   e.stopPropagation();
+  //   e.preventDefault();
+  //   if (followState === false) {
+  //     setFollowState(true);
+  //     try {
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   } else if (followState === true) {
+  //     setFollowState(false);
+  //     try {
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   }
+  // }
 
   return (
     <>
       <PopularCardstyled>
-        <Link to={`/api/otherusers/:id/?id=${userId}`}>
-          <img src={avatar} alt="other User's avatar" />
-        </Link>
-        <Link className="user_text" to={`/api/otherusers/:id/?id=${userId}`}>
-          <p className="username">{name}</p>
-          <p className="useraccount">@{account}</p>
+        <div className="userAvatar" to="">
+          <img
+            src={item.FollowerAvatar}
+            alt="other User's avatar"
+            onClick={() => {
+              // onImgClick?.(id);
+              onAvatarClick?.(id);
+            }}
+          />
+        </div>
+        <Link className="user_text" to="">
+          <p className="username">{item.FollowerName}</p>
+          <p className="useraccount">@{item.FollowerAccount}</p>
         </Link>
         <FollowBtnBox>
           <StyledButton
-            className={"following_btn" + clsx(" ", { active: followState })}
-            onClick={handleFollow}
+            className={"following_btn" + clsx(" ", { active: item.isFollowed })}
+            onClick={() => {
+              onFollowClick?.({
+                id,
+                followState,
+                // handleFollow,
+              });
+            }}
           >
-            {followState === 1 ? "正在跟隨" : "跟隨"}
+            {item.isFollowed ? "正在跟隨" : "跟隨"}
           </StyledButton>
         </FollowBtnBox>
       </PopularCardstyled>
