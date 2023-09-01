@@ -12,6 +12,50 @@ import user1 from "../../API/user1";
 import users from "../../API/users";
 import clsx from "clsx";
 import UserFollowCard from "../../components/Cards/UserFollowCard";
+import {
+  deleteUserFollow,
+  getUserFollowers,
+  getUserFollowing,
+  postUserFollow,
+} from "../../API/usercopy";
+
+const FollowList = ({
+  activeTab,
+  onClick,
+  followerData,
+  followingData,
+  onAvatarClick,
+}) => {
+  if (activeTab === "followers") {
+    if (followerData.length === 0) {
+      return null;
+    } else {
+      return followerData.map((item) => (
+        <UserFollowCard
+          key={item.UserId}
+          item={item}
+          activeTab={activeTab}
+          onAvatarClick={(id) => onAvatarClick?.(id)}
+          onClick={(id) => onClick?.(id)}
+        />
+      ));
+    }
+  } else if (activeTab === "followings") {
+    if (followingData.length === 0 || !Array.isArray(followingData)) {
+      return null;
+    } else {
+      return followingData.map((item) => (
+        <UserFollowCard
+          key={item.UserId}
+          item={item}
+          onClick={(id) => onClick?.(id)}
+          activeTab={activeTab}
+          onAvatarClick={(id) => onAvatarClick?.(id)}
+        />
+      ));
+    }
+  }
+};
 
 function OutuserFollowPage() {
   const { activeTab, setActiveTab } = useContext(FollowClickContext);
@@ -45,7 +89,7 @@ function OutuserFollowPage() {
               }
               onClick={() => {
                 setActiveTab("followers");
-                navigate("/api/otherusers/:UserId/followers");
+                navigate("/other/followers");
               }}
             >
               追隨者
@@ -56,7 +100,7 @@ function OutuserFollowPage() {
               }
               onClick={() => {
                 setActiveTab("followings");
-                navigate("/api/otherusers/:UserId/followings");
+                navigate("/other/followings");
               }}
             >
               正在追隨

@@ -132,9 +132,15 @@ function UserFollowPage() {
   };
 
   // 點擊頭像切換至 other
-  const handleAvatarClick = (id) => {
-    localStorage.setItem("otherId", id);
-    navigate("/api/other");
+  const handleAvatarClick = (clickId) => {
+    const id = localStorage.getItem("id");
+    if (Number(clickId) === Number(id)) {
+      navigate("/users");
+    } else {
+      localStorage.setItem("otherId", clickId);
+      // localStorage.setItem("TweetId", TweetId);
+      navigate("/other");
+    }
   };
 
   // 摳 api 取得 following array
@@ -196,7 +202,7 @@ function UserFollowPage() {
               }
               onClick={() => {
                 setActiveTab("followers");
-                navigate("/api/users/followers");
+                navigate("/users/followers");
               }}
             >
               追隨者
@@ -207,7 +213,7 @@ function UserFollowPage() {
               }
               onClick={() => {
                 setActiveTab("followings");
-                navigate("/api/users/followings");
+                navigate("/users/followings");
               }}
             >
               正在追隨
@@ -224,7 +230,7 @@ function UserFollowPage() {
           </div>
         </PageStyle>
       </UserPageConainer>
-      <Popular />
+      <Popular onAvatarClick={handleAvatarClick} />
     </>
   );
 }

@@ -3,10 +3,10 @@ import { styled } from "styled-components";
 import { StyledButton } from "../components/common/button.styled";
 import { useState, useEffect } from "react";
 import { getUser, putUser } from "../API/setting";
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 
 // api
- import { patchAccountInfo } from "../API/usercopy";
+import { patchAccountInfo } from "../API/usercopy";
 
 const SettingPageConainer = styled.div`
   width: 640px;
@@ -86,10 +86,13 @@ const SettingPage = () => {
   const [password, setPassword] = useState("");
   const [checkPassword, setCheckPassword] = useState("");
 
-
   const handleClick = async () => {
     if (
-      account.length === 0 || name.length === 0 || email.length === 0 ||password.length === 0 || checkPassword.length === 0
+      account.length === 0 ||
+      name.length === 0 ||
+      email.length === 0 ||
+      password.length === 0 ||
+      checkPassword.length === 0
     ) {
       return;
     }
@@ -157,7 +160,9 @@ const SettingPage = () => {
                 name={password}
                 value={user.password}
                 placeholder={"請設定密碼"}
-                onChange={(passwordInputValue) => setPassword(passwordInputValue)}
+                onChange={(passwordInputValue) =>
+                  setPassword(passwordInputValue)
+                }
                 required
               />
               密碼確認
@@ -175,7 +180,9 @@ const SettingPage = () => {
                 required
               />
               <div className="buttonBox">
-                <StyledButton className="saveButton" onClick={handleClick}>儲存</StyledButton>
+                <StyledButton className="saveButton" onClick={handleClick}>
+                  儲存
+                </StyledButton>
               </div>
             </div>
           </div>
@@ -184,6 +191,6 @@ const SettingPage = () => {
       <EmptyContainer />
     </>
   );
-}
+};
 
 export default SettingPage;

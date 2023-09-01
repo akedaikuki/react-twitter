@@ -19,7 +19,7 @@ const NameLink = styled.div`
 `;
 
 function UserFollowCard({ item, onClick, name, introduction, onAvatarClick }) {
-  const [followState, setFollowState] = useState(item.isFollowed);
+  // const [followState, setFollowState] = useState(item.isFollowed);
   // console.log(followState);
   // 切換follow狀態
   // function handleFollow(e) {
@@ -57,12 +57,14 @@ function UserFollowCard({ item, onClick, name, introduction, onAvatarClick }) {
             </div>
             <FollowBtnBox>
               <StyledButton
-                className={"following_btn" + clsx(" ", { active: followState })}
+                className={
+                  "following_btn" + clsx(" ", { active: item.isFollowed })
+                }
                 onClick={() => {
                   onClick?.(item.UserId);
                 }}
               >
-                {followState ? "正在跟隨" : "跟隨"}
+                {item.isFollowed ? "正在跟隨" : "跟隨"}
               </StyledButton>
               {/* <StyledButton className={"follow_btn"}>跟隨</StyledButton> */}
             </FollowBtnBox>

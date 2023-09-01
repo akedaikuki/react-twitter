@@ -54,7 +54,7 @@ const SignUpPage = () => {
         timer: 1000,
         position: "top",
       });
-      navigate("api/users/:id/tweets");
+      navigate("users");
       return;
     }
     Swal.fire({
@@ -121,7 +121,7 @@ const SignUpPage = () => {
       </AuthInputContainer>
       <AuthButton onClick={handleClick}>註冊</AuthButton>
 
-      <Link to="/api/login">
+      <Link to="/login">
         <AuthLinkText>取消</AuthLinkText>
       </Link>
     </AuthContainer>

@@ -384,7 +384,7 @@ function UserModal({ userInfo, setUserInfo }) {
                       type="file"
                       name="cover"
                       id="cover"
-                      src={userCover}
+                      src={user.cover}
                       onOnPreview={handleOnPreview}
                       inputfileref={inputfileref}
                       ref={inputfileref}
@@ -405,7 +405,7 @@ function UserModal({ userInfo, setUserInfo }) {
                       type="file"
                       name="avatar"
                       id="avatar"
-                      src={userAvatar}
+                      src={user.avatar}
                       onOnAvatar={handleOnAvatar}
                       onClickUpload={handleOnClickUpload}
                     />

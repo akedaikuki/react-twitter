@@ -99,11 +99,11 @@ function UserControl() {
     const id = localStorage.getItem("id");
     // const otherId = localStorage.getItem("otherId");
     if (Number(clickId) === Number(id)) {
-      navigate(`/api/users`);
+      navigate(`users`);
     } else {
       localStorage.setItem("otherId", clickId);
       // localStorage.setItem("TweetId", TweetId);
-      navigate(`/api/other`);
+      navigate(`other`);
     }
   };
 

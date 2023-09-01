@@ -36,7 +36,7 @@ const AdminLoginPage = () => {
         timer: 1000,
         position: "top",
       });
-      navigate("/api/admin/tweets");
+      navigate("admin/tweets");
       console.log(data.tweetOwnerName);
       return;
     } else {
@@ -78,7 +78,7 @@ const AdminLoginPage = () => {
       </AuthInputContainer>
       <AuthButton onClick={handleClick}>登入</AuthButton>
 
-      <Link to="/api/login">
+      <Link to="/login">
         <AuthLinkText>前台登入</AuthLinkText>
       </Link>
     </AuthContainer>

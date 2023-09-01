@@ -4,13 +4,14 @@ import { useEffect } from "react";
 const RaectPage = () => {
   const navigate = useNavigate();
   useEffect(() => {
-    navigate("api/login");
     if (localStorage.getItem("userToken")) {
-      navigate("/");
+      navigate("home");
     } else if (localStorage.getItem("authToken")) {
       navigate("/admin/main");
+    } else {
+      navigate("login");
     }
-  }, [navigate]);
+  }, []);
 };
 
 export default RaectPage;
