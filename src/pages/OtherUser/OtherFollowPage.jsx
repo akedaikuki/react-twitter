@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { TurnbackIcon } from "../../assets/icons";
 import { StyledTabbar } from "../../components/common/tab.styled";
 import {
@@ -59,9 +59,110 @@ const FollowList = ({
 
 function OutuserFollowPage() {
   const { activeTab, setActiveTab } = useContext(FollowClickContext);
-  const [userInfo, setUserInfo] = useState(user1);
-  const [usersInfo, setUsersInfo] = useState(users);
+  // const [userInfo, setUserInfo] = useState(user1);
+  // const [usersInfo, setUsersInfo] = useState(users);
+  const [followerData, setFollowerData] = useState([]);
+  const [followingData, setFollowingData] = useState([]);
+  const tweetCount = localStorage.getItem("tweetCount");
+  const userName = localStorage.getItem("userName");
   const navigate = useNavigate();
+
+  // 更改 追蹤/取消追宗
+  const changeUserFollowAsync = async (currentUser, id, userToken) => {
+    try {
+      if (currentUser.isFollowed) {
+        await deleteUserFollow(userToken, id);
+      } else if (!currentUser.isFollowed) {
+        await postUserFollow(userToken, id);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // 點擊按鈕後觸發 追蹤/取消追蹤
+  const handleClick = (id) => {
+    const userToken = localStorage.getItem("userToken");
+    if (activeTab === "followers") {
+      setFollowerData(
+        followerData.map((item) => {
+          if (item.UserId === id) {
+            return {
+              ...item,
+              isFollowed: !item.isFollowed,
+            };
+          } else {
+            return item;
+          }
+        })
+      );
+      const currentUser = followerData.find((item) => item.UserId === id);
+      changeUserFollowAsync(currentUser, id, userToken);
+    } else if (activeTab === "followings") {
+      setFollowingData(
+        followingData.map((item) => {
+          if (item.UserId === id) {
+            return {
+              ...item,
+              isFollowed: !item.isFollowed,
+            };
+          } else {
+            return item;
+          }
+        })
+      );
+      const currentUser = followingData.find((item) => item.UserId === id);
+      changeUserFollowAsync(currentUser, id, userToken);
+    }
+  };
+
+  // 點擊頭像切換至 other
+  const handleAvatarClick = (clickId) => {
+    const id = localStorage.getItem("id");
+    if (Number(clickId) === Number(id)) {
+      navigate("/users");
+    } else {
+      localStorage.setItem("otherId", clickId);
+      // localStorage.setItem("TweetId", TweetId);
+      navigate("/other");
+    }
+  };
+
+  // 摳 api 取得 following array
+  const getUserFollowingAsync = async (userToken, renderId) => {
+    const data = await getUserFollowing(userToken, renderId);
+    if (data.message === "無追蹤其他使用者") {
+      setFollowingData([]);
+    } else {
+      setFollowingData(data);
+    }
+  };
+
+  // 摳 api 取得 follower array
+  const getUserFollowersAsync = async (userToken, renderId) => {
+    const data = await getUserFollowers(userToken, renderId);
+    if (data.message === "無跟隨者資料") {
+      setFollowerData([]);
+    } else {
+      setFollowerData(data);
+    }
+  };
+
+  // 渲染畫面
+  useEffect(() => {
+    const userToken = localStorage.getItem("userToken");
+    let renderId = "";
+    const id = localStorage.getItem("id");
+    const otherId = localStorage.getItem("otherId");
+    if (id === otherId) {
+      renderId = id;
+    } else {
+      renderId = otherId;
+    }
+    getUserFollowersAsync(userToken, renderId);
+    getUserFollowingAsync(userToken, renderId);
+  }, [activeTab]);
+
   return (
     <>
       <UserPageConainer className="userFollowPageConainer">
@@ -74,11 +175,8 @@ function OutuserFollowPage() {
               }}
             />
             <div className="header_info">
-              <h5 className="username">{userInfo[0].data.user[0].name}</h5>
-              <p className="tweet_amount">
-                {" "}
-                {userInfo[0].data.Tweets[0].tweetsTotal} 推文
-              </p>
+              <h5 className="username">{userName}</h5>
+              <p className="tweet_amount">{tweetCount} 推文</p>
             </div>
           </header>
 
@@ -107,39 +205,17 @@ function OutuserFollowPage() {
             </button>
           </StyledTabbar>
           <div className="followList">
-            {usersInfo.map((usersInfo) => {
-              if (activeTab === "followers") {
-                return (
-                  <UserFollowCard
-                    key={usersInfo.data.user[0].id}
-                    userId={usersInfo.data.user[0].id}
-                    avatar={usersInfo.data.user[0].avatar}
-                    name={usersInfo.data.user[0].name}
-                    introduction={usersInfo.data.user[0].introduction}
-                    isFollowed={usersInfo.data.user[0].isFollowed}
-                  />
-                );
-              }
-              if (
-                activeTab === "followings" &&
-                usersInfo.data.user[0].isFollowed === 1
-              ) {
-                return (
-                  <UserFollowCard
-                    key={usersInfo.data.user[0].id}
-                    userId={usersInfo.data.user[0].id}
-                    avatar={usersInfo.data.user[0].avatar}
-                    name={usersInfo.data.user[0].name}
-                    introduction={usersInfo.data.user[0].introduction}
-                    isFollowed={usersInfo.data.user[0].isFollowed}
-                  />
-                );
-              }
-            })}
+            <FollowList
+              activeTab={activeTab}
+              onClick={handleClick}
+              followerData={followerData}
+              followingData={followingData}
+              onAvatarClick={handleAvatarClick}
+            />
           </div>
         </PageStyle>
       </UserPageConainer>
-      <Popular />
+      <Popular onAvatarClick={handleAvatarClick} />
     </>
   );
 }
