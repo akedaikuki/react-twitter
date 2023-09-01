@@ -19,16 +19,16 @@ export const adminLogin = async ({ account, password }) => {
     }
 
     const adminData = res.data.data?.user;
-    const adminToken = res.data.data?.token;
+    const authToken = res.data.data?.token;
 
     if (!adminData) {
       throw Error("no user data");
     }
-    if (!adminToken) {
+    if (!authToken) {
       throw Error("no user token");
     }
 
-    return { success: true, adminData, adminToken };
+    return { success: true, adminData, authToken };
   } catch (error) {
     console.error("[Login Failed]:", error);
     return {
@@ -45,7 +45,7 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('AdminToken');
+    const token = localStorage.getItem('authToken');
     console.log(token)
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
@@ -57,22 +57,35 @@ axiosInstance.interceptors.request.use(
   },
 );
 
-// get 管理員 users
-export const getAdminUsers = async () => {
+// get 管理員 tweets
+export const getTweets = async (authToken) => {
   try {
-    const res = await axiosInstance.get(`${apiURL}/admin/users`);
-    return res.data
+    const { data } = await axios.get(`${apiURL}/admin/tweets`, { headers: { Authorization: 'Bearer ' + authToken } })
+    return data
   } catch (error) {
-    console.error('[GET AdminUsers failed]:', error)
+    console.error('[GET USERS FAILED]', error)
+  }
+}
+
+// get 管理員 users
+export const getUsers = async (authToken) => {
+  try {
+    const { data } = await axios.get(`${apiURL}/admin/users`, { headers: { Authorization: 'Bearer ' + authToken } })
+    return data
+  } catch (error) {
+    console.error('[GET USERS FAILED]', error)
   }
 }
 
 // delete 管理員 tweets_id
-export const deleteAdminTweets = async ({id}) => {
+export const deleteTweet = async (id, authToken) => {
   try {
-    const res = await axiosInstance.delete(`${apiURL}/admin/tweets/${id}`);
-    return res.data
+    const { data } = await axios.delete(`${apiURL}/admin/tweets/${id}`, {
+      headers: { Authorization: 'Bearer ' + authToken }
+    })
+    return data
   } catch (error) {
-    console.error('[Delete AdminTweets failed]:', error)
+    console.error('[deleteTweet failed]', error)
   }
 }
+

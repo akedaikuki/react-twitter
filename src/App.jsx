@@ -1,14 +1,12 @@
 import "./App.scss";
 import MainPage from "./pages/MainPage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
-import {
-  AdminLoginPase,
-  AdmainTweetPage,
-  AdmainUsertPage,
-  LoginPage,
-  SignUpPage,
-} from "./pages";
+import { useState } from "react";
+import AdminLoginPage from "./pages/AdminLoginPage";
+import AdminTweetPage from "./pages/AdminTweetPage";
+import AdminUserPage from "./pages/AdminUserPage";
+import LoginPage from "./pages/LoginPage";
+import SignUpPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
 import UserPage from "./pages/UserPage";
 import TweetPage from "./pages/TweetPage";
@@ -59,9 +57,9 @@ function App() {
 
           <Route path="api/users/signin" element={<LoginPage />} />
           <Route path="api/users" element={<SignUpPage />} />
-          <Route path="api/admin/login" element={<AdminLoginPase />} />
-          <Route path="api/admin/tweets/:id" element={<AdmainTweetPage />} />
-          <Route path="api/admin/users" element={<AdmainUsertPage />} />
+          <Route path="api/admin/login" element={<AdminLoginPage />} />
+          <Route path="api/admin/tweets" element={<AdminTweetPage />} />
+          <Route path="api/admin/users" element={<AdminUserPage />} />
         </Routes>
         {/* </FollowClickContextProvider> */}
       </BrowserRouter>
