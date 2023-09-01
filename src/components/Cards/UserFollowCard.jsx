@@ -18,49 +18,51 @@ const NameLink = styled.div`
   margin-bottom: 8px;
 `;
 
-function UserFollowCard({ userId, avatar, name, introduction, isFollowed }) {
-  const [followState, setFollowState] = useState(isFollowed);
+function UserFollowCard({ item, onClick, name, introduction, onAvatarClick }) {
+  const [followState, setFollowState] = useState(item.isFollowed);
   // console.log(followState);
   // 切換follow狀態
-  function handleFollow(e) {
-    e.stopPropagation();
-    e.preventDefault();
-    if (followState === 0) {
-      setFollowState(1);
-      try {
-      } catch (error) {
-        console.error(error);
-      }
-    } else if (followState === 1) {
-      setFollowState(0);
-      try {
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  }
+  // function handleFollow(e) {
+  //   e.stopPropagation();
+  //   e.preventDefault();
+  //   if (followState === 0) {
+  //     setFollowState(1);
+  //     try {
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   } else if (followState === 1) {
+  //     setFollowState(0);
+  //     try {
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   }
+  // }
 
   return (
     <>
       {/* follow1 */}
-      <TweetCardContainer className="TweetCardContainer" id={userId}>
-        <Link
+      <TweetCardContainer className="TweetCardContainer" id={item.UserId}>
+        <div
           className="userAvatar"
-          to={`/api/otherusers/:UserId/?id=${userId}`}
+          onClick={() => onAvatarClick?.(item.UserId)}
         >
-          <img src={avatar} alt="avatar" style={{ marginTop: "0" }} />
-        </Link>
+          <img src={item.avatar} alt="avatar" style={{ marginTop: "0" }} />
+        </div>
         <div className="right">
           <NameLink className="name_link">
-            <Link to={`/api/otherusers/:UserId/?id=${userId}`}>
-              <span className="name">{name}</span>
-            </Link>
+            <div>
+              <span className="name">{item.name}</span>
+            </div>
             <FollowBtnBox>
               <StyledButton
                 className={"following_btn" + clsx(" ", { active: followState })}
-                onClick={handleFollow}
+                onClick={() => {
+                  onClick?.(item.UserId);
+                }}
               >
-                {followState === 1 ? "正在跟隨" : "跟隨"}
+                {followState ? "正在跟隨" : "跟隨"}
               </StyledButton>
               {/* <StyledButton className={"follow_btn"}>跟隨</StyledButton> */}
             </FollowBtnBox>

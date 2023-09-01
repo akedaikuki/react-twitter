@@ -56,8 +56,8 @@ const FollowList = ({
 
 function UserFollowPage() {
   const { activeTab, setActiveTab } = useContext(FollowClickContext);
-  const [userInfo, setUserInfo] = useState(user1);
-  const [usersInfo, setUsersInfo] = useState(users);
+  // const [userInfo, setUserInfo] = useState(user1);
+  // const [usersInfo, setUsersInfo] = useState(users);
   const navigate = useNavigate();
   // const [followData, setFollowData] = useState([]);
   const [followerData, setFollowerData] = useState([]);
@@ -196,7 +196,7 @@ function UserFollowPage() {
               }
               onClick={() => {
                 setActiveTab("followers");
-                navigate("/api/users/:id/followers");
+                navigate("/api/users/followers");
               }}
             >
               追隨者
@@ -207,7 +207,7 @@ function UserFollowPage() {
               }
               onClick={() => {
                 setActiveTab("followings");
-                navigate("/api/users/:id/followings");
+                navigate("/api/users/followings");
               }}
             >
               正在追隨
