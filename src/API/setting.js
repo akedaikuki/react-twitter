@@ -48,3 +48,4 @@ export const putUser = async ({name, account, email, password, checkPassword}) =
       console.error('[PUT User failed]: ', error);
     }
   }
+
