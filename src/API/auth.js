@@ -34,6 +34,43 @@ export const login = async ({ account, password }) => {
   }
 };
 
+export const register = async ({
+  name,
+  account,
+  email,
+  password,
+  checkPassword,
+}) => {
+  try {
+    const res = await axios.post(`${apiURL}/users`, {
+      name,
+      account,
+      email,
+      password,
+      checkPassword,
+    });
+
+    if (!res || !res.data) {
+      throw Error("nothing returned");
+    }
+
+    if (res.status >= 400 || res.data.status !== "success") {
+      throw Error("request has error");
+    }
+
+    const userData = res.data.data?.user;
+
+    if (!userData) {
+      throw Error("no user data");
+    }
+
+    return { success: true };
+  } catch (error) {
+    console.error("[Sign up Failed]:", error);
+    throw error
+  }
+};
+
 
 export const adminLogin = async ({ account, password }) => {
   try {
