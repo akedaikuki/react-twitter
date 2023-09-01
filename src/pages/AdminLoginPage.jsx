@@ -7,7 +7,7 @@ import {
 import { BrandLogo } from "../assets/icons";
 import AuthInput from "../components/AuthInput";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { adminLogin } from "../API/auth";
 import Swal from "sweetalert2";
 
@@ -78,6 +78,10 @@ const AdminLoginPage = () => {
         />
       </AuthInputContainer>
       <AuthButton onClick={handleClick}>登入</AuthButton>
+
+      <Link to="/api/users">
+        <AuthLinkText>前台登入</AuthLinkText>
+      </Link>
 
     </AuthContainer>
   );

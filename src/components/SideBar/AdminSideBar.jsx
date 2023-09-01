@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink} from "react-router-dom";
 
 import { BrandLogo, AdminHomeLogo, AdminHomeActiveLogo, AdminUserListLogo, AdminUserListActiveLogo, LogoutIcon } from "../../assets/icons";
 
@@ -63,7 +63,7 @@ function Navbar() {
             <LinkStyle>
                <NavLink 
                   className="adminHome-icon"
-                  to={`/`}
+                  to={`/api/admin/tweets`}
                   style={({ isActive }) => ({ color: isActive && "#FF6600" })}
                   >
                     {({ isActive }) =>
@@ -82,7 +82,7 @@ function Navbar() {
             <LinkStyle>
                <NavLink 
                   className="adminUserList-icon"
-                  to={`/`}
+                  to={`/api/admin/users`}
                   style={({ isActive }) => ({ color: isActive && "#FF6600" })}
                   >
                     {({ isActive }) =>
@@ -100,7 +100,7 @@ function Navbar() {
             </LinkStyle>
             <LinkStyle className="logout">
                 <LogoutIcon />
-                <Link className="outIcon" to="api/users/signin">
+                <Link className="outIcon" to="/">
                     登出
                 </Link>
             </LinkStyle>

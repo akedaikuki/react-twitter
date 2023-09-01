@@ -95,7 +95,7 @@ const LoginPage = () => {
       </AuthInputContainer>
       <AuthButton onClick={handleClick}>登入</AuthButton>
 
-      <Link to="/api/users">
+      <Link to="/api/users/signin">
         <AuthLinkText>註冊</AuthLinkText>
       </Link>
       {"．"}
