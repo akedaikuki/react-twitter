@@ -1,6 +1,6 @@
 import React from "react";
 import { TweetCardContainer } from "../common/tweet.styled";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import relativeTime from "../../utilities/relativeTime";
 
 // const handleSubmit = ({ onUserReply, onClose, text, tweet }) => {
@@ -11,7 +11,7 @@ import relativeTime from "../../utilities/relativeTime";
 //   }
 // };
 
-function TweetReplyList({ tweet, id, reply, onAvatarClick }) {
+function TweetReplyCard({ tweet, id, reply, onAvatarClick }) {
   let Avatar;
   let ReplyerName;
   let ReplyerAccount;
@@ -30,21 +30,21 @@ function TweetReplyList({ tweet, id, reply, onAvatarClick }) {
     <>
       {/* reoly */}
       <TweetCardContainer className="tweetCardContainer">
-        <Link className="userAvatar" to={`/api/otherusers/${id}/?id=${id}`}>
+        <div className="userAvatar">
           <img
             src={Avatar}
-            onClick={() => onAvatarClick?.(tweet.replyOwnerId)}
+            onClick={() => onAvatarClick?.(tweet.tweetOwnerId)}
             alt="avatar"
             style={{ marginTop: "0" }}
           />
-        </Link>
+        </div>
         <div className="right">
-          <Link className="name_link" to={`/api/otherusers/${id}/?id=${id}`}>
+          <div className="name_link">
             <span className="name">{ReplyerName}</span>
             <span className="account">@{ReplyerAccount}</span>
 
             <span className="time"> · {relativeTime(tweet.createdAt)}</span>
-          </Link>
+          </div>
 
           <p className="reply_to">
             回覆 <span>@{tweet.tweetOwnerAccount}</span>
@@ -57,4 +57,4 @@ function TweetReplyList({ tweet, id, reply, onAvatarClick }) {
   );
 }
 
-export default TweetReplyList;
+export default TweetReplyCard;

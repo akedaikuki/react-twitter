@@ -8,6 +8,7 @@ import { StyledTabbar } from "../../components/common/tab.styled";
 import { useNavigate, redirect, Link } from "react-router-dom";
 // import { getUserTweets } from "../../API/user";
 import {
+  getAccountInfo,
   getUserLikeTweets,
   getUserReplyTweets,
   getUserTweets,
@@ -57,6 +58,8 @@ function UserControl() {
   const [postList, setPostList] = useState([]);
   const [replyList, setReplyList] = useState([]);
   const [userLikeList, setUserLikeList] = useState([]);
+  const [otherUser, setOtherUser] = useState([]);
+  const otherId = localStorage.getItem("otherId");
   // console.log(postList);
   // const formData = new FormData();
   const navigate = useNavigate();
@@ -92,16 +95,33 @@ function UserControl() {
       });
     });
   };
-
   const handleAvatarClick = (clickId) => {
     const id = localStorage.getItem("id");
+    // const otherId = localStorage.getItem("otherId");
     if (Number(clickId) === Number(id)) {
-      navigate("");
+      navigate(`/api/users`);
     } else {
-      localStorage.setItem("clickId", clickId);
-      navigate("");
+      localStorage.setItem("otherId", clickId);
+      // localStorage.setItem("TweetId", TweetId);
+      navigate(`/api/other`);
     }
   };
+
+  useEffect(() => {
+    const getAccountInfoAsync = async () => {
+      try {
+        const userToken = localStorage.getItem("userToken");
+        const data = await getAccountInfo(userToken, otherId);
+        setOtherUser(data);
+        localStorage.setItem("tweetCount", data.tweetCount);
+        localStorage.setItem("userName", data.name);
+        return data;
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getAccountInfoAsync();
+  }, [localStorage.getItem("otherId")]);
 
   useEffect(() => {
     const getUserDataAsync = async (userToken, id) => {
@@ -129,12 +149,12 @@ function UserControl() {
       }
     };
     if (localStorage.getItem("userToken")) {
-      getUserDataAsync(
-        localStorage.getItem("userToken"),
-        localStorage.getItem("id")
-      );
+      getUserDataAsync(localStorage.getItem("userToken"), otherId);
     }
-  }, [navigate]);
+    // else if () {
+    //   getUserDataAsync(localStorage.getItem("userToken"), otherId);
+    // }
+  }, [navigate, localStorage.getItem("otherId")]);
   // const id = localStorage.getItem("id");
   return (
     <div className="userControl">

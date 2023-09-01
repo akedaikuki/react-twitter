@@ -199,13 +199,13 @@ function TweetPage() {
 
   const handleAvatarClick = () => {
     const clickId = tweetOwnerInfo.tweetOwnerId;
-    console.log(clickId);
+    // console.log(clickId);
     const id = localStorage.getItem("id");
     if (Number(clickId) === Number(id)) {
-      navigate("");
+      navigate(`/api/users`);
     } else {
       localStorage.setItem("clickId", clickId);
-      navigate("");
+      navigate(`/api/other`);
     }
   };
 

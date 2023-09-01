@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { TweetCardContainer } from "../common/tweet.styled";
-import { Link } from "react-router-dom";
-import relativeTime from "../../utilities/relativeTime";
+// import { TweetCardContainer } from "../common/tweet.styled";
+// import { Link } from "react-router-dom";
+// import relativeTime from "../../utilities/relativeTime";
 import { getSingleTweet } from "../../API/usercopy";
 import TweetReplyCard from "./TweetReplyCard";
 

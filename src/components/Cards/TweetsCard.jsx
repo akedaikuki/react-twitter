@@ -106,21 +106,21 @@ function TweetsCard({
   return (
     <>
       <TweetCardContainer className="tweetCardContainer" id={tweet.id}>
-        <Link className="userAvatar" to={`/api/users/${id}/tweets`}>
+        <div className="userAvatar">
           <img
             src={tweet.tweetOwnerAvatar}
             alt="other User's avatar"
             style={{ marginTop: "0" }}
             onClick={() => onAvatarClick?.(tweet.tweetOwnerId)}
           />
-        </Link>
+        </div>
         <div className="right">
-          <Link className="name_link" to={`/api/users/${id}/tweets`}>
+          <div className="name_link">
             <span className="name">{tweet.tweetOwnerName}</span>
             <span className="account">@{tweet.tweetOwnerAccount}</span>
 
             <span className="time">・{relativeTime(tweet.createdAt)}</span>
-          </Link>
+          </div>
 
           <Link
             className="tweetContent_link"

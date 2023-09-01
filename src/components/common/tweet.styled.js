@@ -8,6 +8,7 @@ export const TweetCardContainer = styled.div`
 
   .userAvatar {
     display: flex;
+    cursor: pointer;
   }
 
   .right {
@@ -27,7 +28,7 @@ export const TweetCardContainer = styled.div`
       font-weight: 700;
       /* line-height: 26px; */
       margin-right: 5px;
-      cursor: pointer;
+      /* cursor: pointer; */
     }
     .account,
     .time {
