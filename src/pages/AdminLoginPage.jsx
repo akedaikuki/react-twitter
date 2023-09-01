@@ -36,7 +36,8 @@ const AdminLoginPage = () => {
         timer: 1000,
         position: "top",
       });
-      navigate("/");
+      navigate("/api/admin/tweets");
+      console.log(data.tweetOwnerName)
       return;
     } else {
       Swal.fire({

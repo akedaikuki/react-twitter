@@ -53,7 +53,7 @@ function App({ TweetId, id }) {
           <Route path="api/users/signin" element={<LoginPage />} />
           <Route path="api/users" element={<SignUpPage />} />
           <Route path="api/admin/login" element={<AdminLoginPage />} />
-          <Route path="api/admin/tweets/:id" element={<AdminTweetPage />} />
+          <Route path="api/admin/tweets" element={<AdminTweetPage />} />
           <Route path="api/admin/users" element={<AdminUserPage />} />
         </Routes>
         {/* </FollowClickContextProvider> */}

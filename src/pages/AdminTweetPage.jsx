@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AdminPostCard from "../components/Cards/AdminPostCard";
+import AdminSideBar from "../components/SideBar/AdminSideBar";
 import * as style from "../components/common/admin.styled";
 
 // get delete api
@@ -49,15 +50,15 @@ export default function AdminTweetPage() {
           console.error(error)
         }
       }
-      if (localStorage.getItem('adminAuthToken')) {
-        getUserDataAsync(localStorage.getItem('adminAuthToken'))
+      if (localStorage.getItem('authToken')) {
+        getUserDataAsync(localStorage.getItem('authToken'))
       }
     }, [])
 
   
     const handleDelete = async (id) => {
       try {
-        const authToken = localStorage.getItem('adminAuthToken')
+        const authToken = localStorage.getItem('authToken')
         await deleteTweet(id, authToken)
         console.log('刪除成功')
         setTweetList(tweetList.filter(item => item.TweetId !== id))
@@ -69,26 +70,30 @@ export default function AdminTweetPage() {
 
     return (
         <>
-           <Container>
+           
+              <div className="main">
+                <AdminSideBar />
+                <Container>
                 <Header>
                     <h4>推文清單</h4>
                 </Header>
                 <CardContainer>
-                    {tweetList.map(data => {
+                    {tweetList.map( (item) => {
                         return(
                             <AdminPostCard
-                               key={data.id}
-                               name={data.User.name}
-                               account={data.User.name}
-                               avatar={data.User.avatar}
-                               content={data.description}
-                               timestamp={data.createdAt}
-                               onClick={() => handleDelete(data.id)}
+                               key={item.TweetId}
+                               name={item.tweetOwnerName}
+                               avatar={item.tweetOwnerAvatar}
+                               account={item.tweetOwnerAccount}
+                               content={item.description}
+                               timestamp={item.createdAt}
+                               onClick={() => handleDelete(item.id)}
                             />
                         )
                     })}
                 </CardContainer>
-           </Container>
+                </Container>
+              </div>   
         </>
     )
 }

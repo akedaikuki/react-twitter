@@ -20,7 +20,7 @@ import { ShowModalContext } from "../Context/ShowModalContext";
 import SideBarModal from "../components/profile/SideBarModal";
 import TweetReplyModal from "../components/profile/TweetReplyModal";
 import { getAccountInfo, putPersonalInfo } from "../API/usercopy";
-import jwtDecode from "jwt-decode";
+// import jwtDecode from "jwt-decode";
 // import users from "../API/users";
 
 function UserPage({

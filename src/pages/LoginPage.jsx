@@ -99,7 +99,7 @@ const LoginPage = () => {
         <AuthLinkText>註冊</AuthLinkText>
       </Link>
       {"．"}
-      <Link to="/api/admin/users">
+      <Link to="/api/admin/login">
         <AuthLinkText>後台登入</AuthLinkText>
       </Link>
     </AuthContainer>

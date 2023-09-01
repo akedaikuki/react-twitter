@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { ReactComponent as LikeIconLogo } from "../../assets/icons/like-icon@24.svg";
+import { ReactComponent as PostsLogo } from "../../assets/icons/posts-icon.svg";
 import * as style from '../common/admin.styled';
 
 const Container = styled.div`
@@ -81,10 +83,10 @@ const FollowInfoContainer = styled.div`
     }
 `
 
-export default function AdminUserCard({name, account, banner, avatar, posts, likes, follower, following}){
+export default function AdminUserCard({name, account, avatar, cover,  tweetCount, likeCount, follower, following}){
     return(
         <Container>
-            <img src={banner} alt="background" className='bg-img'/>
+            <img src={cover} alt="background" className='bg-img'/>
 
             <InfoContainer>
                 <img src={avatar} alt="avatar" />
@@ -93,10 +95,12 @@ export default function AdminUserCard({name, account, banner, avatar, posts, lik
             </InfoContainer>
             <InteractContainer>
                 <div>
-                    <p>{posts}</p>
+                    <PostsLogo />
+                    <p>{tweetCount}</p>
                 </div>
                 <div>
-                    <p>{likes}</p>
+                    <LikeIconLogo />
+                    <p>{likeCount}</p>
                 </div>
             </InteractContainer>
             <FollowInfoContainer>

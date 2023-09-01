@@ -16,6 +16,12 @@ import { ReactComponent as TweetIcon } from "./tweet-icon.svg";
 import { ReactComponent as NotiIcon } from "./noti-icon.svg";
 import { ReactComponent as NotiIconActive } from "./noti-icon-active.svg";
 import { ReactComponent as MsgIcon } from "./message-icon.svg";
+import { ReactComponent as AdminHomeLogo } from "./adminHome-icon.svg";
+import { ReactComponent as AdminHomeActiveLogo } from "./adminHomeActive-icon.svg";
+import { ReactComponent as AdminUserListLogo } from "./adminUserList-icon.svg";
+import { ReactComponent as AdminUserListActiveLogo } from "./adminUserListActive-icon.svg";
+import { ReactComponent as LikeIconLogo } from "./like-icon@24.svg";
+import { ReactComponent as PostsIconLogo } from "./posts-icon.svg";
 
 export {
   BrandLogo,
@@ -36,4 +42,10 @@ export {
   NotiIcon,
   NotiIconActive,
   MsgIcon,
+  AdminHomeLogo,
+  AdminHomeActiveLogo,
+  AdminUserListLogo,
+  AdminUserListActiveLogo,
+  LikeIconLogo,
+  PostsIconLogo,
 };

@@ -27,7 +27,7 @@ export const login = async ({ account, password }) => {
       throw Error("no user token");
     }
 
-    return { success: true, userData, userToken, avatar, id };
+    return { success: true, userData, userToken };
   } catch (error) {
     console.error("[Login Failed]:", error);
     throw error

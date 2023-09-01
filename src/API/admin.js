@@ -19,16 +19,16 @@ export const adminLogin = async ({ account, password }) => {
     }
 
     const adminData = res.data.data?.user;
-    const adminToken = res.data.data?.token;
+    const authToken = res.data.data?.token;
 
     if (!adminData) {
       throw Error("no user data");
     }
-    if (!adminToken) {
+    if (!authToken) {
       throw Error("no user token");
     }
 
-    return { success: true, adminData, adminToken };
+    return { success: true, adminData, authToken };
   } catch (error) {
     console.error("[Login Failed]:", error);
     return {
@@ -45,7 +45,7 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('AdminToken');
+    const token = localStorage.getItem('authToken');
     console.log(token)
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
