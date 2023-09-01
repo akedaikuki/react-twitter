@@ -2,21 +2,22 @@ import React, { useState, useMemo, useContext, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { CloseIcon } from "../../assets/icons";
 import { StyledButton } from "../common/button.styled";
-import user1 from "../../API/user1";
+// import user1 from "../../API/user1";
 import { TweetCardContainer } from "../common/tweet.styled";
-import users from "../../API/users";
+// import users from "../../API/users";
 import { Link } from "react-router-dom";
 import userImg from "../../assets/images/img.png";
 import relativeTime from "../../utilities/relativeTime";
 import { ShowModalContext } from "../../Context/ShowModalContext";
-import Swal from "sweetalert2";
+// import Swal from "sweetalert2";
 import {
   userAddTweets,
   userLikeTweet,
   userUnLikeTweet,
 } from "../../API/tweets";
 import { useUserPostModal } from "../../Context/MainPageContext";
-import { useReplyList } from "../contexts/DataContext";
+import { TweetIdContext } from "../contexts/DataContext";
+import Swal from "sweetalert2";
 
 const ModalContainer = styled.div`
   position: absolute;
@@ -110,72 +111,56 @@ const StyledConnectLine = styled.div`
   }
 `;
 
-const handleSubmit = ({ onUserReply, text, tweet }) => {
+const handleSubmit = ({ onUserReply, text, tweet, toggleShowReplyModal }) => {
   if (text.trim().length > 0) {
     onUserReply?.({ TweetId: tweet.TweetId, text });
-
     localStorage.setItem("TweetId", tweet.TweetId);
+    toggleShowReplyModal();
+    setTimeout(() => {
+      Swal.fire({
+        position: "top",
+        title: "推文發送成功！",
+        timer: 1000,
+        icon: "success",
+        showConfirmButton: false,
+      });
+    });
   }
 };
 
 function TweetReplyModal({
-  onPostList,
-  onUserLikeList,
-  onAvatarClick,
-  // onUserReply,
-  // text,
-  // setText,
+  onUserReply,
+  text,
+  setText,
   tweet,
+  toggleShowReplyModal,
+  onAddHomeList,
+  onTheTweetId,
 }) {
-  const [userInfo, setUserInfo] = useState(user1);
-  const [usersInfo, setUsersInfo] = useState(users);
+  // const [userInfo, setUserInfo] = useState(user1);
+  // const [usersInfo, setUsersInfo] = useState(users);
   // const [text, setTweetText] = useState("");
   const [errorMsg, setErrorMsg] = useState(null);
-  const [text, setText] = useState("");
+  // const [text, setText] = useState("");
   const tweetRef = useRef(null);
-  const { toggleShowReplyModal } = useContext(ShowModalContext);
-  const { onTheTweetId } = useReplyList();
-  const { onUserReply } = useUserPostModal();
-  const { homeList, onHomeList } = useUserPostModal();
-  const { onLike, onUnLike } = useUserPostModal();
+  // const { toggleShowReplyModal } = useContext(ShowModalContext);
 
-  const handleLikeIcon = async (TweetId) => {
-    const userToken = localStorage.getItem("userToken");
-    try {
-      if (tweet.isLiked === true) {
-        await userUnLikeTweet({ userToken, TweetId });
-        onUnLike(TweetId);
-        onPostList?.({ TweetId, count: -1 });
-        onUserLikeList?.({ TweetId, count: -1 });
-      } else {
-        await userLikeTweet({ userToken, TweetId });
-        onLike(TweetId);
-        onPostList?.({ TweetId, count: 1 });
-        onUserLikeList?.({ TweetId, count: 1 });
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const getUserDataAsync = async (description) => {
-    try {
-      const data = await userAddTweets(description);
-      onHomeList(data);
-      console.log(homeList);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  if (localStorage.getItem("userToken")) {
-    getUserDataAsync(localStorage.getItem("userToken"));
-  }
+  // const { onUserReply } = useUserPostModal();
 
   // console.log(usersInfo[0].data.user[0].avatar);
   const handleChange = (e) => {
     setErrorMsg(null);
     setText(e.target.value);
+    onAddHomeList(text);
   };
+
+  // const handlePost = async () => {
+  //   if (text.length === 0) {
+  //     return;
+  //   }
+  //   setText("");
+  //   onAddHomeList(text);
+  // };
 
   const isValid = useMemo(() => {
     if (!text) {
@@ -187,7 +172,7 @@ function TweetReplyModal({
 
     return true;
   }, [text]);
-  const avatar = localStorage.getItem("avatar");
+  // const avatar = localStorage.getItem("avatar");
 
   return (
     <div className="modal">
@@ -199,11 +184,11 @@ function TweetReplyModal({
             <TweetCardContainer
               className="tweetCardContainer"
               style={{ outline: "0" }}
-              id={tweet.tweetOwnerId}
+              // id={tweet.TweetId}
             >
               <div className="userAvatar">
                 <img
-                  src={avatar}
+                  src={tweet.tweetOwnerAvatar}
                   alt="other User's avatar"
                   style={{ marginTop: "0" }}
                 />
@@ -211,8 +196,8 @@ function TweetReplyModal({
               <StyledConnectLine />
               <div className="right">
                 <div className="name_link">
-                  <span className="name">{tweet.name}</span>
-                  <span className="account">@{tweet.account}</span>
+                  <span className="name">{tweet.tweetOwnerName}</span>
+                  <span className="account">@{tweet.tweetOwnerAccount}</span>
 
                   <span className="time">
                     ・{relativeTime(tweet.createdAt)}
@@ -224,17 +209,17 @@ function TweetReplyModal({
 
                 {/*  */}
                 <p className="reply_to">
-                  回覆 <span>@{tweet.name}</span>
+                  回覆 <span>@{tweet.tweetOwnerAccount}</span>
                 </p>
               </div>
             </TweetCardContainer>
             <Tweettextbox className="Tweettextbox">
-              <img src={avatar} alt="user avatar" />
+              <img src={tweet.tweetOwnerAvatar} alt="user avatar" />
 
               <textarea
                 className="tweettext"
                 id="tweettext"
-                rows="5"
+                rows="3"
                 placeholder="推你的回覆"
                 ref={tweetRef}
                 value={text}
@@ -254,8 +239,10 @@ function TweetReplyModal({
                       tweet,
                       text,
                       onUserReply,
+                      toggleShowReplyModal,
                     })
                   }
+                  onAddHomeList={onAddHomeList}
                   disabled={!isValid}
                 >
                   推文

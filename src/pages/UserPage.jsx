@@ -14,7 +14,7 @@ import Popular from "../components/Popular";
 // import UserModal from "../components/profile/UserModal";
 // import TweetsCard from "../components/Cards/TweetsCard";
 import UserControl from "../components/profile/UserControl";
-import user1 from "../API/user1";
+// import user1 from "../API/user1";
 import UserModal from "../components/profile/UserModal";
 import { ShowModalContext } from "../Context/ShowModalContext";
 import SideBarModal from "../components/profile/SideBarModal";
@@ -24,6 +24,10 @@ import { getAccountInfo, putPersonalInfo } from "../API/usercopy";
 // import users from "../API/users";
 
 function UserPage({
+  tweet,
+  onAvatarClick,
+  handleAvatarClick,
+  text,
   activeTab,
   render,
   postList,
@@ -31,7 +35,7 @@ function UserPage({
   userLikeList,
   onPostList,
   onUserLikeList,
-  onAvatarClick,
+  onAddHomeList,
 }) {
   const [userInfo, setUserInfo] = useState({});
   // const [usersInfo, setUsersInfo] = useState(users);
@@ -148,7 +152,7 @@ function UserPage({
               userLikeList={userLikeList}
               onPostList={onPostList}
               onUserLikeList={onUserLikeList}
-              onAvatarClick={onAvatarClick}
+              onAvatarClick={handleAvatarClick}
             />
             {/* <button className={"userTab"}>推文</button> */}
             {/* <button className={"userTab"}>回覆</button> */}
@@ -172,9 +176,21 @@ function UserPage({
       </UserPageConainer>
       <Popular />
 
-      {showEditModal && <UserModal />}
-      {showPostModal && <SideBarModal />}
-      {showReplyModal && <TweetReplyModal />}
+      {showEditModal && (
+        <UserModal
+          // userToken={userToken}
+          userInfo={userInfo}
+          setUserInfo={setUserInfo}
+        />
+      )}
+      {showPostModal && <SideBarModal onAddHomeList={onAddHomeList} />}
+      {showReplyModal && (
+        <TweetReplyModal
+          tweet={tweet}
+          onAvatarClick={handleAvatarClick}
+          text={text}
+        />
+      )}
     </>
   );
 }

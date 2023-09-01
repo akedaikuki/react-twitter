@@ -1,10 +1,12 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useRef } from "react";
 import styled from "styled-components";
 import { CloseIcon, CameraIcon } from "../../assets/icons";
 import { StyledButton } from "../common/button.styled";
 import Swal from "sweetalert2";
-import user1 from "../../API/user1";
+// import user1 from "../../API/user1";
 import { ShowModalContext } from "../../Context/ShowModalContext";
+import { useNavigate } from "react-router-dom";
+import { putPersonalInfo } from "../../API/usercopy";
 
 const ModalContainer = styled.div`
   box-sizing: border-box;
@@ -156,41 +158,182 @@ const UserInfoText = styled.div`
   }
 `;
 
-function UserModal() {
-  const [userInfo, setUserInfo] = useState(user1);
-  const [avatar, setAvatar] = useState();
-  const [cover, setCover] = useState();
-  const [introduction, setIntroduction] = useState(
-    userInfo[0].data.user[0].introduction
-  );
-  const [name, setName] = useState(userInfo[0].data.user[0].name);
-  const [deleteCover, setDeleteCover] = useState(false);
+function UserModal({ userInfo, setUserInfo }) {
+  // const [userInfo, setUserInfo] = useState(user1);
+  // const [avatar, setAvatar] = useState();
+  // const [cover, setCover] = useState();
+  // const [introduction, setIntroduction] = useState(
+  //   userInfo[0].data.user[0].introduction
+  // );
+  // const [name, setName] = useState(userInfo[0].data.user[0].name);
+  // const [deleteCover, setDeleteCover] = useState(false);
   const [errorMessage, setErrorMessage] = useState({});
-  const [tmpImg, setTmpImg] = useState({
-    avatar: userInfo[0].data.user[0].avatar,
-    cover: userInfo[0].data.user[0].coverImage,
-  });
+  // const [tmpImg, setTmpImg] = useState({
+  //   avatar: userInfo[0].data.user[0].avatar,
+  //   cover: userInfo[0].data.user[0].coverImage,
+  // });
+
+  // 編輯資料頭像狀態
+  const [user, setUser] = useState({ userInfo });
+  const [userName, setUserName] = useState(userInfo.name);
+  const [inroduction, setIntorduction] = useState(userInfo.introduction);
+
+  const [userAvatar, setUserAvatar] = useState(userInfo.avatar);
+  const [userCover, setUserCover] = useState(userInfo.cover);
+
+  // 上傳照片
+  const [coverStatus, setCoverStatus] = useState(false);
+  const [avatarStatus, setAvatarStatus] = useState(false);
+
+  const navigate = useNavigate();
+  const formData = new FormData();
+
+  // modal
   const { toggleShowEditModal } = useContext(ShowModalContext);
+  const handleClose = () => {
+    if (user.introduction === null) {
+      setIntorduction("請輸入自我介紹");
+    } else {
+      setIntorduction(user.introduction);
+    }
+    setUserName(user.name);
+  };
+
   function handleSave() {
-    if (name.length === 0) {
+    if (userName.length === 0) {
       setErrorMessage({ ...errorMessage, name: "名稱不能為空白" });
       return;
-    } else if (name.length > 50) {
+    } else if (userName.length > 50) {
       setErrorMessage({ ...errorMessage, name: "名稱不能超過50字" });
       return;
-    } else if (introduction?.length > 160) {
+    } else if (inroduction?.length > 160) {
       setErrorMessage({ ...errorMessage, introduction: "自我介紹最多160字" });
       return;
     }
   }
+
+  const handleSaveInfo = () => {
+    if (
+      userName.length > 0 &&
+      inroduction.length > 0 &&
+      userName.length <= 50 &&
+      inroduction.length <= 160
+    ) {
+      handleSaveClick();
+      handleClose();
+      handleSave();
+    }
+  };
+
+  // Cover
+  const inputfileref = useRef(userCover);
+  const handleOnClickUpload = () => {
+    inputfileref.current.click();
+  };
+  const [imageSrc, setImageSrc] = useState("");
+  const handleOnPreview = (event) => {
+    const file = event.target.files[0];
+    setUserCover(file);
+    const reader = new FileReader();
+
+    reader.addEventListener(
+      "load",
+      function () {
+        // convert image file to base64 string
+        setImageSrc(reader.result);
+      },
+      false
+    );
+    setCoverStatus(true);
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  };
+  const handleDeletePreview = () => {
+    setImageSrc("");
+    setCoverStatus(false);
+    handleRemoveFile();
+    setUserCover(inputfileref.current);
+  };
+  const handleRemoveFile = () => {
+    inputfileref.current.value = "";
+  };
+
+  // avatar
+  const [modalAvatar, setModalAvatar] = useState("");
+  const handleOnAvatar = (event) => {
+    const file = event.target.files[0];
+    setUserAvatar(file);
+    const reader = new FileReader();
+    reader.addEventListener(
+      "load",
+      function () {
+        setModalAvatar(reader.result);
+        localStorage.setItem("avatar", reader.result);
+        setAvatarStatus(true);
+      },
+      false
+    );
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  };
+
+  // modal 更換名字與介紹
+  const handleNameChange = (changeName) => {
+    setUserName(changeName);
+  };
+
+  const handleIntrodrctionChange = (changeIntroduction) => {
+    setIntorduction(changeIntroduction);
+  };
+
+  // modal 點擊儲存
+  const handleSaveClick = () => {
+    const id = localStorage.getItem("id");
+    const userToken = localStorage.getItem("userToken");
+    setUser({
+      ...user,
+      name: userName,
+      introduction: inroduction,
+      cover: imageSrc,
+      avatar: modalAvatar,
+    });
+    formData.append("name", userName);
+    formData.append("introduction", inroduction);
+    formData.append("cover", userCover);
+    formData.append("avatar", userAvatar);
+    putPersonalInfoAsync(userToken, id, formData);
+    setTimeout(function () {
+      navigate("/");
+    }, 1000);
+  };
+
+  const putPersonalInfoAsync = async (userToken, id, formData) => {
+    try {
+      await putPersonalInfo(userToken, id, formData);
+      navigate(0);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className="modal">
       <div className="background">
         <ModalContainer className="ModalContainer">
           <div className="header">
-            <CloseIcon className="close" onClick={toggleShowEditModal} />
+            <CloseIcon
+              className="close"
+              onClose={handleClose}
+              onClick={toggleShowEditModal}
+            />
             <h5>編輯個人資料</h5>
-            <StyledButton className="save active">儲存</StyledButton>
+            <StyledButton className="save active" onSaveInfo={handleSaveClick}>
+              儲存
+            </StyledButton>
           </div>
           <div className="modalUserInfoContainer">
             <UserInfoPicture>
@@ -198,49 +341,68 @@ function UserModal() {
                 <img
                   width={640}
                   height={200}
-                  src={tmpImg.cover}
+                  src={userCover}
                   alt=""
                   className="cover"
+                  coverStatus={coverStatus}
                 />
                 <div className="changeCoverActions">
                   <label htmlFor="cover" className="cameraIcon">
                     <CameraIcon />
-                    <input type="file" name="cover" id="cover" />
+                    <input
+                      type="file"
+                      name="cover"
+                      id="cover"
+                      src={userCover}
+                      onOnPreview={handleOnPreview}
+                      inputfileref={inputfileref}
+                      ref={inputfileref}
+                      avatarStatus={avatarStatus}
+                    />
                   </label>
-                  <CloseIcon className="removeIcon" />
+                  <CloseIcon
+                    className="removeIcon"
+                    onDeletePreview={handleDeletePreview}
+                  />
                 </div>
               </div>
               <div className="modalAvatar">
                 <div className="imgBox">
                   <label htmlFor="avatar" className="cameraIcon">
                     <CameraIcon />
-                    <input type="file" name="avatar" id="avatar" />
+                    <input
+                      type="file"
+                      name="avatar"
+                      id="avatar"
+                      src={userAvatar}
+                      onClickUpload={handleOnClickUpload}
+                    />
                   </label>
-                  <img src={tmpImg.avatar} alt="" />
+                  <img src={userAvatar} alt="" onhandleOnAvatar />
                 </div>
               </div>
             </UserInfoPicture>
             <UserInfoText>
               <input
-                label={"名稱"}
-                value={name}
+                label="名稱"
+                value={userName}
                 errorMessage={errorMessage.name || null}
-                onChange={(name) => {
-                  setName(name);
+                onChange={(event) => {
+                  handleNameChange?.(event.target.value);
                   setErrorMessage({ ...errorMessage, name: "" });
                 }}
               />
-              <div className="caption">{name.length}/50</div>
+              <div className="caption">{userName.length}/50</div>
               <textarea
                 label={"自我介紹"}
-                value={introduction}
+                value={inroduction}
                 errorMessage={errorMessage.introduction || null}
-                onChange={(introduction) => {
-                  setIntroduction(introduction);
+                onChange={(event) => {
+                  handleIntrodrctionChange?.(event.target.value);
                   setErrorMessage({ ...errorMessage, introduction: "" });
                 }}
               />
-              <div className="caption">{introduction.length}/160</div>
+              <div className="caption">{inroduction.length}/160</div>
             </UserInfoText>
           </div>
         </ModalContainer>

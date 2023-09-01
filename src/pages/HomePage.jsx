@@ -3,8 +3,8 @@ import { styled } from "styled-components";
 import TweetsCard from "../components/Cards/TweetsCard";
 import { StyledButton } from "../components/common/button.styled";
 import { PageStyle } from "../components/common/page.styled";
-import user1 from "../API/user1";
-import users from "../API/users";
+// import user1 from "../API/user1";
+// import users from "../API/users";
 import Popular from "../components/Popular";
 import relativeTime from "../utilities/relativeTime";
 import SideBarModal from "../components/profile/SideBarModal";
@@ -124,7 +124,7 @@ function HomeList({ toggleShowReplyModal, handleAvatarClick }) {
           // isLiked={item.data.isLiked}
           // personalInfo={personalInfo}
           onClick={toggleShowReplyModal}
-          onAvatarClick={handleAvatarClick}
+          handleAvatarClick={handleAvatarClick}
         />
       ))}
     </>
@@ -148,16 +148,17 @@ function HomePage({ tweet }) {
   // const [userTextNothing, setUserTextNoting] = useState(false);
   const navigate = useNavigate();
   const { onAddHomeList } = useUserPostModal();
+
   const avatar = localStorage.getItem("avatar");
   // 點擊 avatar 後移至 other
   const handleAvatarClick = (clickId, TweetId) => {
-    const userId = localStorage.getItem("id");
-    if (Number(clickId) === Number(userId)) {
-      navigate(`/api/users/${userId}/tweets`);
+    const id = localStorage.getItem("id");
+    if (Number(clickId) === Number(id)) {
+      navigate(`/api/users/${id}/tweets`);
     } else {
       localStorage.setItem("otherId", clickId);
       localStorage.setItem("TweetId", TweetId);
-      navigate(`/api/otherusers/${userId}/tweets`);
+      navigate(`/api/otherusers/${id}/tweets`);
     }
   };
   const handleChange = (e) => {
@@ -229,9 +230,13 @@ function HomePage({ tweet }) {
       </HomePageContainer>
       <Popular />
 
-      {showPostModal && <SideBarModal />}
+      {showPostModal && <SideBarModal onAddHomeList={onAddHomeList} />}
       {showReplyModal && (
-        <TweetReplyModal tweet={tweet} onAvatarClick={handleAvatarClick} />
+        <TweetReplyModal
+          tweet={tweet}
+          onAvatarClick={handleAvatarClick}
+          text={text}
+        />
       )}
     </>
   );

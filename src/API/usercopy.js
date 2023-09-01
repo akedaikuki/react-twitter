@@ -65,19 +65,20 @@ export const userUnLikeTweet = async ({ userToken, TweetId }) => {
   }
 };
 
-// -- 個人資料頁底下的推文串
+// 個人資料頁底下的推文串
 export const getUserTweets = async (userToken, id) => {
   try {
     const res = await axios.get(`${apiURL}/users/${id}/tweets `, {
       headers: { Authorization: "Bearer " + userToken },
     });
+
     return res.data;
   } catch (error) {
     console.error("[Get UserTweets failed]", error);
   }
 };
 
-// -- 個人資料頁底下的回覆串
+// 個人資料頁底下的回覆串
 export const getUserReplyTweets = async (userToken, id) => {
   try {
     const res = await axios.get(`${apiURL}/users/${id}/replied_tweets `, {
@@ -89,7 +90,7 @@ export const getUserReplyTweets = async (userToken, id) => {
   }
 };
 
-// -- 個人資料頁底下的喜歡串
+// 個人資料頁底下的喜歡串
 export const getUserLikeTweets = async (userToken, id) => {
   try {
     const res = await axios.get(`${apiURL}/users/${id}/likes `, {
@@ -101,7 +102,7 @@ export const getUserLikeTweets = async (userToken, id) => {
   }
 };
 
-// -- 設定頁 post 更改使用者帳號資料
+// 設定頁 post 更改使用者帳號資料
 export const patchAccountInfo = async (userToken, id, userInfo) => {
   try {
     const { account, name, email, password, checkPassword } = userInfo;
@@ -126,7 +127,7 @@ export const patchAccountInfo = async (userToken, id, userInfo) => {
   }
 };
 
-// -- 許多頁取得使用者資料
+// 許多頁取得使用者資料
 export const getAccountInfo = async (userToken, id) => {
   try {
     const { data } = await axios.get(`${apiURL}/users/${id}`, {
@@ -138,7 +139,7 @@ export const getAccountInfo = async (userToken, id) => {
   }
 };
 
-// -- 取得ReplyList頁面的回覆串
+// 取得ReplyList頁面的回覆串
 export const getSingleTweet = async ({ userToken, TweetId }) => {
   try {
     const { data } = await axios.get(`${apiURL}/tweets/${TweetId}/replies`, {

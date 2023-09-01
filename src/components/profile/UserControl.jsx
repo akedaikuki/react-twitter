@@ -3,8 +3,8 @@ import clsx from "clsx";
 import TweetReplyCard from "../Cards/TweetReplyCard";
 import TweetsCard from "../Cards/TweetsCard";
 import { StyledTabbar } from "../../components/common/tab.styled";
-import user1 from "../../API/user1";
-import users from "../../API/users";
+// import user1 from "../../API/user1";
+// import users from "../../API/users";
 import { useNavigate, redirect, Link } from "react-router-dom";
 // import { getUserTweets } from "../../API/user";
 import {
@@ -15,7 +15,7 @@ import {
 
 const ContentItem = ({
   activeTab,
-  render,
+  // render,
   postList,
   replyList,
   userLikeList,
@@ -57,6 +57,7 @@ function UserControl() {
   const [postList, setPostList] = useState([]);
   const [replyList, setReplyList] = useState([]);
   const [userLikeList, setUserLikeList] = useState([]);
+  // console.log(postList);
   // const formData = new FormData();
   const navigate = useNavigate();
   // 取得 回覆列表
@@ -95,19 +96,19 @@ function UserControl() {
   const handleAvatarClick = (clickId) => {
     const id = localStorage.getItem("id");
     if (Number(clickId) === Number(id)) {
-      navigate("/user/personalinfo/main");
+      navigate("");
     } else {
-      localStorage.setItem("otherId", clickId);
-      navigate("/user/other/main");
+      localStorage.setItem("clickId", clickId);
+      navigate("");
     }
   };
 
   useEffect(() => {
-    const getUserDataAsync = async (authToken, id) => {
+    const getUserDataAsync = async (userToken, id) => {
       try {
-        const postListData = await getUserTweets(authToken, id);
-        const replyListData = await getUserReplyTweets(authToken, id);
-        const userLikeListData = await getUserLikeTweets(authToken, id);
+        const postListData = await getUserTweets(userToken, id);
+        const replyListData = await getUserReplyTweets(userToken, id);
+        const userLikeListData = await getUserLikeTweets(userToken, id);
         if (postListData.message === "無推文資料") {
           setPostList([]);
         } else {
@@ -127,14 +128,14 @@ function UserControl() {
         console.error(error);
       }
     };
-    if (localStorage.getItem("authToken")) {
+    if (localStorage.getItem("userToken")) {
       getUserDataAsync(
-        localStorage.getItem("authToken"),
+        localStorage.getItem("userToken"),
         localStorage.getItem("id")
       );
     }
   }, [navigate]);
-  const id = localStorage.getItem("id");
+  // const id = localStorage.getItem("id");
   return (
     <div className="userControl">
       <div active={"active"}>

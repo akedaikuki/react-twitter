@@ -1,7 +1,7 @@
 import { createContext, useState, useContext } from "react";
 const replyListContext = createContext("");
 
-export const useReplyList = () => useContext(replyListContext);
+export const TweetIdContext = () => useContext(replyListContext);
 export const ReplyListContextProvider = ({ children }) => {
   const [theTweetId, setTheTweetId] = useState("");
   const handleTheTweetId = (TweetId) => {

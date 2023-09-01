@@ -15,7 +15,10 @@ import OtheruserPage from "./pages/OtherUser/OtherUserPage";
 import OtherFollowPage from "./pages/OtherUser/OtherFollowPage";
 import SettingPage from "./pages/SettingPage";
 
-function App({ TweetId, id }) {
+function App() {
+  // const TweetId = localStorage.getItem("TweetId");
+  // console.log(TweetId);
+  // const id = localStorage.getItem("id");
   return (
     <div className="App">
       <BrowserRouter>
@@ -23,28 +26,30 @@ function App({ TweetId, id }) {
         <Routes>
           <Route path="/" element={<MainPage />}>
             <Route index element={<HomePage />} />
-            <Route path={`api/users/2/tweets`} element={<UserPage />} />
-            <Route path={`api/users/2/replied_tweets`} element={<UserPage />} />
-            <Route path={`api/users/2/likes`} element={<UserPage />} />
-            <Route path={`api/tweets/${TweetId}`} element={<TweetPage />} />
+            <Route path="api/users/:id/tweets" element={<UserPage />} />
+            <Route path="api/users/:id/replied_tweets" element={<UserPage />} />
+            <Route path="api/users/:id/likes" element={<UserPage />} />
+            <Route path="api/tweets/:TweetId" element={<TweetPage />} />
+            <Route path="api/users/:id/tweets" element={<OtheruserPage />} />
             <Route
-              path={`api/users/${id}/tweets`}
+              path="api/users/:id/replied_tweets"
               element={<OtheruserPage />}
             />
+            <Route path="api/users/:id/likes" element={<OtheruserPage />} />
             <Route
-              path="api/users/:UserId/followers"
+              path="api/users/:id/followers"
               element={<UserFollowPage />}
             />
             <Route
-              path="api/users/:UserId/followings"
+              path="api/users/:id/followings"
               element={<UserFollowPage />}
             />
             <Route
-              path="api/users/:UserId/followers"
+              path="api/users/:id/followers"
               element={<OtherFollowPage />}
             />
             <Route
-              path="api/users/:UserId/followings"
+              path="api/users/:id/followings"
               element={<OtherFollowPage />}
             />
             <Route path="setting" element={<SettingPage />} />
