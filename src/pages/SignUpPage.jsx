@@ -117,7 +117,7 @@ import {
         </AuthInputContainer>
         <AuthButton onClick={handleClick}>註冊</AuthButton>
   
-        <Link to="/api/users/signin">
+        <Link to="/api/users">
           <AuthLinkText>取消</AuthLinkText>
         </Link>
       </AuthContainer>
