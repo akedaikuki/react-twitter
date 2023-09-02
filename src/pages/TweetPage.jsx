@@ -14,7 +14,11 @@ import TweetReplyModal from "../components/profile/TweetReplyModal";
 import { getSingleTweetInfo } from "../API/usercopy";
 import { userLikeTweet, userUnLikeTweet } from "../API/usercopy";
 import { useUserPostModal } from "../Context/MainPageContext";
-import { useReplyList } from "../components/contexts/DataContext";
+import {
+  TweetIdContext,
+  useReplyList,
+} from "../components/contexts/DataContext";
+import { Toast } from "../utilities/sweetalert";
 
 const UsertweetContainer = styled.div`
   margin: 15px;
@@ -125,11 +129,34 @@ function TweetPage() {
   const navigate = useNavigate();
 
   const [text, setText] = useState("");
+  const [showLike, setShowLike] = useState([]);
+  const [countLike, setCountLike] = useState([]);
   const [errorMsg, setErrorMsg] = useState(null);
   const [tweetOwnerInfo, setTweetOwnerInfo] = useState([]);
   const { onLike, onUnLike, onUserReply } = useUserPostModal();
   // const { onTheTweetId } = useReplyList();
   const { onAddHomeList } = useUserPostModal();
+  const { onTheTweetId } = TweetIdContext();
+  const TweetId = localStorage.getItem("TweetId");
+  useEffect(() => {
+    const userToken = localStorage.getItem("userToken");
+    const TweetId = localStorage.getItem("TweetId");
+    const getDataAsync = async ({ userToken, TweetId }) => {
+      try {
+        const data = await getSingleTweetInfo({ userToken, TweetId });
+
+        setTweetOwnerInfo(data);
+        setShowLike(data.isLiked);
+        setErrorMsg(data.likeCount);
+        console.log(data.isLiked);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    if (userToken) {
+      getDataAsync({ userToken, TweetId });
+    }
+  }, [localStorage.getItem("replyListLength")]);
 
   // 取得 回覆列表
   const handlePostList = ({ TweetId, count }) => {
@@ -148,54 +175,63 @@ function TweetPage() {
     });
   };
 
-  const handleLikeIcon = async () => {
+  const handleLikeClick = async (type) => {
     const userToken = localStorage.getItem("userToken");
     const TweetId = localStorage.getItem("TweetId");
     try {
-      if (tweetOwnerInfo.isLiked === true) {
-        await userUnLikeTweet({ userToken, TweetId });
-        setTweetOwnerInfo((pre) => {
-          return {
-            ...pre,
-            isLiked: false,
-            likeCount: tweetOwnerInfo.likeCount - 1,
-          };
+      if (type === "increment") {
+        Toast.fire({
+          title: "你已成功喜歡這則貼文",
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1000,
+          position: "top",
         });
-        onUnLike(TweetId);
-      } else {
+        onLike(TweetId);
         await userLikeTweet({ userToken, TweetId });
+        console.log(TweetId);
+        setCountLike(countLike + 1);
         setTweetOwnerInfo((pre) => {
           return {
             ...pre,
             isLiked: true,
-            likeCount: tweetOwnerInfo.likeCount + 1,
+            likeCount: pre.likeCount + 1,
           };
         });
-        onLike(TweetId);
+      } else if (type === "decrement") {
+        Toast.fire({
+          title: "你已成功移除喜歡",
+          icon: "error",
+          showConfirmButton: false,
+          timer: 1000,
+          position: "top",
+        });
+        onUnLike(TweetId);
+        await userUnLikeTweet({ userToken, TweetId });
+        setCountLike(countLike - 1);
+        setTweetOwnerInfo((pre) => {
+          return {
+            ...pre,
+            isLiked: false,
+            likeCount: pre.likeCount - 1,
+          };
+        });
       }
     } catch (error) {
       console.error(error);
     }
   };
 
-  useEffect(() => {
-    const userToken = localStorage.getItem("userToken");
-    const TweetId = localStorage.getItem("TweetId");
-    const getDataAsync = async ({ userToken, TweetId }) => {
-      try {
-        const data = await getSingleTweetInfo({ userToken, TweetId });
-
-        setTweetOwnerInfo(data);
-
-        console.log(data.Replies);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    if (userToken) {
-      getDataAsync({ userToken, TweetId });
+  // 愛心狀態
+  function handleShowLike() {
+    if (showLike === true) {
+      setShowLike(false);
+      console.log(showLike);
+    } else if (showLike === false) {
+      setShowLike(true);
+      console.log(showLike);
     }
-  }, [localStorage.getItem("replyListLength")]);
+  }
 
   const handleAvatarClick = () => {
     const clickId = tweetOwnerInfo.tweetOwnerId;
@@ -259,37 +295,34 @@ function TweetPage() {
               <ReplyIconStyle>
                 <ReplyIcon className="reply" onClick={toggleShowReplyModal} />
               </ReplyIconStyle>
-              {tweetOwnerInfo.isLiked === true ? (
+              {showLike === true ? (
                 <LikeIconStyle
                   style={{ marginLeft: "15px" }}
                   onClick={() => {
-                    handleLikeIcon();
-                    // onTheTweetId(TweetId);
+                    handleShowLike();
+                    handleLikeClick("decrement");
+                    onTheTweetId(TweetId);
                   }}
                 >
                   <LikedIcon className="like active" />
-                  <span className="en-font-family">
-                    {tweetOwnerInfo.likeCount}
-                  </span>
                 </LikeIconStyle>
               ) : (
                 <LikeIconStyle
                   style={{ marginLeft: "15px" }}
                   onClick={() => {
-                    handleLikeIcon();
-                    // onTheTweetId(TweetId);
+                    handleShowLike();
+                    handleLikeClick("increment");
+                    onTheTweetId(TweetId);
                   }}
                 >
                   <LikeIcon className="like" />
-                  <span className="en-font-family">
-                    {tweetOwnerInfo.likeCount}
-                  </span>
                 </LikeIconStyle>
               )}
             </div>
           </UsertweetContainer>
           <TweetReplyList
             text={text}
+            onAddHomeList={onAddHomeList}
             onAvatarClick={handleAvatarClick}
             onPostList={handlePostList}
             onUserReply={onUserReply}
@@ -297,7 +330,9 @@ function TweetPage() {
         </PageStyle>
       </UserPageConainer>
       <Popular onAvatarClick={handleAvatarClick} />
-      {showReplyModal && <TweetReplyModal />}
+      {showReplyModal && (
+        <TweetReplyModal tweetOwnerInfo={tweetOwnerInfo} text={text} />
+      )}
     </>
   );
 }

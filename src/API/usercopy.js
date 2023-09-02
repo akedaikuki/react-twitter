@@ -45,9 +45,14 @@ export const userReplyTweets = async (payload) => {
 
 export const userLikeTweet = async ({ userToken, TweetId }) => {
   try {
-    const res = await axios.post(`${apiURL}/tweets/${TweetId}/like`, null, {
-      headers: { Authorization: "Bearer " + userToken },
-    });
+    const res = await axios.post(
+      `${apiURL}/tweets/${TweetId}/like`,
+      null,
+
+      {
+        headers: { Authorization: "Bearer " + userToken },
+      }
+    );
     return res.data;
   } catch (error) {
     console.error("[LikeTweet failed]: ", error);
@@ -56,9 +61,14 @@ export const userLikeTweet = async ({ userToken, TweetId }) => {
 
 export const userUnLikeTweet = async ({ userToken, TweetId }) => {
   try {
-    const res = await axios.post(`${apiURL}/tweets/${TweetId}/unlike`, null, {
-      headers: { Authorization: "Bearer " + userToken },
-    });
+    const res = await axios.post(
+      `${apiURL}/tweets/${TweetId}/unlike`,
+      null,
+
+      {
+        headers: { Authorization: "Bearer " + userToken },
+      }
+    );
     return res.data;
   } catch (error) {
     console.error("[UnLikeTweet failed]: ", error);
