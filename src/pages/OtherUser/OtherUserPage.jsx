@@ -20,7 +20,7 @@ import {
 import Popular from "../../components/Popular";
 // import UserModal from "../components/profile/UserModal";
 // import Tweetslist from "../../components/profile/Tweetslist";
-import UserControl from "../../components/profile/UserControl";
+import OtherUserControl from "../../components/profile/OtherUserControl";
 // import users from "../../API/users";
 import { ShowModalContext } from "../../Context/ShowModalContext";
 import SideBarModal from "../../components/profile/SideBarModal";
@@ -29,22 +29,16 @@ import {
   deleteUserFollow,
   getAccountInfo,
   postUserFollow,
+  getUserTweets,
+  getUserReplyTweets,
+  getUserLikeTweets,
+  userLikeTweet,
+  userUnLikeTweet,
 } from "../../API/usercopy";
+import { useUserPostModal } from "../../Context/MainPageContext";
+import { Toast } from "../../utilities/sweetalert";
 
-function OtherUserPage({
-  tweet,
-  handleUserLikeList,
-  text,
-  activeTab,
-  render,
-  postList,
-  replyList,
-  userLikeList,
-  onPostList,
-  onUserLikeList,
-  onAddHomeList,
-  s,
-}) {
+function OtherUserPage() {
   // { isFollowed }
   // const [usersInfo, setUsersInfo] = useState(users[0]);
   const [showNotice, setShowNotice] = useState(false);
@@ -55,10 +49,15 @@ function OtherUserPage({
   const { showPostModal, toggleShowPostModal } = useContext(ShowModalContext);
   const { showReplyModal, toggleShowReplyModal } = useContext(ShowModalContext);
   const navigate = useNavigate();
-
+  const [postList, setPostList] = useState([]);
+  const [replyList, setReplyList] = useState([]);
+  const [userLikeList, setUserLikeList] = useState([]);
+  const { onAddHomeList } = useUserPostModal();
+  const [showLike, setShowLike] = useState([]);
+  const [countLike, setCountLike] = useState([]);
   // const useId = useParams();
   const otherId = localStorage.getItem("otherId");
-
+  const { onLike, onUnLike, onUserReply } = useUserPostModal();
   // render 用戶資料
   useEffect(() => {
     const getAccountInfoAsync = async () => {
@@ -67,6 +66,7 @@ function OtherUserPage({
         const data = await getAccountInfo(userToken, otherId);
 
         setOtherUser(data);
+        console.log(otherId);
         localStorage.setItem("tweetCount", data.tweetCount);
         localStorage.setItem("userName", data.name);
 
@@ -133,6 +133,130 @@ function OtherUserPage({
       navigate("/other");
     }
   };
+  useEffect(() => {
+    const getUserDataAsync = async (userToken, id) => {
+      try {
+        const postListData = await getUserTweets(userToken, id);
+        const replyListData = await getUserReplyTweets(userToken, id);
+        const userLikeListData = await getUserLikeTweets(userToken, id);
+        if (postListData.message === "無推文資料") {
+          setPostList([]);
+        } else {
+          setPostList(postListData);
+        }
+        if (replyListData.message === "無回覆資料") {
+          setReplyList([]);
+        } else {
+          setReplyList(replyListData);
+        }
+        if (userLikeListData.message === "無Like資料") {
+          setUserLikeList([]);
+        } else {
+          setUserLikeList(userLikeListData);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    if (localStorage.getItem("userToken")) {
+      getUserDataAsync(localStorage.getItem("userToken"), otherId);
+    }
+    // else if () {
+    //   getUserDataAsync(localStorage.getItem("userToken"), otherId);
+    // }
+  }, [navigate, localStorage.getItem("otherId")]);
+
+  // 取得 回覆列表
+  const handlePostList = ({ TweetId, count }) => {
+    setPostList((pre) => {
+      return pre.map((item) => {
+        if (item.TweetId === TweetId) {
+          return {
+            ...item,
+            isLiked: !item.isLiked,
+            likeCount: item.likeCount + count,
+          };
+        } else {
+          return item;
+        }
+      });
+    });
+  };
+  // 取得 喜歡的內容列表
+  const handleUserLikeList = ({ TweetId, count }) => {
+    setUserLikeList((pre) => {
+      return pre.map((item) => {
+        if (item.TweetId === TweetId) {
+          return {
+            ...item,
+            isLiked: !item.isLiked,
+            likeCount: item.likeCount + count,
+          };
+        } else {
+          return item;
+        }
+      });
+    });
+  };
+
+  // console.log(userInfo);
+  const handleLikeClick = async (type) => {
+    const userToken = localStorage.getItem("userToken");
+    const TweetId = localStorage.getItem("TweetId");
+    try {
+      if (type === "increment") {
+        Toast.fire({
+          title: "你已成功喜歡這則貼文",
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1000,
+          position: "top",
+        });
+        onLike(TweetId);
+        await userLikeTweet({ userToken, TweetId });
+        console.log(TweetId);
+        setCountLike(countLike + 1);
+        setOtherUser((pre) => {
+          return {
+            ...pre,
+            isLiked: true,
+            likeCount: pre.likeCount + 1,
+          };
+        });
+      } else if (type === "decrement") {
+        Toast.fire({
+          title: "你已成功移除喜歡",
+          icon: "error",
+          showConfirmButton: false,
+          timer: 1000,
+          position: "top",
+        });
+        onUnLike(TweetId);
+        await userUnLikeTweet({ userToken, TweetId });
+        setCountLike(countLike - 1);
+        setOtherUser((pre) => {
+          return {
+            ...pre,
+            isLiked: false,
+            likeCount: pre.likeCount - 1,
+          };
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // 愛心狀態
+  function handleShowLike() {
+    if (showLike === true) {
+      setShowLike(false);
+      // console.log(showLike);
+    } else if (showLike === false) {
+      setShowLike(true);
+      // console.log(showLike);
+    }
+  }
 
   return (
     <>
@@ -242,15 +366,16 @@ function OtherUserPage({
           </div>
 
           <StyledTabbar>
-            <UserControl
-              activeTab={activeTab}
+            <OtherUserControl
               // render={render}
               postList={postList}
               replyList={replyList}
               userLikeList={userLikeList}
-              onPostList={onPostList}
-              onUserLikeList={onUserLikeList}
+              onPostList={handlePostList}
+              onUserLikeList={handleUserLikeList}
               onAvatarClick={handleAvatarClick}
+              onClickShowLike={handleShowLike}
+              onLikeClick={handleLikeClick}
             />
             {/* <button className={"userTab"}>推文</button> */}
             {/* <button className={"userTab"}>回覆</button> */}
@@ -264,13 +389,13 @@ function OtherUserPage({
         onFollowClick={handleFollowClick}
       />
       {showPostModal && <SideBarModal onAddHomeList={onAddHomeList} />}
-      {showReplyModal && (
+      {/* {showReplyModal && (
         <TweetReplyModal
           tweet={tweet}
           onAvatarClick={handleAvatarClick}
           text={text}
         />
-      )}
+      )} */}
     </>
   );
 }

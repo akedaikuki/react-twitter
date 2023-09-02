@@ -61,7 +61,7 @@ function MainContextProvider({ children }) {
   const handleUserReply = async ({ TweetId, text }) => {
     try {
       await userReplyTweets({ TweetId, comment: text });
-      navigate("/user/replylist/main");
+      navigate(`/tweets/${TweetId}`);
       localStorage.removeItem("replyListLength");
     } catch (error) {
       console.error(error);
