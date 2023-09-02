@@ -11,12 +11,12 @@ import { getUsers } from "../API/admin";
 const Container = styled.div`
   width: 83%;
   padding: 0;
-  border: ${style.styledBorder};
+  border-left: ${style.styledBorder};
   position: relative;
 `
 
 const Header = styled.div`
-  width: 100%;
+  width: calc(100% + (100vw - 960px)/2);
   height: 51px;
   margin-top: 24px;
   border-bottom: ${style.styledBorder};
@@ -25,15 +25,17 @@ const Header = styled.div`
     font-size: 24px;
     margin-left: 24px;
   }
+  @media (min-width: 1200px) {
+    width: calc(100% + (100vw - 1140px)/2);
+  }
 `
 
 const CardContainer = styled.div`
-  width: 100%;
   margin-top: 16px;
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  flex-wrap: wrap;
 `
+
 
 export default function AdminUserPage() {
     const [users, setUsers] = useState([])
@@ -56,8 +58,8 @@ export default function AdminUserPage() {
 
     return (
         <>
-           <div className="main">
-            <AdminSideBar />
+          <div className="main">
+           <AdminSideBar />
            <Container>
                <Header>
                    <h4>使用者列表</h4>
@@ -78,9 +80,9 @@ export default function AdminUserPage() {
                         />
                     )
                   })}
-               </CardContainer>
+               </CardContainer>  
            </Container>
-           </div> 
+           </div>
         </>
     )  
 }

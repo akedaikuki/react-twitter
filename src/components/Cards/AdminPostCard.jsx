@@ -50,6 +50,7 @@ const PostContainer = styled.div`
 `
 
 export default function AdminPostCard({avatar, name, account, content, onClick, timestamp}) {
+
     return (
         <Container>
             <img src={avatar} alt="avatar" />
@@ -57,7 +58,7 @@ export default function AdminPostCard({avatar, name, account, content, onClick, 
                 <InfoContainer>
                     <p className="name">{name}</p>
                     <p className="account">@{account}・<TimeGap timestamp={timestamp} /></p>
-                    <Close className="close" onClick={onClick} />
+                    <Close className='close-icon' onClick={onClick}/>
                 </InfoContainer>
                 <p className="content">{content}</p>
             </PostContainer>

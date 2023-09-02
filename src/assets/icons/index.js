@@ -22,6 +22,7 @@ import { ReactComponent as AdminUserListLogo } from "./adminUserList-icon.svg";
 import { ReactComponent as AdminUserListActiveLogo } from "./adminUserListActive-icon.svg";
 import { ReactComponent as LikeIconLogo } from "./like-icon@24.svg";
 import { ReactComponent as PostsIconLogo } from "./posts-icon.svg";
+import { ReactComponent as XLogo } from "./iconX.svg";
 
 export {
   BrandLogo,
@@ -48,4 +49,5 @@ export {
   AdminUserListActiveLogo,
   LikeIconLogo,
   PostsIconLogo,
+  XLogo,
 };
