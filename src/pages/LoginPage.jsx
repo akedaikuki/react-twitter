@@ -3,6 +3,7 @@ import {
   AuthInputContainer,
   AuthButton,
   AuthLinkText,
+  AuthLinkWrapper,
 } from "../components/common/auth.styled";
 import { BrandLogo } from "../assets/icons";
 import AuthInput from "../components/AuthInput";
@@ -94,7 +95,7 @@ const LoginPage = () => {
         />
       </AuthInputContainer>
       <AuthButton onClick={handleClick}>登入</AuthButton>
-
+      <AuthLinkWrapper>
       <Link to="/users/signin">
         <AuthLinkText>註冊</AuthLinkText>
       </Link>
@@ -102,6 +103,7 @@ const LoginPage = () => {
       <Link to="/admin/login">
         <AuthLinkText>後台登入</AuthLinkText>
       </Link>
+      </AuthLinkWrapper>
     </AuthContainer>
   );
 };
