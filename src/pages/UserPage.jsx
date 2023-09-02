@@ -24,9 +24,11 @@ import {
   getUserTweets,
   getUserReplyTweets,
   getUserLikeTweets,
-  putPersonalInfo,
+  userLikeTweet,
+  userUnLikeTweet,
 } from "../API/usercopy";
 import { useUserPostModal } from "../Context/MainPageContext";
+import { Toast } from "../utilities/sweetalert";
 // import jwtDecode from "jwt-decode";
 // import users from "../API/users";
 
@@ -37,6 +39,8 @@ function UserPage() {
   const [postList, setPostList] = useState([]);
   const [replyList, setReplyList] = useState([]);
   const [userLikeList, setUserLikeList] = useState([]);
+  const [showLike, setShowLike] = useState([]);
+  const [countLike, setCountLike] = useState([]);
   // const [usersInfo, setUsersInfo] = useState(users);
   // const [editActive, setEditActive] = useState(false);
   const { setActiveTab } = useContext(FollowClickContext);
@@ -46,6 +50,7 @@ function UserPage() {
   const navigate = useNavigate();
   const otherId = localStorage.getItem("otherId");
   const { onAddHomeList } = useUserPostModal();
+  const { onLike, onUnLike, onUserReply } = useUserPostModal();
   // console.log(users[0].username);
 
   useEffect(() => {
@@ -143,8 +148,67 @@ function UserPage() {
       navigate("/other");
     }
   };
-  // console.log(userInfo);
 
+  // console.log(userInfo);
+  const handleLikeClick = async (type) => {
+    const userToken = localStorage.getItem("userToken");
+    const TweetId = localStorage.getItem("TweetId");
+    try {
+      if (type === "increment") {
+        Toast.fire({
+          title: "你已成功喜歡這則貼文",
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1000,
+          position: "top",
+        });
+        onLike(TweetId);
+        await userLikeTweet({ userToken, TweetId });
+        console.log(TweetId);
+        setCountLike(countLike + 1);
+        handleShowLike();
+        setUserInfo((pre) => {
+          return {
+            ...pre,
+            isLiked: true,
+            likeCount: pre.likeCount + 1,
+          };
+        });
+      } else if (type === "decrement") {
+        Toast.fire({
+          title: "你已成功移除喜歡",
+          icon: "error",
+          showConfirmButton: false,
+          timer: 1000,
+          position: "top",
+        });
+        onUnLike(TweetId);
+        await userUnLikeTweet({ userToken, TweetId });
+        setCountLike(countLike - 1);
+        handleShowLike();
+        setUserInfo((pre) => {
+          return {
+            ...pre,
+            isLiked: false,
+            likeCount: pre.likeCount - 1,
+          };
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // 愛心狀態
+  function handleShowLike() {
+    if (showLike === true) {
+      setShowLike(false);
+      // console.log(showLike);
+    } else if (showLike === false) {
+      setShowLike(true);
+      // console.log(showLike);
+    }
+  }
   return (
     <>
       <UserPageConainer
@@ -224,12 +288,15 @@ function UserPage() {
           <StyledTabbar>
             <UserControl
               // render={render}
+              showLike={showLike}
               postList={postList}
               replyList={replyList}
               userLikeList={userLikeList}
               onPostList={handlePostList}
               onUserLikeList={handleUserLikeList}
               onAvatarClick={handleAvatarClick}
+              onClickShowLike={handleShowLike}
+              onLikeClick={handleLikeClick}
             />
             {/* <button className={"userTab"}>推文</button> */}
             {/* <button className={"userTab"}>回覆</button> */}
@@ -253,7 +320,7 @@ function UserPage() {
       </UserPageConainer>
       <Popular onAvatarClick={handleAvatarClick} />
 
-      {showEditModal && (
+      {/* {showEditModal && (
         <UserModal
           // userToken={userToken}
           userInfo={userInfo}
@@ -269,7 +336,7 @@ function UserPage() {
           onAvatarClick={handleAvatarClick}
           // text={text}
         />
-      )}
+      )} */}
     </>
   );
 }

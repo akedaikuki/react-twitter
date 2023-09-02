@@ -69,7 +69,7 @@ function UserFollowCard({ item, onClick, name, introduction, onAvatarClick }) {
               {/* <StyledButton className={"follow_btn"}>跟隨</StyledButton> */}
             </FollowBtnBox>
           </NameLink>
-          <p className="tweetP">{introduction}</p>
+          <p className="tweetP">{item.introduction}</p>
         </div>
       </TweetCardContainer>
     </>

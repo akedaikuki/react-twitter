@@ -54,10 +54,11 @@ function TweetsCard({
   onPostList,
   onUserLikeList,
   onAvatarClick,
+  onClickShowLike,
+  onLikeClick,
+  showLike,
 }) {
   const { showReplyModal, toggleShowReplyModal } = useContext(ShowModalContext);
-  const [showLike, setShowLike] = useState(isLiked);
-  const [countLike, setCountLike] = useState(likeCount);
   const [errorMsg, setErrorMsg] = useState(null);
   const { onLike, onUnLike } = useUserPostModal();
   const { onTheTweetId } = TweetIdContext();
@@ -66,58 +67,6 @@ function TweetsCard({
   // const userId = TweetId;
   // const tweet_id = Number(TweetId);
   const [text, setText] = useState("");
-
-  // 上傳愛心狀態
-  async function handleLikeClick(type) {
-    const userToken = localStorage.getItem("userToken");
-    if (type === "increment") {
-      setCountLike(countLike + 1);
-      handleShowLike();
-      Toast.fire({
-        title: "你已成功喜歡這則貼文",
-        icon: "success",
-        showConfirmButton: false,
-        timer: 1000,
-        position: "top",
-      });
-      try {
-        await userLikeTweet({ userToken, TweetId });
-        onLike(TweetId);
-        onPostList?.({ TweetId, Count: +1 });
-        onUserLikeList?.({ TweetId, Count: +1 });
-      } catch (error) {
-        console.error(error);
-      }
-    } else if (type === "decrement") {
-      setCountLike(countLike - 1);
-      handleShowLike();
-      Toast.fire({
-        title: "你已成功移除喜歡",
-        icon: "error",
-        showConfirmButton: false,
-        timer: 1000,
-        position: "top",
-      });
-      try {
-        await userUnLikeTweet({ userToken, TweetId });
-        onUnLike(TweetId);
-        onPostList?.({ TweetId, Count: -1 });
-        onUserLikeList?.({ TweetId, Count: -1 });
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  }
-  console.log(tweet.TweetId);
-  // 愛心狀態
-  function handleShowLike() {
-    if (showLike === true) {
-      setShowLike(false);
-      console.log(showLike);
-    } else if (showLike === false) {
-      setShowLike(true);
-    }
-  }
 
   const handleChange = (e) => {
     setErrorMsg(null);
@@ -163,11 +112,8 @@ function TweetsCard({
             {showLike ? (
               <LikeIconStyle
                 style={{ marginLeft: "15px" }}
-                onClick={() => {
-                  // handleShowLike();
-                  handleLikeClick("decrement");
-                  onTheTweetId(TweetId);
-                }}
+                onClickShowLike={onClickShowLike}
+                onLikeClick={onLikeClick}
               >
                 <LikedIcon className="like active" />
                 <span className="en-font-family">{tweet.likeCount}</span>
@@ -175,11 +121,8 @@ function TweetsCard({
             ) : (
               <LikeIconStyle
                 style={{ marginLeft: "15px" }}
-                onClick={() => {
-                  // handleShowLike();
-                  handleLikeClick("increment");
-                  onTheTweetId(TweetId);
-                }}
+                onClickShowLike={onClickShowLike}
+                onLikeClick={onLikeClick}
               >
                 <LikeIcon className="like" />
                 <span className="en-font-family">{tweet.likeCount}</span>

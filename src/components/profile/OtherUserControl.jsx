@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import clsx from "clsx";
 import TweetReplyCard from "../Cards/TweetReplyCard";
 import UsersTweetsCard from "../Cards/UsersTweetsCard";
-import { StyledTabbar } from "../../components/common/tab.styled";
+import { StyledTabbar } from "../common/tab.styled";
 // import user1 from "../../API/user1";
 // import users from "../../API/users";
 import { useNavigate, redirect, Link } from "react-router-dom";
@@ -31,8 +31,8 @@ const ContentItem = ({
         onUserLikeList={onUserLikeList}
         userLikeList={userLikeList}
         postList={postList}
-        onClickShowLike={onClickShowLike}
-        onLikeClick={onLikeClick}
+        onClickShowLike={(clickId) => onClickShowLike?.(clickId)}
+        onLikeClick={(clickId) => onClickShowLike?.(clickId)}
         onAvatarClick={(clickId) => onAvatarClick?.(clickId)}
       />
     ));
@@ -50,15 +50,15 @@ const ContentItem = ({
         onUserLikeList={onUserLikeList}
         userLikeList={userLikeList}
         postList={postList}
-        onClickShowLike={onClickShowLike}
-        onLikeClick={onLikeClick}
+        onClickShowLike={(clickId) => onClickShowLike?.(clickId)}
+        onLikeClick={(clickId) => onClickShowLike?.(clickId)}
         onAvatarClick={(clickId) => onAvatarClick?.(clickId)}
       />
     ));
   }
 };
 
-function UserControl({
+function OtherUserControl({
   // render,
   postList,
   replyList,
@@ -184,4 +184,4 @@ function UserControl({
   );
 }
 
-export default UserControl;
+export default OtherUserControl;

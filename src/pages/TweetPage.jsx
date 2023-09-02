@@ -174,7 +174,7 @@ function TweetPage() {
       });
     });
   };
-
+  console.log(tweetOwnerInfo);
   const handleLikeClick = async (type) => {
     const userToken = localStorage.getItem("userToken");
     const TweetId = localStorage.getItem("TweetId");
@@ -226,10 +226,10 @@ function TweetPage() {
   function handleShowLike() {
     if (showLike === true) {
       setShowLike(false);
-      console.log(showLike);
+      // console.log(showLike);
     } else if (showLike === false) {
       setShowLike(true);
-      console.log(showLike);
+      // console.log(showLike);
     }
   }
 
@@ -330,9 +330,9 @@ function TweetPage() {
         </PageStyle>
       </UserPageConainer>
       <Popular onAvatarClick={handleAvatarClick} />
-      {showReplyModal && (
+      {showReplyModal ? (
         <TweetReplyModal tweetOwnerInfo={tweetOwnerInfo} text={text} />
-      )}
+      ) : null}
     </>
   );
 }
