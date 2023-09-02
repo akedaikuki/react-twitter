@@ -55,20 +55,22 @@ export default function AdminTweetPage() {
       }
     }, [])
 
-    const handleDelete = async (id)=>{
+    const handleDelete = async (TweetId)=>{
       try{
-        const success = await deleteTweet({ id });
+        const success = await deleteTweet(TweetId);
         if (success) {
           setTweetList((prevTweetList) =>
           prevTweetList.filter((tweetList) =>
-          tweetList.id !== id));
+          tweetList.TweetId !== TweetId));
           console.log('Delete successful');
         } else {
           console.log('Delete failed');
+          console.log(TweetId);
         }
       } catch (error){
         console.error("Delete Tweet Failed:", error)
       }
+      
     }
 
 
