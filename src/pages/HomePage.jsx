@@ -149,9 +149,23 @@ function HomePage() {
   // const [avatar, setAvatar] = useState("");
   // const [userTextNothing, setUserTextNoting] = useState(false);
   const navigate = useNavigate();
-  const { onAddHomeList } = useUserPostModal();
+  const { onHomeList, onAddHomeList } = useUserPostModal();
 
   const avatar = localStorage.getItem("avatar");
+
+  // useEffect(() => {
+  //   const getUserDataAsync = async (userToken) => {
+  //     try {
+  //       const data = await getTweets(userToken);
+  //       onHomeList(data);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+  //   if (localStorage.getItem("userToken")) {
+  //     getUserDataAsync(localStorage.getItem("userToken"));
+  //   }
+  // }, []);
   // 點擊 avatar 後移至 other
   const handleAvatarClick = (clickId) => {
     const id = localStorage.getItem("id");
@@ -235,13 +249,14 @@ function HomePage() {
       <Popular onAvatarClick={handleAvatarClick} />
 
       {showPostModal && <SideBarModal onAddHomeList={onAddHomeList} />}
-      {showReplyModal && (
+      {/* {showReplyModal && (
         <TweetReplyModal
-          // tweet={tweet}
+          tweet={onHomeList}
+          // onAddHomeList={onAddHomeList}
           onAvatarClick={handleAvatarClick}
           text={text}
         />
-      )}
+      )} */}
     </>
   );
 }

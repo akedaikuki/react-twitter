@@ -5,7 +5,7 @@ import { StyledButton } from "../common/button.styled";
 // import user1 from "../../API/user1";
 import { TweetCardContainer } from "../common/tweet.styled";
 // import users from "../../API/users";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import userImg from "../../assets/images/img.png";
 import relativeTime from "../../utilities/relativeTime";
 import { ShowModalContext } from "../../Context/ShowModalContext";
@@ -18,6 +18,7 @@ import {
 import { useUserPostModal } from "../../Context/MainPageContext";
 import { TweetIdContext } from "../contexts/DataContext";
 import Swal from "sweetalert2";
+import { Toast } from "../../utilities/sweetalert";
 
 const ModalContainer = styled.div`
   position: absolute;
@@ -115,9 +116,10 @@ const handleSubmit = ({ onUserReply, text, tweet, toggleShowReplyModal }) => {
   if (text.trim().length > 0) {
     onUserReply?.({ TweetId: tweet.TweetId, text });
     localStorage.setItem("TweetId", tweet.TweetId);
+
     toggleShowReplyModal();
     setTimeout(() => {
-      Swal.fire({
+      Toast.fire({
         position: "top",
         title: "推文發送成功！",
         timer: 1000,
@@ -131,37 +133,24 @@ const handleSubmit = ({ onUserReply, text, tweet, toggleShowReplyModal }) => {
 function TweetReplyModal({
   onUserReply,
   text,
-  setText,
   tweet,
-  toggleShowReplyModal,
-  onAddHomeList,
+  // onAddHomeList,
   onTheTweetId,
+  onChange,
 }) {
   // const [userInfo, setUserInfo] = useState(user1);
   // const [usersInfo, setUsersInfo] = useState(users);
-  // const [text, setTweetText] = useState("");
+  // const [text, setText] = useState("");
   const [errorMsg, setErrorMsg] = useState(null);
+  const { toggleShowReplyModal } = useContext(ShowModalContext);
   // const [text, setText] = useState("");
   const tweetRef = useRef(null);
+  const navigate = useNavigate();
   // const { toggleShowReplyModal } = useContext(ShowModalContext);
 
   // const { onUserReply } = useUserPostModal();
 
   // console.log(usersInfo[0].data.user[0].avatar);
-  const handleChange = (e) => {
-    setErrorMsg(null);
-    setText(e.target.value);
-    onAddHomeList(text);
-  };
-
-  // const handlePost = async () => {
-  //   if (text.length === 0) {
-  //     return;
-  //   }
-  //   setText("");
-  //   onAddHomeList(text);
-  // };
-
   const isValid = useMemo(() => {
     if (!text) {
       setErrorMsg("內容不可空白");
@@ -172,6 +161,14 @@ function TweetReplyModal({
 
     return true;
   }, [text]);
+  // const handlePost = async () => {
+  //   if (text.length === 0) {
+  //     return;
+  //   }
+  //   setText("");
+  //   onAddHomeList(text);
+  // };
+
   // const avatar = localStorage.getItem("avatar");
 
   return (
@@ -219,11 +216,11 @@ function TweetReplyModal({
               <textarea
                 className="tweettext"
                 id="tweettext"
-                rows="3"
+                rows="5"
                 placeholder="推你的回覆"
                 ref={tweetRef}
                 value={text}
-                onChange={handleChange}
+                onChange={onChange}
               ></textarea>
 
               <div className="panel">
@@ -242,7 +239,7 @@ function TweetReplyModal({
                       toggleShowReplyModal,
                     })
                   }
-                  onAddHomeList={onAddHomeList}
+                  // onAddHomeList={onAddHomeList}
                   disabled={!isValid}
                 >
                   推文

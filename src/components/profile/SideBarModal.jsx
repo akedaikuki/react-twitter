@@ -5,6 +5,7 @@ import { StyledButton } from "../common/button.styled";
 import { ShowModalContext } from "../../Context/ShowModalContext";
 import Swal from "sweetalert2";
 import { useUserPostModal } from "../../Context/MainPageContext";
+import { Toast } from "../../utilities/sweetalert";
 
 // API
 // import user1 from "../../API/user1";
@@ -94,7 +95,7 @@ const handleSubmit = ({ onAddHomeList, text, toggleShowPostModal }) => {
     onAddHomeList(text);
     toggleShowPostModal();
     setTimeout(() => {
-      Swal.fire({
+      Toast.fire({
         position: "top",
         title: "推文發送成功！",
         timer: 1000,
@@ -102,9 +103,8 @@ const handleSubmit = ({ onAddHomeList, text, toggleShowPostModal }) => {
         showConfirmButton: false,
       });
     });
-  }
-  if (text.trim().length === 0) {
-    Swal.fire({
+  } else if (text.trim().length === 0) {
+    Toast.fire({
       position: "top",
       title: "推文發送失敗！",
       timer: 1000,
