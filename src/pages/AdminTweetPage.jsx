@@ -56,8 +56,9 @@ export default function AdminTweetPage() {
     }, [])
 
     const handleDelete = async (TweetId)=>{
+      const authToken = localStorage.getItem('authToken')
       try{
-        const success = await deleteTweet(TweetId);
+        const success = await deleteTweet(authToken, TweetId);
         if (success) {
           setTweetList((prevTweetList) =>
           prevTweetList.filter((tweetList) =>
@@ -70,7 +71,6 @@ export default function AdminTweetPage() {
       } catch (error){
         console.error("Delete Tweet Failed:", error)
       }
-      
     }
 
 
