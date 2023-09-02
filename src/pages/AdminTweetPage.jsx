@@ -55,23 +55,25 @@ export default function AdminTweetPage() {
       }
     }, [])
 
-  
-    const handleDelete = async (id) => {
-      try {
-        const authToken = localStorage.getItem('authToken')
-        await deleteTweet(id, authToken)
-        console.log('刪除成功')
-        setTweetList(tweetList.filter(item => item.TweetId !== id))
-      } catch (error) {
-        console.error(error)
+    const handleDelete = async (id)=>{
+      try{
+        const success = await deleteTweet({ id });
+        if (success) {
+          setTweetList((prevTweetList) =>
+          prevTweetList.filter((tweetList) =>
+          tweetList.id !== id));
+          console.log('Delete successful');
+        } else {
+          console.log('Delete failed');
+        }
+      } catch (error){
+        console.error("Delete Tweet Failed:", error)
       }
     }
 
 
     return (
         <>
-           
-              <div className="main">
                 <AdminSideBar />
                 <Container>
                 <Header>
@@ -87,13 +89,12 @@ export default function AdminTweetPage() {
                                account={item.tweetOwnerAccount}
                                content={item.description}
                                timestamp={item.createdAt}
-                               onClick={() => handleDelete(item.id)}
+                               onClick={()=>handleDelete(item.TweetId)}
                             />
                         )
                     })}
                 </CardContainer>
-                </Container>
-              </div>   
+                </Container>  
         </>
     )
 }

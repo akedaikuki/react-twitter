@@ -6,33 +6,33 @@ import * as style from '../common/admin.styled';
 const Container = styled.div`
     width: 210px;
     height: 314px;
+    display: flex;
     border-radius: 10px 10px 0 0;
     background-color: ${style.colors.Gray};
     margin-left: 8px;
     margin-top: 8px;
     position: relative;
     .bg-img{
-        width: 100%;
-        height: 140px;
-        object-fit: cover;
-        border-radius: 10px 10px 0 0;
+        width: 210px;
+        margin-bottom: 86px;
+        border-radius: 10px 10px 0px 0px;
     }
 `
 
 const InfoContainer = styled.div`
-    width: 100px;
-    height: 154px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: absolute;
-    top: 64px;
-    left: 55px;
+     width: 100px;
+     position: absolute;
+     top: 60px;
+     left: 50px;
+     margin: 0 auto;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+
     img{
-        width: 100px;
-        height: 100px;
-        border-radius: 50%;
-        border: ${style.colors.white} solid 4px;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
     p{
         width: 180px;

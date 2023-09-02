@@ -78,10 +78,10 @@ export const getUsers = async (authToken) => {
 }
 
 // delete 管理員 tweets_id
-export const deleteTweet = async (id, authToken) => {
+export const deleteTweet = async (authToken, id) => {
   try {
     const { data } = await axios.delete(`${apiURL}/admin/tweets/${id}`, {
-      headers: { Authorization: 'Bearer ' + authToken }
+      headers: { Authorization: 'Bearer ' + authToken },
     })
     return data
   } catch (error) {

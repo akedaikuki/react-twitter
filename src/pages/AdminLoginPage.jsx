@@ -36,7 +36,7 @@ const AdminLoginPage = () => {
         timer: 1000,
         position: "top",
       });
-      navigate("admin/tweets");
+      navigate("/admin/tweets");
       console.log(data.tweetOwnerName);
       return;
     } else {
