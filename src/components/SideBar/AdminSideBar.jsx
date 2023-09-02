@@ -70,7 +70,7 @@ function Navbar() {
       <LinkStyle>
         <NavLink
           className="adminHome-icon"
-          to={`/api/admin/tweets`}
+          to={`/admin/tweets`}
           style={({ isActive }) => ({ color: isActive && "#FF6600" })}
         >
           {({ isActive }) =>
@@ -89,7 +89,7 @@ function Navbar() {
       <LinkStyle>
         <NavLink
           className="adminUserList-icon"
-          to={`/api/admin/users`}
+          to={`/admin/users`}
           style={({ isActive }) => ({ color: isActive && "#FF6600" })}
         >
           {({ isActive }) =>
@@ -107,7 +107,7 @@ function Navbar() {
       </LinkStyle>
       <LinkStyle className="logout">
         <LogoutIcon />
-        <Link className="outIcon" to="admin/login">
+        <Link className="outIcon" to="/admin/login">
           登出
         </Link>
       </LinkStyle>
