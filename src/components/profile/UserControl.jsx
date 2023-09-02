@@ -7,12 +7,7 @@ import { StyledTabbar } from "../../components/common/tab.styled";
 // import users from "../../API/users";
 import { useNavigate, redirect, Link } from "react-router-dom";
 // import { getUserTweets } from "../../API/user";
-import {
-  getAccountInfo,
-  getUserLikeTweets,
-  getUserReplyTweets,
-  getUserTweets,
-} from "../../API/usercopy";
+import { getAccountInfo } from "../../API/usercopy";
 
 const ContentItem = ({
   activeTab,
@@ -31,6 +26,9 @@ const ContentItem = ({
         key={item.TweetId}
         TweetId={item.TweetId}
         onPostList={onPostList}
+        onUserLikeList={onUserLikeList}
+        userLikeList={userLikeList}
+        postList={postList}
         onAvatarClick={(clickId) => onAvatarClick?.(clickId)}
       />
     ));
@@ -44,68 +42,33 @@ const ContentItem = ({
         tweet={item}
         key={item.TweetId}
         TweetId={item.TweetId}
+        onPostList={onPostList}
         onUserLikeList={onUserLikeList}
+        userLikeList={userLikeList}
+        postList={postList}
         onAvatarClick={(clickId) => onAvatarClick?.(clickId)}
       />
     ));
   }
 };
 
-function UserControl() {
+function UserControl({
+  // render,
+  postList,
+  replyList,
+  userLikeList,
+  onPostList,
+  onUserLikeList,
+  onAvatarClick,
+}) {
   const [activeTab, setActiveTab] = useState("tweets");
   // const [userInfo, setUserInfo] = useState(user1);
   // const [usersInfo, setUsersInfo] = useState(users);
-  const [postList, setPostList] = useState([]);
-  const [replyList, setReplyList] = useState([]);
-  const [userLikeList, setUserLikeList] = useState([]);
+
   const [otherUser, setOtherUser] = useState([]);
   const otherId = localStorage.getItem("otherId");
   // console.log(postList);
   // const formData = new FormData();
-  const navigate = useNavigate();
-  // 取得 回覆列表
-  const handlePostList = ({ TweetId, count }) => {
-    setPostList((pre) => {
-      return pre.map((item) => {
-        if (item.TweetId === TweetId) {
-          return {
-            ...item,
-            isLiked: !item.isLiked,
-            likeCount: item.likeCount + count,
-          };
-        } else {
-          return item;
-        }
-      });
-    });
-  };
-  // 取得 喜歡的內容列表
-  const handleUserLikeList = ({ TweetId, count }) => {
-    setUserLikeList((pre) => {
-      return pre.map((item) => {
-        if (item.TweetId === TweetId) {
-          return {
-            ...item,
-            isLiked: !item.isLiked,
-            likeCount: item.likeCount + count,
-          };
-        } else {
-          return item;
-        }
-      });
-    });
-  };
-  const handleAvatarClick = (clickId) => {
-    const id = localStorage.getItem("id");
-    // const otherId = localStorage.getItem("otherId");
-    if (Number(clickId) === Number(id)) {
-      navigate(`users`);
-    } else {
-      localStorage.setItem("otherId", clickId);
-      // localStorage.setItem("TweetId", TweetId);
-      navigate(`other`);
-    }
-  };
 
   useEffect(() => {
     const getAccountInfoAsync = async () => {
@@ -123,38 +86,6 @@ function UserControl() {
     getAccountInfoAsync();
   }, [localStorage.getItem("otherId")]);
 
-  useEffect(() => {
-    const getUserDataAsync = async (userToken, id) => {
-      try {
-        const postListData = await getUserTweets(userToken, id);
-        const replyListData = await getUserReplyTweets(userToken, id);
-        const userLikeListData = await getUserLikeTweets(userToken, id);
-        if (postListData.message === "無推文資料") {
-          setPostList([]);
-        } else {
-          setPostList(postListData);
-        }
-        if (replyListData.message === "無回覆資料") {
-          setReplyList([]);
-        } else {
-          setReplyList(replyListData);
-        }
-        if (userLikeListData.message === "無Like資料") {
-          setUserLikeList([]);
-        } else {
-          setUserLikeList(userLikeListData);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    if (localStorage.getItem("userToken")) {
-      getUserDataAsync(localStorage.getItem("userToken"), otherId);
-    }
-    // else if () {
-    //   getUserDataAsync(localStorage.getItem("userToken"), otherId);
-    // }
-  }, [navigate, localStorage.getItem("otherId")]);
   // const id = localStorage.getItem("id");
   return (
     <div className="userControl">
@@ -208,9 +139,9 @@ function UserControl() {
           postList={postList}
           replyList={replyList}
           userLikeList={userLikeList}
-          onPostList={handlePostList}
-          onUserLikeList={handleUserLikeList}
-          onAvatarClick={handleAvatarClick}
+          onPostList={onPostList}
+          onUserLikeList={onUserLikeList}
+          onAvatarClick={onAvatarClick}
         />
 
         {/* {usersInfo.map((usersInfo) => {

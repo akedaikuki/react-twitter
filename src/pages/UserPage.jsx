@@ -19,26 +19,24 @@ import UserModal from "../components/profile/UserModal";
 import { ShowModalContext } from "../Context/ShowModalContext";
 import SideBarModal from "../components/profile/SideBarModal";
 import TweetReplyModal from "../components/profile/TweetReplyModal";
-import { getAccountInfo, putPersonalInfo } from "../API/usercopy";
+import {
+  getAccountInfo,
+  getUserTweets,
+  getUserReplyTweets,
+  getUserLikeTweets,
+  putPersonalInfo,
+} from "../API/usercopy";
+import { useUserPostModal } from "../Context/MainPageContext";
 // import jwtDecode from "jwt-decode";
 // import users from "../API/users";
 
-function UserPage({
-  tweet,
-  handleUserLikeList,
-  text,
-  activeTab,
-  render,
-  postList,
-  replyList,
-  userLikeList,
-  onPostList,
-  onUserLikeList,
-  onAddHomeList,
-}) {
+function UserPage() {
   const [userInfo, setUserInfo] = useState({});
   const [followerCount, setFollowerCount] = useState("");
   const [followingCount, setFollowingCount] = useState("");
+  const [postList, setPostList] = useState([]);
+  const [replyList, setReplyList] = useState([]);
+  const [userLikeList, setUserLikeList] = useState([]);
   // const [usersInfo, setUsersInfo] = useState(users);
   // const [editActive, setEditActive] = useState(false);
   const { setActiveTab } = useContext(FollowClickContext);
@@ -46,6 +44,8 @@ function UserPage({
   const { showPostModal, toggleShowPostModal } = useContext(ShowModalContext);
   const { showReplyModal, toggleShowReplyModal } = useContext(ShowModalContext);
   const navigate = useNavigate();
+  const otherId = localStorage.getItem("otherId");
+  const { onAddHomeList } = useUserPostModal();
   // console.log(users[0].username);
 
   useEffect(() => {
@@ -67,6 +67,71 @@ function UserPage({
     getAccountInfoAsync();
   }, [navigate]);
 
+  // 取得 回覆列表
+  const handlePostList = ({ TweetId, count }) => {
+    setPostList((pre) => {
+      return pre.map((item) => {
+        if (item.TweetId === TweetId) {
+          return {
+            ...item,
+            isLiked: !item.isLiked,
+            likeCount: item.likeCount + count,
+          };
+        } else {
+          return item;
+        }
+      });
+    });
+  };
+  // 取得 喜歡的內容列表
+  const handleUserLikeList = ({ TweetId, count }) => {
+    setUserLikeList((pre) => {
+      return pre.map((item) => {
+        if (item.TweetId === TweetId) {
+          return {
+            ...item,
+            isLiked: !item.isLiked,
+            likeCount: item.likeCount + count,
+          };
+        } else {
+          return item;
+        }
+      });
+    });
+  };
+
+  useEffect(() => {
+    const getUserDataAsync = async (userToken, id) => {
+      try {
+        const postListData = await getUserTweets(userToken, id);
+        const replyListData = await getUserReplyTweets(userToken, id);
+        const userLikeListData = await getUserLikeTweets(userToken, id);
+        if (postListData.message === "無推文資料") {
+          setPostList([]);
+        } else {
+          setPostList(postListData);
+        }
+        if (replyListData.message === "無回覆資料") {
+          setReplyList([]);
+        } else {
+          setReplyList(replyListData);
+        }
+        if (userLikeListData.message === "無Like資料") {
+          setUserLikeList([]);
+        } else {
+          setUserLikeList(userLikeListData);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    if (localStorage.getItem("userToken")) {
+      getUserDataAsync(localStorage.getItem("userToken"), otherId);
+    }
+    // else if () {
+    //   getUserDataAsync(localStorage.getItem("userToken"), otherId);
+    // }
+  }, [navigate, localStorage.getItem("otherId")]);
   const handleAvatarClick = (clickId) => {
     const id = localStorage.getItem("id");
     // const otherId = localStorage.getItem("otherId");
@@ -158,13 +223,12 @@ function UserPage({
 
           <StyledTabbar>
             <UserControl
-              activeTab={activeTab}
               // render={render}
               postList={postList}
               replyList={replyList}
               userLikeList={userLikeList}
-              onPostList={onPostList}
-              onUserLikeList={onUserLikeList}
+              onPostList={handlePostList}
+              onUserLikeList={handleUserLikeList}
               onAvatarClick={handleAvatarClick}
             />
             {/* <button className={"userTab"}>推文</button> */}
@@ -201,9 +265,9 @@ function UserPage({
       {showPostModal && <SideBarModal onAddHomeList={onAddHomeList} />}
       {showReplyModal && (
         <TweetReplyModal
-          tweet={tweet}
+          // tweet={tweet}
           onAvatarClick={handleAvatarClick}
-          text={text}
+          // text={text}
         />
       )}
     </>
