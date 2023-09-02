@@ -104,7 +104,7 @@ function PopularCard({
         </Link>
         <FollowBtnBox>
           <StyledButton
-            className={"following_btn" + clsx(" ", { active: item.isFollowed })}
+            className={"following_btn" + clsx(" ", { active: followState })}
             onClick={() => {
               onFollowClick?.({
                 id,

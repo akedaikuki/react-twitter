@@ -30,7 +30,7 @@ const Popularstyle = styled.div`
     /* outline: 3px solid tomato; */
   }
 `;
-function PopularList({ onAvatarClick, onFollowClick }) {
+function PopularList() {
   // const [usersInfo, setUsersInfo] = useState(users);
   const [popularData, setPopularData] = useState([]);
   const navigate = useNavigate();
@@ -84,24 +84,24 @@ function PopularList({ onAvatarClick, onFollowClick }) {
       console.error(error);
     }
   };
-  // const handleFollowClick = async () => {
-  //   const userToken = localStorage.getItem("userToken");
-  //   if (popularData.isFollowed) {
-  //     setPopularData({
-  //       ...popularData,
-  //       isFollowed: !popularData.isFollowed,
-  //     });
-  //     // setFollowState();
-  //     deleteUserFollowAsync(userToken, popularData.id);
-  //   } else {
-  //     postUserFollowAsync(userToken, popularData.id);
-  //     setPopularData({
-  //       ...popularData,
-  //       isFollowed: !popularData.isFollowed,
-  //     });
-  //     // setFollowState("true");
-  //   }
-  // };
+  const handleFollowClick = async () => {
+    const userToken = localStorage.getItem("userToken");
+    if (popularData.isFollowed) {
+      setPopularData({
+        ...popularData,
+        isFollowed: !popularData.isFollowed,
+      });
+      // setFollowState();
+      deleteUserFollowAsync(userToken, popularData.id);
+    } else {
+      postUserFollowAsync(userToken, popularData.id);
+      setPopularData({
+        ...popularData,
+        isFollowed: !popularData.isFollowed,
+      });
+      // setFollowState("true");
+    }
+  };
 
   useEffect(() => {
     const getpopularDataAsync = async () => {
@@ -111,6 +111,14 @@ function PopularList({ onAvatarClick, onFollowClick }) {
     };
     getpopularDataAsync();
   }, []);
+  const handleImgClick = (id) => {
+    localStorage.setItem("otherId", id);
+    if (id === localStorage.getItem("id")) {
+      navigate("/user/personalinfo/main");
+    } else {
+      navigate("/user/other/main");
+    }
+  };
 
   return (
     <Popularstyle className="Popularstyle">
@@ -122,8 +130,8 @@ function PopularList({ onAvatarClick, onFollowClick }) {
             item={item}
             key={item.FollowingId}
             onClick={handleClick}
-            onAvatarClick={onAvatarClick}
-            onFollowClick={onFollowClick}
+            onAvatarClick={handleImgClick}
+            onFollowClick={handleFollowClick}
           />
         ))}
         {/* {usersInfo.map((usersInfo) => (
