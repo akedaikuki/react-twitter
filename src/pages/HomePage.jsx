@@ -112,6 +112,8 @@ function HomeList({ toggleShowReplyModal, onAvatarClick }) {
           TweetId={item.TweetId}
           key={item.TweetId}
           id={item.tweetOwnerId}
+          isLiked={item.isLiked}
+          totalLikes={item.likeCount}
           // tweetOwnerId={item.data.tweetOwnerId}
           // account={item.data.tweetOwnerAccount}
           // name={item.data.tweetOwnerName}
@@ -131,13 +133,13 @@ function HomeList({ toggleShowReplyModal, onAvatarClick }) {
   );
 }
 
-function HomePage({ tweet }) {
+function HomePage() {
   // const [userInfo, setUserInfo] = useState(user1);
   // const [usersInfo, setUsersInfo] = useState(users);
   const [text, setText] = useState("");
   const [errorMsg, setErrorMsg] = useState(null);
   const { showPostModal, toggleShowPostModal } = useContext(ShowModalContext);
-  const { showReplyModal } = useContext(ShowModalContext);
+  const { showReplyModal, toggleShowReplyModal } = useContext(ShowModalContext);
   // console.log(usersInfo[0].data.user[0].avatar);
   // 串接
   // const [tweets, setTweets] = useState([]);
@@ -197,7 +199,7 @@ function HomePage({ tweet }) {
               <textarea
                 className="tweettext"
                 id="tweettext"
-                rows="5"
+                rows="3"
                 placeholder="有什麼新鮮事?"
                 value={text}
                 onAddHomeList={onAddHomeList}
@@ -224,6 +226,7 @@ function HomePage({ tweet }) {
             <div className="divider"></div>
           </div>
           <HomeList
+            onClick={toggleShowReplyModal}
             onAddHomeList={onAddHomeList}
             onAvatarClick={handleAvatarClick}
           />
@@ -234,7 +237,7 @@ function HomePage({ tweet }) {
       {showPostModal && <SideBarModal onAddHomeList={onAddHomeList} />}
       {showReplyModal && (
         <TweetReplyModal
-          tweet={tweet}
+          // tweet={tweet}
           onAvatarClick={handleAvatarClick}
           text={text}
         />
