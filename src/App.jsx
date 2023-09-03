@@ -15,6 +15,8 @@ import OtheruserPage from "./pages/OtherUser/OtherUserPage";
 import OtherFollowPage from "./pages/OtherUser/OtherFollowPage";
 import SettingPage from "./pages/SettingPage";
 import RaectPage from "./pages/ReactPage";
+import { ErrorProvider } from "./components/contexts/ErrorContext";
+
 
 function App() {
   // const TweetId = localStorage.getItem("TweetId");
@@ -22,6 +24,7 @@ function App() {
   // const id = localStorage.getItem("id");
   return (
     <div className="App">
+      <ErrorProvider>
       <BrowserRouter>
         {/* <FollowClickContextProvider> */}
         <Routes>
@@ -54,6 +57,7 @@ function App() {
         </Routes>
         {/* </FollowClickContextProvider> */}
       </BrowserRouter>
+      </ErrorProvider>
     </div>
   );
 }

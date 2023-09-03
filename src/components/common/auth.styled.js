@@ -41,6 +41,11 @@ const StyledButton = styled.button`
 
 `;
 
+const StyledTittle = styled.h3`
+  margin: 24px 0 30px 0;
+  font-weight: 700;
+`;
+
 const StyledLinkText = styled.div`
   color: #0062ff;
   font-size: 16px;
@@ -60,7 +65,6 @@ export {
   StyledAuthInputContainer as AuthInputContainer,
   StyledButton as AuthButton,
   StyledLinkText as AuthLinkText,
-
+  StyledTittle as AuthTittle,
   StyledLinkWrapper as AuthLinkWrapper,
-
 };

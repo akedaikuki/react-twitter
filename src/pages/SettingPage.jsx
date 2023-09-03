@@ -2,11 +2,11 @@ import React from "react";
 import { styled } from "styled-components";
 import { StyledButton } from "../components/common/button.styled";
 import { useState, useEffect } from "react";
-import { getUser, putUser } from "../API/setting";
 import { useNavigate } from "react-router-dom";
 
 // api
 import { patchAccountInfo } from "../API/usercopy";
+import { getUser,putUser } from "../API/setting";
 
 const SettingPageConainer = styled.div`
   width: 640px;
@@ -85,6 +85,7 @@ const SettingPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [checkPassword, setCheckPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleClick = async () => {
     if (

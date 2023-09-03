@@ -2,6 +2,25 @@ import axios from "axios";
 
 const apiURL = "https://secure-beach-58251-e97c6ff22f2e.herokuapp.com/api";
 
+const axiosInstance = axios.create({
+  baseURL: apiURL
+})
+
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('authToken');
+    console.log(token)
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    console.error(error);
+  },
+);
+
+
 export const login = async ({ account, password }) => {
   try {
     const res = await axios.post(`${apiURL}/users/signin`, {
@@ -36,42 +55,22 @@ export const login = async ({ account, password }) => {
   }
 };
 
-export const register = async ({
-  name,
-  account,
-  email,
-  password,
-  checkPassword,
-}) => {
+export const register = async ({ account, name, email, password, checkPassword }) => {
   try {
-    const res = await axios.post(`${apiURL}/users`, {
-      name,
+    const { data } = await axios.post(`${apiURL}/users`, {
       account,
+      name,
       email,
       password,
       checkPassword,
-    });
-
-    if (!res || !res.data) {
-      throw Error("nothing returned");
-    }
-
-    if (res.status >= 400 || res.data.status !== "success") {
-      throw Error("request has error");
-    }
-
-    const userData = res.data.data?.user;
-
-    if (!userData) {
-      throw Error("no user data");
-    }
-
-    return { success: true };
+    })
+    return data
   } catch (error) {
-    console.error("[Sign up Failed]:", error);
-    throw error;
+    console.error('[Register Failed]', error)
+    return error
   }
-};
+}
+
 
 export const adminLogin = async ({ account, password }) => {
   try {
@@ -93,16 +92,4 @@ export const adminLogin = async ({ account, password }) => {
   }
 };
 
-// export const checkPermission = async (userToken) => {
-//   try {
-//     const response = await axios.get(`${apiURL}/test-token`, {
-//       headers: {
-//         Authorization: "Bearer " + userToken,
-//       },
-//     });
 
-//     return response.data.success;
-//   } catch (error) {
-//     console.log("[Check Permission Failed]:", error);
-//   }
-// };

@@ -11,7 +11,6 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../API/auth";
 import Swal from "sweetalert2";
-import { checkPermission } from "../API/auth";
 
 const LoginPage = () => {
   const [account, setAccount] = useState("");
