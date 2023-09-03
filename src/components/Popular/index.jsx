@@ -13,7 +13,7 @@ const PopularContainer = styled.div`
 `;
 
 const SideBar = () => {
-  // const [sidebarData, setSidebarData] = useState([]);
+  // const [popularData, setPopularData] = useState([]);
   // const navigate = useNavigate();
 
   // const postUserFollowAsync = async (userToken, id) => {
@@ -38,8 +38,8 @@ const SideBar = () => {
   //   const { id, isFollowed } = value;
   //   if (isFollowed) {
   //     deleteUserFollowAsync(userToken, id);
-  //     setSidebarData(
-  //       sidebarData.map((item) => {
+  //     setPopularData(
+  //       popularData.map((item) => {
   //         if (item.FollowingId === id) {
   //           return {
   //             ...item,
@@ -52,8 +52,8 @@ const SideBar = () => {
   //     );
   //   } else if (!isFollowed) {
   //     postUserFollowAsync(userToken, id);
-  //     setSidebarData(
-  //       sidebarData.map((item) => {
+  //     setPopularData(
+  //       popularData.map((item) => {
   //         if (item.FollowingId === id) {
   //           return {
   //             ...item,
@@ -70,9 +70,9 @@ const SideBar = () => {
   // const handleImgClick = (id) => {
   //   localStorage.setItem("otherId", id);
   //   if (id === localStorage.getItem("id")) {
-  //     navigate("/user/personalinfo/main");
+  //     navigate("/users");
   //   } else {
-  //     navigate("/user/other/main");
+  //     navigate("/other");
   //   }
   // };
 
@@ -80,7 +80,8 @@ const SideBar = () => {
   //   const getSidebarDataAsync = async () => {
   //     const userToken = localStorage.getItem("userToken");
   //     const data = await getpopularData(userToken);
-  //     setSidebarData(data);
+  //     setPopularData(data);
+  //     console.log(popularData);
   //   };
   //   getSidebarDataAsync();
   // }, []);
