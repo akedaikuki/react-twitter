@@ -29,7 +29,7 @@ const FollowList = ({
     } else {
       return followerData.map((item) => (
         <UserFollowCard
-          key={item.UserId}
+          // key={item.UserId}
           item={item}
           activeTab={activeTab}
           onAvatarClick={(id) => onAvatarClick?.(id)}
@@ -43,7 +43,7 @@ const FollowList = ({
     } else {
       return followingData.map((item) => (
         <UserFollowCard
-          key={item.UserId}
+          // key={item.UserId}
           item={item}
           onClick={(id) => onClick?.(id)}
           activeTab={activeTab}
@@ -55,6 +55,7 @@ const FollowList = ({
 };
 
 function UserFollowPage() {
+  const [status, setStatus] = useState(0);
   const { activeTab, setActiveTab } = useContext(FollowClickContext);
   // const [userInfo, setUserInfo] = useState(user1);
   // const [usersInfo, setUsersInfo] = useState(users);
@@ -101,7 +102,8 @@ function UserFollowPage() {
     if (activeTab === "followers") {
       setFollowerData(
         followerData.map((item) => {
-          if (item.UserId === id) {
+          // console.log(followerData);
+          if (item.followingId === id) {
             return {
               ...item,
               isFollowed: !item.isFollowed,
@@ -111,12 +113,12 @@ function UserFollowPage() {
           }
         })
       );
-      const currentUser = followerData.find((item) => item.UserId === id);
+      const currentUser = followerData.find((item) => item.followingId === id);
       changeUserFollowAsync(currentUser, id, userToken);
     } else if (activeTab === "followings") {
       setFollowingData(
         followingData.map((item) => {
-          if (item.UserId === id) {
+          if (item.followingId === id) {
             return {
               ...item,
               isFollowed: !item.isFollowed,
@@ -126,21 +128,15 @@ function UserFollowPage() {
           }
         })
       );
-      const currentUser = followingData.find((item) => item.UserId === id);
+      const currentUser = followingData.find((item) => item.followingId === id);
       changeUserFollowAsync(currentUser, id, userToken);
     }
   };
 
   // 點擊頭像切換至 other
-  const handleAvatarClick = (clickId) => {
-    const id = localStorage.getItem("id");
-    if (Number(clickId) === Number(id)) {
-      navigate("/users");
-    } else {
-      localStorage.setItem("otherId", clickId);
-      // localStorage.setItem("TweetId", TweetId);
-      navigate("/other");
-    }
+  const handleAvatarClick = (id) => {
+    localStorage.setItem("otherId", id);
+    navigate("/users");
   };
 
   // 摳 api 取得 following array
@@ -156,6 +152,7 @@ function UserFollowPage() {
   // 摳 api 取得 follower array
   const getUserFollowersAsync = async (userToken, renderId) => {
     const data = await getUserFollowers(userToken, renderId);
+    // console.log(data.renderId);
     if (data.message === "無跟隨者資料") {
       setFollowerData([]);
     } else {

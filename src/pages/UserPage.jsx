@@ -125,7 +125,7 @@ function UserPage() {
           setUserLikeList([]);
         } else {
           setUserLikeList(userLikeListData);
-          console.log(userLikeListData);
+          // console.log(userLikeListData);
         }
       } catch (error) {
         console.error(error);
@@ -165,7 +165,7 @@ function UserPage() {
         });
         onLike(TweetId);
         await userLikeTweet({ userToken, TweetId });
-        console.log(TweetId);
+        // console.log(TweetId);
         setCountLike(countLike + 1);
         handleShowLike();
         setUserInfo((pre) => {

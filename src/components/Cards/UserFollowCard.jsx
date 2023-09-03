@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { TweetCardContainer } from "../common/tweet.styled";
 import { StyledButton } from "../common/button.styled";
 import { styled } from "styled-components";
+import { Toast } from "../../utilities/sweetalert";
 
 const FollowBtnBox = styled.div`
   flex-basis: calc(100% * (1 / 3));
@@ -22,28 +23,40 @@ function UserFollowCard({ item, onClick, name, introduction, onAvatarClick }) {
   // const [followState, setFollowState] = useState(item.isFollowed);
   // console.log(followState);
   // 切換follow狀態
-  // function handleFollow(e) {
-  //   e.stopPropagation();
-  //   e.preventDefault();
-  //   if (followState === 0) {
-  //     setFollowState(1);
-  //     try {
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   } else if (followState === 1) {
-  //     setFollowState(0);
-  //     try {
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   }
-  // }
+  function handleFollow() {
+    if (item.isFollowed === false) {
+      Toast.fire({
+        title: "成功追蹤使用者",
+        icon: "success",
+        showConfirmButton: false,
+        timer: 1000,
+        position: "top",
+      });
+
+      console.log(item.isFollowed);
+      try {
+      } catch (error) {
+        console.error(error);
+      }
+    } else if (item.isFollowed === true) {
+      Toast.fire({
+        title: "成功取消追蹤此使用者",
+        icon: "info",
+        showConfirmButton: false,
+        timer: 1000,
+        position: "top",
+      });
+      try {
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }
 
   return (
     <>
       {/* follow1 */}
-      <TweetCardContainer className="TweetCardContainer" id={item.UserId}>
+      <TweetCardContainer className="TweetCardContainer" id={item.followingId}>
         <div
           className="userAvatar"
           onClick={() => onAvatarClick?.(item.UserId)}
@@ -61,7 +74,8 @@ function UserFollowCard({ item, onClick, name, introduction, onAvatarClick }) {
                   "following_btn" + clsx(" ", { active: item.isFollowed })
                 }
                 onClick={() => {
-                  onClick?.(item.UserId);
+                  onClick?.(item.followingId);
+                  handleFollow();
                 }}
               >
                 {item.isFollowed ? "正在跟隨" : "跟隨"}

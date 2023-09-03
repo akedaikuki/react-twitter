@@ -22,6 +22,7 @@ import { getUserInfo } from "../API/user";
 import { useNavigate } from "react-router-dom";
 import { useUserPostModal } from "../Context/MainPageContext";
 import { getAccountInfo } from "../API/usercopy";
+import { Toast } from "../utilities/sweetalert";
 
 const HomePageContainer = styled.div`
   width: 640px;
@@ -236,9 +237,17 @@ function HomePage() {
   const handlePost = async () => {
     if (text.length === 0) {
       return;
+    } else {
+      Toast.fire({
+        title: "推文發送成功",
+        icon: "success",
+        showConfirmButton: false,
+        timer: 1500,
+        position: "top",
+      });
+      setText("");
+      onAddHomeList(text);
     }
-    setText("");
-    onAddHomeList(text);
   };
 
   const isValid = useMemo(() => {
