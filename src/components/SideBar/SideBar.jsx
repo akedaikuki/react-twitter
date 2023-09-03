@@ -54,8 +54,8 @@ const LinkStyle = styled.div`
     display: flex;
     align-items: center;
     padding: 16px;
-    position: absolute;
-    bottom: 0;
+    position: relative;
+    top: 500px;
     cursor: pointer;
   }
   .outIcon {

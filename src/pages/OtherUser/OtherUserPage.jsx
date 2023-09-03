@@ -58,6 +58,7 @@ function OtherUserPage() {
   // const useId = useParams();
   const otherId = localStorage.getItem("otherId");
   const { onLike, onUnLike, onUserReply } = useUserPostModal();
+
   // render 用戶資料
   useEffect(() => {
     const getAccountInfoAsync = async () => {
@@ -290,7 +291,7 @@ function OtherUserPage() {
       }
     }
   }
-
+  // console.log(otherUser);
   return (
     <>
       <UserPageConainer
@@ -367,7 +368,7 @@ function OtherUserPage() {
                   }}
                   // onClick={handleFollowClick}
                 >
-                  {otherUser.isFollowed ? "正在跟隨" : "跟隨"}
+                  {otherUser.isFollowed === true ? "正在跟隨" : "跟隨"}
                 </StyledButton>
                 {/* <StyledButton className="follow_btn">跟隨</StyledButton> */}
               </div>

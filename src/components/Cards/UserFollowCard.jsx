@@ -33,7 +33,6 @@ function UserFollowCard({ item, onClick, name, introduction, onAvatarClick }) {
         position: "top",
       });
 
-      console.log(item.isFollowed);
       try {
       } catch (error) {
         console.error(error);
@@ -52,7 +51,7 @@ function UserFollowCard({ item, onClick, name, introduction, onAvatarClick }) {
       }
     }
   }
-
+  console.log(item);
   return (
     <>
       {/* follow1 */}
@@ -74,11 +73,11 @@ function UserFollowCard({ item, onClick, name, introduction, onAvatarClick }) {
                   "following_btn" + clsx(" ", { active: item.isFollowed })
                 }
                 onClick={() => {
-                  onClick?.(item.followingId);
+                  onClick?.(item.followerId);
                   handleFollow();
                 }}
               >
-                {item.isFollowed ? "正在跟隨" : "跟隨"}
+                {item.isFollowed === true ? "正在跟隨" : "跟隨"}
               </StyledButton>
               {/* <StyledButton className={"follow_btn"}>跟隨</StyledButton> */}
             </FollowBtnBox>
