@@ -5,7 +5,7 @@
 ## 專案介紹
 
 - 線上部署後的主要頁面
-  - 登入頁 https://johnnytsai81.github.io/simple-twitter/login
+  - 登入頁
 
 ## 專案功能
 
@@ -29,7 +29,7 @@
 
 ### 1. 註冊頁
 
-![圖片](https://github.com/akedaikuki/react-twitter/src/assets/images/ACTwitter.png)
+![圖片](https://github.com/akedaikuki/react-twitter/blob/main/src/assets/images/ACTwitter.png)
 
 ## 環境建置
 
