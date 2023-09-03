@@ -6,7 +6,8 @@ import { useNavigate } from "react-router-dom";
 
 // api
 import { patchAccountInfo } from "../API/usercopy";
-import { getUser,putUser } from "../API/setting";
+import { getUser, putUser } from "../API/setting";
+import { Toast } from "../utilities/sweetalert";
 
 const SettingPageConainer = styled.div`
   width: 640px;
@@ -95,12 +96,33 @@ const SettingPage = () => {
       password.length === 0 ||
       checkPassword.length === 0
     ) {
-      return;
+      Toast.fire({
+        position: "top",
+        title: "設定失敗",
+        timer: 1000,
+        icon: "error",
+        showConfirmButton: false,
+      });
     }
     try {
       if (password !== checkPassword) {
+        Toast.fire({
+          position: "top",
+          title: "密碼不相同",
+          timer: 1000,
+          icon: "error",
+          showConfirmButton: false,
+        });
         console.error("Passwords do not match");
         return;
+      } else {
+        Toast.fire({
+          position: "top",
+          title: "設定成功！",
+          timer: 1000,
+          icon: "success",
+          showConfirmButton: false,
+        });
       }
       await patchAccountInfo({ name, account, email, password, checkPassword });
       console.log("Editing User Successful!");
@@ -173,7 +195,7 @@ const SettingPage = () => {
                 minlength="5"
                 maxlength="20"
                 name={checkPassword}
-                value={checkPassword}
+                value={user.checkPassword}
                 placeholder={"請再次輸入密碼"}
                 onChange={(checkPasswordInputValue) =>
                   setCheckPassword(checkPasswordInputValue)
