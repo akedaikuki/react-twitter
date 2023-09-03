@@ -9,6 +9,7 @@ import UserFollowCard from "../components/Cards/UserFollowCard";
 import user1 from "../API/user1";
 import users from "../API/users";
 import { FollowClickContext } from "../Context/FollowClickContext";
+import UserFollowingCard from "../components/Cards/UserFollowingCard";
 import {
   deleteUserFollow,
   getUserFollowers,
@@ -42,7 +43,7 @@ const FollowList = ({
       return null;
     } else {
       return followingData.map((item) => (
-        <UserFollowCard
+        <UserFollowingCard
           // key={item.UserId}
           item={item}
           onClick={(id) => onClick?.(id)}
@@ -103,7 +104,7 @@ function UserFollowPage() {
       setFollowerData(
         followerData.map((item) => {
           // console.log(followerData);
-          if (item.followingId === id) {
+          if (item.followerId === id) {
             return {
               ...item,
               isFollowed: !item.isFollowed,
@@ -113,7 +114,7 @@ function UserFollowPage() {
           }
         })
       );
-      const currentUser = followerData.find((item) => item.followingId === id);
+      const currentUser = followerData.find((item) => item.followerId === id);
       changeUserFollowAsync(currentUser, id, userToken);
     } else if (activeTab === "followings") {
       setFollowingData(
