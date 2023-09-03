@@ -7,6 +7,7 @@ import Swal from "sweetalert2";
 import { ShowModalContext } from "../../Context/ShowModalContext";
 import { useNavigate } from "react-router-dom";
 import { getAccountInfo, putPersonalInfo } from "../../API/usercopy";
+import { Toast } from "../../utilities/sweetalert";
 
 const ModalContainer = styled.div`
   box-sizing: border-box;
@@ -158,7 +159,7 @@ const UserInfoText = styled.div`
   }
 `;
 
-function UserModal({ userInfo, setUserInfo }) {
+function UserModal() {
   // const [userInfo, setUserInfo] = useState(user1);
   // const [avatar, setAvatar] = useState();
   // const [cover, setCover] = useState();
@@ -201,14 +202,43 @@ function UserModal({ userInfo, setUserInfo }) {
 
   function handleSave() {
     if (userName.length === 0) {
-      setErrorMessage({ ...errorMessage, name: "名稱不能為空白" });
+      // setErrorMessage({ ...errorMessage, name: "名稱不能為空白" });
+      Toast.fire({
+        title: "名稱不能為空白",
+        icon: "error",
+        showConfirmButton: false,
+        timer: 1500,
+        position: "top",
+      });
       return;
     } else if (userName.length > 50) {
-      setErrorMessage({ ...errorMessage, name: "名稱不能超過50字" });
+      // setErrorMessage({ ...errorMessage, name: "名稱不能超過50字" });
+      Toast.fire({
+        title: "名稱不能超過50字",
+        icon: "error",
+        showConfirmButton: false,
+        timer: 1500,
+        position: "top",
+      });
       return;
     } else if (inroduction?.length > 160) {
-      setErrorMessage({ ...errorMessage, introduction: "自我介紹最多160字" });
+      // setErrorMessage({ ...errorMessage, introduction: "自我介紹最多160字" });
+      Toast.fire({
+        title: "自我介紹最多160字",
+        icon: "error",
+        showConfirmButton: false,
+        timer: 1500,
+        position: "top",
+      });
       return;
+    } else {
+      Toast.fire({
+        title: "你已成功儲存資料",
+        icon: "success",
+        showConfirmButton: false,
+        timer: 1500,
+        position: "top",
+      });
     }
   }
 
@@ -366,6 +396,7 @@ function UserModal({ userInfo, setUserInfo }) {
               className="save active"
               onClick={handleSaveInfo}
               onSaveInfo={handleSaveClick}
+              // onSave={handleSave}
             >
               儲存
             </StyledButton>

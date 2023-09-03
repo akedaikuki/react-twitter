@@ -58,6 +58,7 @@ function OtherUserPage() {
   // const useId = useParams();
   const otherId = localStorage.getItem("otherId");
   const { onLike, onUnLike, onUserReply } = useUserPostModal();
+
   // render 用戶資料
   useEffect(() => {
     const getAccountInfoAsync = async () => {
@@ -93,6 +94,7 @@ function OtherUserPage() {
         ...otherUser,
         isFollowed: !otherUser.isFollowed,
       });
+      console.log(otherUser.isFollowed);
       // setFollowState();
       deleteUserFollowAsync(userToken, otherUser.id);
     } else {
@@ -102,12 +104,14 @@ function OtherUserPage() {
         isFollowed: !otherUser.isFollowed,
       });
       // setFollowState("true");
+      // console.log(otherUser);
     }
   };
 
   const postUserFollowAsync = async (userToken, id) => {
     try {
       const data = await postUserFollow(userToken, id);
+      console.log(data);
       return data;
     } catch (error) {
       console.error(error);
@@ -214,7 +218,7 @@ function OtherUserPage() {
         });
         onLike(TweetId);
         await userLikeTweet({ userToken, TweetId });
-        console.log(TweetId);
+        // console.log(TweetId);
         setCountLike(countLike + 1);
         setOtherUser((pre) => {
           return {
@@ -258,6 +262,36 @@ function OtherUserPage() {
     }
   }
 
+  function handleFollow() {
+    if (otherUser.isFollowed === false) {
+      Toast.fire({
+        title: "成功追蹤使用者",
+        icon: "success",
+        showConfirmButton: false,
+        timer: 1000,
+        position: "top",
+      });
+      console.log(otherUser.isFollowed);
+      try {
+      } catch (error) {
+        console.error(error);
+      }
+    } else if (otherUser.isFollowed === true) {
+      Toast.fire({
+        title: "成功取消追蹤此使用者",
+        icon: "info",
+        showConfirmButton: false,
+        timer: 1000,
+        position: "top",
+      });
+
+      try {
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }
+  // console.log(otherUser);
   return (
     <>
       <UserPageConainer
@@ -328,10 +362,13 @@ function OtherUserPage() {
                     "following_btn" +
                     clsx(" ", { active: otherUser.isFollowed })
                   }
-                  // onClick={() => {}}
-                  onClick={handleFollowClick}
+                  onClick={() => {
+                    handleFollow();
+                    handleFollowClick();
+                  }}
+                  // onClick={handleFollowClick}
                 >
-                  {otherUser.isFollowed ? "正在跟隨" : "跟隨"}
+                  {otherUser.isFollowed === true ? "正在跟隨" : "跟隨"}
                 </StyledButton>
                 {/* <StyledButton className="follow_btn">跟隨</StyledButton> */}
               </div>

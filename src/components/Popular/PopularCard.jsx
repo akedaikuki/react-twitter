@@ -4,6 +4,7 @@ import { StyledButton } from "../common/button.styled";
 import { styled } from "styled-components";
 import clsx from "clsx";
 import { Link } from "react-router-dom";
+import { Toast } from "../../utilities/sweetalert";
 // import users from "../../API/users";
 
 const PopularCardstyled = styled.li`
@@ -62,29 +63,42 @@ function PopularCard({
   // onBtnClicked,
 }) {
   // const [isFollowed, setIsFollowed] = useState(false);
-  const [followState, setFollowState] = useState(item.isFollowed);
+  // const [followState, setFollowState] = useState(item.isFollowed);
   const id = item.FollowingId;
-  // const followState = item.isFollowed;
+  // console.log(id);
 
+  const followState = item.isFollowed;
+  // console.log(followState);
   // 切換follow狀態
-  // function handleFollow(e) {
-  //   e.stopPropagation();
-  //   e.preventDefault();
-  //   if (followState === false) {
-  //     setFollowState(true);
-  //     console.log(followState);
-  //     try {
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   } else if (followState === true) {
-  //     setFollowState(false);
-  //     try {
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   }
-  // }
+  function handleFollow() {
+    if (followState === false) {
+      Toast.fire({
+        title: "成功追蹤使用者",
+        icon: "success",
+        showConfirmButton: false,
+        timer: 1000,
+        position: "top",
+      });
+
+      console.log(followState);
+      try {
+      } catch (error) {
+        console.error(error);
+      }
+    } else if (followState === true) {
+      Toast.fire({
+        title: "成功取消追蹤此使用者",
+        icon: "info",
+        showConfirmButton: false,
+        timer: 1000,
+        position: "top",
+      });
+      try {
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }
 
   return (
     <>
@@ -105,16 +119,16 @@ function PopularCard({
         </Link>
         <FollowBtnBox>
           <StyledButton
-            className={"following_btn" + clsx(" ", { active: followState })}
+            className={"following_btn" + clsx(" ", { active: item.isFollowed })}
             onClick={() => {
-              onFollowClick?.({
+              onClick?.({
                 id,
                 followState,
-                // handleFollow,
               });
+              handleFollow();
             }}
           >
-            {followState === true ? "正在跟隨" : "跟隨"}
+            {item.isFollowed ? "正在跟隨" : "跟隨"}
           </StyledButton>
         </FollowBtnBox>
       </PopularCardstyled>

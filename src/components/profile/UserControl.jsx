@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import clsx from "clsx";
 import TweetReplyCard from "../Cards/TweetReplyCard";
 import UsersTweetsCard from "../Cards/UsersTweetsCard";
@@ -7,7 +7,10 @@ import { StyledTabbar } from "../../components/common/tab.styled";
 // import users from "../../API/users";
 import { useNavigate, redirect, Link } from "react-router-dom";
 // import { getUserTweets } from "../../API/user";
-import { getAccountInfo } from "../../API/usercopy";
+import { getAccountInfo, getTweets } from "../../API/usercopy";
+import TweetReplyModal from "./TweetReplyModal";
+import { ShowModalContext } from "../../Context/ShowModalContext";
+import { useUserPostModal } from "../../Context/MainPageContext";
 
 const ContentItem = ({
   activeTab,
@@ -76,6 +79,40 @@ function UserControl({
   const [activeTab, setActiveTab] = useState("tweets");
   // const [userInfo, setUserInfo] = useState(user1);
   // const [usersInfo, setUsersInfo] = useState(users);
+  const { showReplyModal } = useContext(ShowModalContext);
+  const { onUserReply } = useUserPostModal();
+  const [personalInfo, setPersonalInfo] = useState({});
+  const { onHomeList } = useUserPostModal();
+  useEffect(() => {
+    const getAccountInfoAsync = async () => {
+      try {
+        const userToken = localStorage.getItem("userToken");
+        const id = localStorage.getItem("id");
+        const data = await getAccountInfo(userToken, id);
+        setPersonalInfo(data);
+        // console.log(data);
+        localStorage.setItem("tweetCount", data.tweetCount);
+        localStorage.setItem("userName", data.name);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getAccountInfoAsync();
+  }, []);
+
+  useEffect(() => {
+    const getUserDataAsync = async (userToken) => {
+      try {
+        const data = await getTweets(userToken);
+        onHomeList(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    if (localStorage.getItem("userToken")) {
+      getUserDataAsync(localStorage.getItem("userToken"));
+    }
+  }, []);
 
   // const id = localStorage.getItem("id");
   return (
@@ -136,6 +173,24 @@ function UserControl({
           onClickShowLike={onClickShowLike}
           onLikeClick={onLikeClick}
         />
+        {showReplyModal ? (
+          <TweetReplyModal
+            // tweetId={replyToData.tweetId}
+            // avatar={replyToData.avatar}
+            // name={replyToData.name}
+            // account={replyToData.account}
+            // createdAt={replyToData.createdAt}
+            // description={replyToData.description}
+            personalInfo={personalInfo}
+            // TweetId={TweetId}
+            // text={text}
+            // setText={setText}
+            // tweet={homeList}
+            onUserReply={onUserReply}
+            // errorMsg={errorMsg}
+            // onChange={handleChange}
+          />
+        ) : null}
 
         {/* {usersInfo.map((usersInfo) => {
           if (activeTab === "replied_tweets") {

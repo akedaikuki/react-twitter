@@ -25,7 +25,7 @@ function TweetReplyCard({ tweet, id, reply, onAvatarClick }) {
     ReplyerName = tweet.replyerName;
     ReplyerAccount = tweet.replyerAccount;
   }
-  console.log(tweet.tweetOwnerId);
+  // console.log(tweet.tweetOwnerId);
   return (
     <>
       {/* reoly */}

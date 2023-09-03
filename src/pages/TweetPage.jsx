@@ -185,7 +185,7 @@ function TweetPage() {
           title: "你已成功喜歡這則貼文",
           icon: "success",
           showConfirmButton: false,
-          timer: 1000,
+          timer: 1500,
           position: "top",
         });
         onLike(TweetId);
@@ -204,7 +204,7 @@ function TweetPage() {
           title: "你已成功移除喜歡",
           icon: "error",
           showConfirmButton: false,
-          timer: 1000,
+          timer: 1500,
           position: "top",
         });
         onUnLike(TweetId);
