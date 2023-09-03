@@ -98,9 +98,9 @@ function HomeList({
   onAvatarClick,
 }) {
   const { homeList, onHomeList } = useUserPostModal();
-  const [replyToData, setReplyToData] = useState({});
+  // const [replyToData, setReplyToData] = useState({});
   const [personalInfo, setPersonalInfo] = useState({});
-  const [replyTweetId, setReplyTweetId] = useState();
+  // const [replyTweetId, setReplyTweetId] = useState();
   const { showReplyModal, toggleShowReplyModal } = useContext(ShowModalContext);
   useEffect(() => {
     const getUserDataAsync = async (userToken) => {
