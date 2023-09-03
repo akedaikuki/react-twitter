@@ -271,7 +271,7 @@ function OtherUserPage() {
         timer: 1000,
         position: "top",
       });
-      console.log(otherUser.isFollowed);
+      // console.log(otherUser.isFollowed);
       try {
       } catch (error) {
         console.error(error);
@@ -291,7 +291,7 @@ function OtherUserPage() {
       }
     }
   }
-  // console.log(otherUser);
+  // console.log(otherUser.isFollowed);
   return (
     <>
       <UserPageConainer
@@ -368,7 +368,7 @@ function OtherUserPage() {
                   }}
                   // onClick={handleFollowClick}
                 >
-                  {otherUser.isFollowed === true ? "正在跟隨" : "跟隨"}
+                  {otherUser.isFollowed ? "正在跟隨" : "跟隨"}
                 </StyledButton>
                 {/* <StyledButton className="follow_btn">跟隨</StyledButton> */}
               </div>

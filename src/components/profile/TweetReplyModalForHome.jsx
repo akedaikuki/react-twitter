@@ -178,6 +178,7 @@ function TweetReplyModal({
       setErrorMsg("內容不可空白");
       return false;
     } else if (text.length > 140) {
+      setErrorMsg("");
       return false;
     }
 

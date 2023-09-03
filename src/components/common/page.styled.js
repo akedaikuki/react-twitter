@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const PageStyle = styled.div`
   position: relative;
   box-sizing: border-box;
-  height: 100vh;
+  height: 110vh;
   width: 640px;
   border: 1px solid var(--border_gray);
   overflow-y: scroll;

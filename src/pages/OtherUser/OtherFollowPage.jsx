@@ -87,7 +87,7 @@ function OutuserFollowPage() {
     if (activeTab === "followers") {
       setFollowerData(
         followerData.map((item) => {
-          if (item.followingId === id) {
+          if (item.followerId === id) {
             return {
               ...item,
               isFollowed: !item.isFollowed,
