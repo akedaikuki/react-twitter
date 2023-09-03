@@ -24,7 +24,7 @@ function UserFollowCard({ item, onClick, name, introduction, onAvatarClick }) {
   // console.log(followState);
   // 切換follow狀態
   function handleFollow() {
-    if (item.isFollowed === false) {
+    if (item.isFollowed === true) {
       Toast.fire({
         title: "成功追蹤使用者",
         icon: "success",
@@ -37,7 +37,7 @@ function UserFollowCard({ item, onClick, name, introduction, onAvatarClick }) {
       } catch (error) {
         console.error(error);
       }
-    } else if (item.isFollowed === true) {
+    } else if (item.isFollowed === false) {
       Toast.fire({
         title: "成功取消追蹤此使用者",
         icon: "info",
@@ -51,7 +51,7 @@ function UserFollowCard({ item, onClick, name, introduction, onAvatarClick }) {
       }
     }
   }
-  console.log(item);
+  // console.log(item);
   return (
     <>
       {/* follow1 */}
@@ -70,14 +70,15 @@ function UserFollowCard({ item, onClick, name, introduction, onAvatarClick }) {
             <FollowBtnBox>
               <StyledButton
                 className={
-                  "following_btn" + clsx(" ", { active: item.isFollowed })
+                  "following_btn" +
+                  clsx(" ", { active: item.isFollowed === false })
                 }
                 onClick={() => {
                   onClick?.(item.followerId);
                   handleFollow();
                 }}
               >
-                {item.isFollowed === true ? "正在跟隨" : "跟隨"}
+                {item.isFollowed ? "跟隨" : "正在跟隨"}
               </StyledButton>
               {/* <StyledButton className={"follow_btn"}>跟隨</StyledButton> */}
             </FollowBtnBox>

@@ -212,11 +212,7 @@ function UserPage() {
   }
   return (
     <>
-      <UserPageConainer
-        className="userPageConainer"
-        // active={editActive}
-        // onClose={handleClose}
-      >
+      <UserPageConainer className="userPageConainer">
         <PageStyle>
           <header>
             <TurnbackIcon
@@ -238,11 +234,7 @@ function UserPage() {
                 <img src={userInfo.avatar} alt="avatar" className="avatarImg" />
               </div>
 
-              <div
-                className="editInfo"
-                // active={editActive}
-                // onClose={handleClose}
-              >
+              <div className="editInfo">
                 {/* {editActive ? <UserModal onClose={handleClose} /> : null} */}
               </div>
 
@@ -265,7 +257,6 @@ function UserPage() {
                   className="followingText"
                   onClick={() => {
                     setActiveTab("followings");
-                    // navigate("followings");
                   }}
                 >
                   <span>{userInfo.followingCount} 個</span>
@@ -276,7 +267,6 @@ function UserPage() {
                   className="followerText"
                   onClick={() => {
                     setActiveTab("followers");
-                    // navigate("followers");
                   }}
                 >
                   <span> {userInfo.followerCount} 位</span>

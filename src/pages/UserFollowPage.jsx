@@ -88,6 +88,7 @@ function UserFollowPage() {
   const changeUserFollowAsync = async (currentUser, id, userToken) => {
     try {
       if (currentUser.isFollowed) {
+        console.log(currentUser.isFollowed);
         await deleteUserFollow(userToken, id);
       } else if (!currentUser.isFollowed) {
         await postUserFollow(userToken, id);
@@ -133,7 +134,8 @@ function UserFollowPage() {
       changeUserFollowAsync(currentUser, id, userToken);
     }
   };
-
+  // console.log(followingData);
+  // console.log(followerData);
   // 點擊頭像切換至 other
   const handleAvatarClick = (id) => {
     localStorage.setItem("otherId", id);

@@ -68,7 +68,7 @@ function PopularCard({
   // console.log(id);
 
   const followState = item.isFollowed;
-  // console.log(followState);
+  console.log(followState);
   // 切換follow狀態
   function handleFollow() {
     if (followState === false) {
@@ -80,7 +80,7 @@ function PopularCard({
         position: "top",
       });
 
-      console.log(followState);
+      // console.log(followState);
       try {
       } catch (error) {
         console.error(error);
