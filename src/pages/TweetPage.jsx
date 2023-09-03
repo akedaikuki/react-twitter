@@ -138,6 +138,7 @@ function TweetPage() {
   const { onAddHomeList } = useUserPostModal();
   const { onTheTweetId } = TweetIdContext();
   const TweetId = localStorage.getItem("TweetId");
+
   useEffect(() => {
     const userToken = localStorage.getItem("userToken");
     const TweetId = localStorage.getItem("TweetId");
@@ -174,7 +175,7 @@ function TweetPage() {
       });
     });
   };
-  console.log(tweetOwnerInfo);
+  // console.log(tweetOwnerInfo);
   const handleLikeClick = async (type) => {
     const userToken = localStorage.getItem("userToken");
     const TweetId = localStorage.getItem("TweetId");

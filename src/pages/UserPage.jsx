@@ -125,6 +125,7 @@ function UserPage() {
           setUserLikeList([]);
         } else {
           setUserLikeList(userLikeListData);
+          console.log(userLikeListData);
         }
       } catch (error) {
         console.error(error);

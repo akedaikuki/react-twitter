@@ -46,7 +46,7 @@ function PopularList() {
       deleteUserFollowAsync(userToken, id);
       setFollowData(
         followData.map((item) => {
-          if (item.FollowerId === id) {
+          if (item.FollowingId === id) {
             return {
               ...item,
               isFollowed: !item.isFollowed,
@@ -60,7 +60,7 @@ function PopularList() {
       postUserFollowAsync(userToken, id);
       setFollowData(
         followData.map((item) => {
-          if (item.FollowerId === id) {
+          if (item.FollowingId === id) {
             return {
               ...item,
               isFollowed: !item.isFollowed,

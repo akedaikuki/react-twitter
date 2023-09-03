@@ -25,6 +25,8 @@ const ContentItem = ({
     return postList.map((item) => (
       <UsersTweetsCard
         tweet={item}
+        isLiked={item.isLiked}
+        likeCount={item.likeCount}
         key={item.TweetId}
         TweetId={item.TweetId}
         onPostList={onPostList}
@@ -44,6 +46,8 @@ const ContentItem = ({
     return userLikeList.map((item) => (
       <UsersTweetsCard
         tweet={item}
+        isLiked={item.isLiked}
+        likeCount={item.likeCount}
         key={item.TweetId}
         TweetId={item.TweetId}
         onPostList={onPostList}

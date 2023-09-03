@@ -62,16 +62,17 @@ function PopularCard({
   // onBtnClicked,
 }) {
   // const [isFollowed, setIsFollowed] = useState(false);
-  // const [followState, setFollowState] = useState(item.isFollowed);
-  const id = item.FollowerId;
-  const followState = item.isFollowed;
-  // console.log(followState);
+  const [followState, setFollowState] = useState(item.isFollowed);
+  const id = item.FollowingId;
+  // const followState = item.isFollowed;
+
   // 切換follow狀態
   // function handleFollow(e) {
   //   e.stopPropagation();
   //   e.preventDefault();
   //   if (followState === false) {
   //     setFollowState(true);
+  //     console.log(followState);
   //     try {
   //     } catch (error) {
   //       console.error(error);
@@ -90,7 +91,7 @@ function PopularCard({
       <PopularCardstyled>
         <div className="userAvatar" to="">
           <img
-            src={item.FollowerAvatar}
+            src={item.FollowingAvatar}
             alt="other User's avatar"
             onClick={() => {
               // onImgClick?.(id);
@@ -99,12 +100,12 @@ function PopularCard({
           />
         </div>
         <Link className="user_text" to="">
-          <p className="username">{item.FollowerName}</p>
-          <p className="useraccount">@{item.FollowerAccount}</p>
+          <p className="username">{item.FollowingName}</p>
+          <p className="useraccount">@{item.FollowingAccount}</p>
         </Link>
         <FollowBtnBox>
           <StyledButton
-            className={"following_btn" + clsx(" ", { active: item.isFollowed })}
+            className={"following_btn" + clsx(" ", { active: followState })}
             onClick={() => {
               onFollowClick?.({
                 id,
@@ -113,7 +114,7 @@ function PopularCard({
               });
             }}
           >
-            {item.isFollowed ? "正在跟隨" : "跟隨"}
+            {followState === true ? "正在跟隨" : "跟隨"}
           </StyledButton>
         </FollowBtnBox>
       </PopularCardstyled>
