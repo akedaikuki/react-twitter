@@ -23,6 +23,8 @@ import { ReactComponent as AdminUserListActiveLogo } from "./adminUserListActive
 import { ReactComponent as LikeIconLogo } from "./like-icon@24.svg";
 import { ReactComponent as PostsIconLogo } from "./posts-icon.svg";
 import { ReactComponent as XLogo } from "./iconX.svg";
+import { ReactComponent as CheckIcon } from "./notiCheck.svg";
+import { ReactComponent as ErrorIcon } from "./noti-icon.svg";
 
 export {
   BrandLogo,
@@ -50,4 +52,6 @@ export {
   LikeIconLogo,
   PostsIconLogo,
   XLogo,
+  CheckIcon,
+  ErrorIcon,
 };

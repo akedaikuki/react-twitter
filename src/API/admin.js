@@ -2,6 +2,25 @@ import axios from "axios";
 
 const apiURL = "https://secure-beach-58251-e97c6ff22f2e.herokuapp.com/api";
 
+const axiosInstance = axios.create({
+  baseURL: apiURL
+})
+
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('authToken');
+    console.log(token)
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    console.error(error);
+  },
+);
+
+
 
 export const adminLogin = async ({ account, password }) => {
   try {
@@ -36,25 +55,6 @@ export const adminLogin = async ({ account, password }) => {
     };
   }
 }
-
-
-const axiosInstance = axios.create({
-  baseURL: apiURL
-})
-
-axiosInstance.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem('authToken');
-    console.log(token)
-    if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => {
-    console.error(error);
-  },
-);
 
 // get 管理員 tweets
 export const getTweets = async (authToken) => {

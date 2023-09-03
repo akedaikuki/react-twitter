@@ -15,6 +15,8 @@ import OtheruserPage from "./pages/OtherUser/OtherUserPage";
 import OtherFollowPage from "./pages/OtherUser/OtherFollowPage";
 import SettingPage from "./pages/SettingPage";
 import RaectPage from "./pages/ReactPage";
+import { ErrorProvider } from "./components/contexts/ErrorContext";
+
 
 export const ClickingContext = createContext({
   clicking: false,
@@ -28,6 +30,7 @@ function App() {
   // const id = localStorage.getItem("id");
   return (
     <div className="App">
+      <ErrorProvider>
       <BrowserRouter>
         <ClickingContext.Provider value={{ clicking, setClicking }}>
           {/* <FollowClickContextProvider> */}
@@ -62,6 +65,7 @@ function App() {
           {/* </FollowClickContextProvider> */}
         </ClickingContext.Provider>
       </BrowserRouter>
+      </ErrorProvider>
     </div>
   );
 }

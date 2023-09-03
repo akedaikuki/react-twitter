@@ -21,31 +21,50 @@ axiosInstance.interceptors.request.use(
     }
 )
 
-
-
 // get使用者
-export const getUser = async () => {
-    try {
-        const res = await axiosInstance.get(`${apiURL}/users/${userId}`);
-        return res
-    } catch (error) {
-        console.error("[Get user failed]", error)
-    }
-};
+export const getUser = async (userId) => {
+  try {
+    const { data } = await axiosInstance.get(`${apiURL}/users${userId}`)
+    if (data)
+    return data
+  } catch (error) {
+    console.error('[Get user info Failed], error')
+    return error
+  }
+}
 
 // put編輯個人資料
-export const putUser = async ({name, account, email, password, checkPassword}) => {
-    try {
-      const res = await axiosInstance.put(`${apiURL}/users/${userId}`, {
-          name,
-          account,
-          email,
-          password,
-          checkPassword
-      });
-      return res.data
-    } catch (error) {
-      console.error('[PUT User failed]: ', error);
-    }
+export const putUser = async ({ account, name, email, password, checkPassword, userId}) => {
+  try {
+    const { data } = await axiosInstance.put(`${apiURL}/users${userId}`, {
+      account,
+      name,
+      email,
+      password,
+      checkPassword,
+    })
+    return data
+  } catch (error) {
+    console.error('[Set account Failed]', error)
+    console.log(error.message)
+    return error
   }
+}
 
+// patch個人資料
+export const patchUser = async ({ account, name, email, password, checkPassword, userId}) => {
+  try {
+    const { data } = await axiosInstance.patch(`${apiURL}/users${userId}`, {
+      account,
+      name,
+      email,
+      password,
+      checkPassword,
+    })
+    return data
+  } catch (error) {
+    console.error('[Set account Failed]', error)
+    console.log(error.message)
+    return error
+  }
+}
