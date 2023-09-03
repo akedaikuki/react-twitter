@@ -10,6 +10,7 @@ import { useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { register } from "../API/auth";
 import Swal from "sweetalert2";
+import { useErrorContext } from "../components/contexts/ErrorContext";
 
 const SignUpPage = () => {
   const [account, setAccount] = useState("");
@@ -18,6 +19,16 @@ const SignUpPage = () => {
   const [password, setPassword] = useState("");
   const [checkPassword, setCheckPassword] = useState("");
   const navigate = useNavigate();
+
+  const {
+    accountError,
+    nameError,
+    emailError,
+    passwordError,
+    checkPasswordError,
+    useResetErrorsEffect,
+  } = useErrorContext();
+  useResetErrorsEffect();
 
   const isValid = useMemo(() => {
     if (!account || account.length > 50) {
@@ -83,6 +94,7 @@ const SignUpPage = () => {
           label="帳號"
           placeholder="請輸入帳號"
           value={account}
+          error={accountError}
           onChange={(accountInputValue) => setAccount(accountInputValue)}
         />
       </AuthInputContainer>
@@ -92,6 +104,7 @@ const SignUpPage = () => {
           label="名稱"
           placeholder="請輸入名稱"
           value={name}
+          error={nameError}
           onChange={(nameInputValue) => setName(nameInputValue)}
         />
       </AuthInputContainer>
@@ -101,6 +114,7 @@ const SignUpPage = () => {
           label="Email"
           placeholder="請輸入Email"
           value={email}
+          error={emailError}
           onChange={(emailInputValue) => setEmail(emailInputValue)}
         />
       </AuthInputContainer>
@@ -111,6 +125,7 @@ const SignUpPage = () => {
           label="密碼"
           placeholder="請輸入密碼"
           value={password}
+          error={passwordError}
           onChange={(passwordInputValue) => setPassword(passwordInputValue)}
         />
       </AuthInputContainer>
@@ -121,6 +136,7 @@ const SignUpPage = () => {
           label="密碼確認"
           placeholder="請再次輸入密碼"
           value={checkPassword}
+          error={checkPasswordError}
           onChange={(checkPasswordInputValue) => setCheckPassword(checkPasswordInputValue)}
         />
       </AuthInputContainer>

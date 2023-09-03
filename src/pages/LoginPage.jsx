@@ -12,6 +12,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { login } from "../API/auth";
 import Swal from "sweetalert2";
 
+
 const LoginPage = () => {
   const [account, setAccount] = useState("");
   const [password, setPassword] = useState("");
