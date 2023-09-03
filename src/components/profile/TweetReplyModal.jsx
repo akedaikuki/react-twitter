@@ -19,6 +19,7 @@ import { useUserPostModal } from "../../Context/MainPageContext";
 import { TweetIdContext } from "../contexts/DataContext";
 import Swal from "sweetalert2";
 import { Toast } from "../../utilities/sweetalert";
+import { getSingleTweetInfo, getTweets } from "../../API/usercopy";
 
 const ModalContainer = styled.div`
   position: absolute;
@@ -112,10 +113,15 @@ const StyledConnectLine = styled.div`
   }
 `;
 
-const handleSubmit = ({ onUserReply, text, tweet, toggleShowReplyModal }) => {
+const handleSubmit = ({
+  onUserReply,
+  text,
+  replyTweet,
+  toggleShowReplyModal,
+}) => {
   if (text.trim().length > 0) {
-    onUserReply?.({ TweetId: tweet.TweetId, text });
-    localStorage.setItem("TweetId", tweet.TweetId);
+    onUserReply?.({ TweetId: replyTweet.TweetId, text });
+    localStorage.setItem("TweetId", replyTweet.TweetId);
 
     toggleShowReplyModal();
     setTimeout(() => {
@@ -132,15 +138,18 @@ const handleSubmit = ({ onUserReply, text, tweet, toggleShowReplyModal }) => {
 
 function TweetReplyModal({
   onUserReply,
-  text,
-  tweet,
+  personalInfo,
+  // text,
+  // tweet,
   // onAddHomeList,
-  onTheTweetId,
+  // onTheTweetId,
   onChange,
 }) {
+  const { homeList, onHomeList, onAddHomeList } = useUserPostModal();
   // const [userInfo, setUserInfo] = useState(user1);
   // const [usersInfo, setUsersInfo] = useState(users);
-  // const [text, setText] = useState("");
+  const [text, setText] = useState("");
+  const [replyTweet, setReplyTweet] = useState([]);
   const [errorMsg, setErrorMsg] = useState(null);
   const { toggleShowReplyModal } = useContext(ShowModalContext);
   // const [text, setText] = useState("");
@@ -148,6 +157,49 @@ function TweetReplyModal({
   const navigate = useNavigate();
   // const { toggleShowReplyModal } = useContext(ShowModalContext);
 
+  useEffect(() => {
+    const userToken = localStorage.getItem("userToken");
+    const TweetId = localStorage.getItem("TweetId");
+    const getDataAsync = async ({ userToken, TweetId }) => {
+      try {
+        const data = await getSingleTweetInfo({ userToken, TweetId });
+
+        setReplyTweet(data);
+        console.log(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    if (userToken) {
+      getDataAsync({ userToken, TweetId });
+    }
+  }, [localStorage.getItem("replyListLength")]);
+
+  // 點擊 avatar 後移至 other
+  const handleAvatarClick = (clickId) => {
+    const id = localStorage.getItem("id");
+    // const otherId = localStorage.getItem("otherId");
+    if (Number(clickId) === Number(id)) {
+      navigate(`/users`);
+    } else {
+      localStorage.setItem("otherId", clickId);
+      // localStorage.setItem("TweetId", TweetId);
+      navigate(`/other`);
+    }
+  };
+
+  const handleChange = (e) => {
+    setErrorMsg(null);
+    setText(e.target.value);
+  };
+
+  const handlePost = async () => {
+    if (text.length === 0) {
+      return;
+    }
+    setText("");
+    onAddHomeList(text);
+  };
   // const { onUserReply } = useUserPostModal();
 
   // console.log(usersInfo[0].data.user[0].avatar);
@@ -185,7 +237,7 @@ function TweetReplyModal({
             >
               <div className="userAvatar">
                 <img
-                  src={tweet.tweetOwnerAvatar}
+                  src={replyTweet.tweetOwnerAvatar}
                   alt="other User's avatar"
                   style={{ marginTop: "0" }}
                 />
@@ -193,25 +245,27 @@ function TweetReplyModal({
               <StyledConnectLine />
               <div className="right">
                 <div className="name_link">
-                  <span className="name">{tweet.tweetOwnerName}</span>
-                  <span className="account">@{tweet.tweetOwnerAccount}</span>
+                  <span className="name">{replyTweet.tweetOwnerName}</span>
+                  <span className="account">
+                    @{replyTweet.tweetOwnerAccount}
+                  </span>
 
                   <span className="time">
-                    ・{relativeTime(tweet.createdAt)}
+                    ・{relativeTime(replyTweet.createdAt)}
                   </span>
                 </div>
                 <div className="tweetContent_link">
-                  <p className="tweetP">{tweet.description}</p>
+                  <p className="tweetP">{replyTweet.description}</p>
                 </div>
 
                 {/*  */}
                 <p className="reply_to">
-                  回覆 <span>@{tweet.tweetOwnerAccount}</span>
+                  回覆 <span>@{replyTweet.tweetOwnerAccount}</span>
                 </p>
               </div>
             </TweetCardContainer>
             <Tweettextbox className="Tweettextbox">
-              <img src={tweet.tweetOwnerAvatar} alt="user avatar" />
+              <img src={personalInfo.tweetOwnerAvatar} alt="user avatar" />
 
               <textarea
                 className="tweettext"
@@ -220,7 +274,7 @@ function TweetReplyModal({
                 placeholder="推你的回覆"
                 ref={tweetRef}
                 value={text}
-                onChange={onChange}
+                onChange={handleChange}
               ></textarea>
 
               <div className="panel">
@@ -233,12 +287,13 @@ function TweetReplyModal({
                   className="tweet_post_btn"
                   onClick={() =>
                     handleSubmit({
-                      tweet,
+                      replyTweet,
                       text,
                       onUserReply,
                       toggleShowReplyModal,
                     })
                   }
+                  // onClick={handlePost}
                   // onAddHomeList={onAddHomeList}
                   disabled={!isValid}
                 >

@@ -200,7 +200,7 @@ function TweetsCard({
           {/*  */}
         </div>
       </TweetCardContainer>
-      {showReplyModal ? (
+      {/* {showReplyModal ? (
         <TweetReplyModal
           TweetId={TweetId}
           text={text}
@@ -209,7 +209,7 @@ function TweetsCard({
           errorMsg={errorMsg}
           onChange={handleChange}
         />
-      ) : null}
+      ) : null} */}
     </>
   );
 }
