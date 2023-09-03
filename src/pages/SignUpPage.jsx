@@ -10,7 +10,11 @@ import { useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { register } from "../API/auth";
 import Swal from "sweetalert2";
+
 import { useErrorContext } from "../components/contexts/ErrorContext";
+
+import { Toast } from "../utilities/sweetalert";
+
 
 const SignUpPage = () => {
   const [account, setAccount] = useState("");
@@ -30,30 +34,62 @@ const SignUpPage = () => {
   } = useErrorContext();
   useResetErrorsEffect();
 
+
   const isValid = useMemo(() => {
     if (!account || account.length > 50) {
-      return false
+      Toast.fire({
+        toast: true,
+        position: "top",
+        title: "帳號不能為空白!",
+        icon: "error",
+        timer: 1000,
+        showConfirmButton: false,
+      });
+      return false;
     }
     if (!name || name.length > 50) {
-      return false
+      Toast.fire({
+        toast: true,
+        position: "top",
+        title: "姓名不能為空白!",
+        icon: "error",
+        timer: 1000,
+        showConfirmButton: false,
+      });
+      return false;
     }
-    if (!email || !email.includes('@')) {
-      return false
+    if (!email || !email.includes("@")) {
+      Toast.fire({
+        toast: true,
+        position: "top",
+        title: "信箱不能為空白!不能沒有＠",
+        icon: "error",
+        timer: 1000,
+        showConfirmButton: false,
+      });
+      return false;
     }
-    if (!password) {
-      return false
+    if (password.length < 4) {
+      Toast.fire({
+        toast: true,
+        position: "top",
+        title: "密碼長度至少4位!",
+        icon: "error",
+        timer: 1000,
+        showConfirmButton: false,
+      });
+      return false;
     }
     if (!checkPassword) {
-      return false
+      return false;
     }
 
-    return true
-  }, [account, name, email, password, checkPassword])
-
+    return true;
+  }, [account, name, email, password, checkPassword]);
 
   const handleClick = async () => {
     if (!isValid) {
-      Swal.fire({
+      Toast.fire({
         toast: true,
         position: "top",
         title: "請填入正確資料!",
@@ -61,26 +97,31 @@ const SignUpPage = () => {
         timer: 1000,
         showConfirmButton: false,
       });
-      return
+      return;
     }
     const data = await register({
-      account, name, email, password, checkPassword
-    })
+      account,
+      name,
+      email,
+      password,
+      checkPassword,
+    });
 
     if (data.status === "success") {
-      Swal.fire({
+      Toast.fire({
         toast: true,
         position: "top",
-        title: "註冊成功!請重新登入",
+        title: "註冊成功!進入登入畫面",
         icon: "success",
         timer: 1000,
         showConfirmButton: false,
-      });      
-   
-      navigate('/login')
-      return
+      });
+
+      navigate("/login");
+      return;
     }
-  }
+  };
+
 
   return (
     <AuthContainer>
@@ -132,7 +173,7 @@ const SignUpPage = () => {
 
       <AuthInputContainer>
         <AuthInput
-          type="checkPassword"
+          type="password"
           label="密碼確認"
           placeholder="請再次輸入密碼"
           value={checkPassword}

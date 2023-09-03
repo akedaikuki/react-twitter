@@ -29,7 +29,7 @@ function UserFollowCard({ item, onClick, name, introduction, onAvatarClick }) {
         title: "成功追蹤使用者",
         icon: "success",
         showConfirmButton: false,
-        timer: 1000,
+        timer: 2000,
         position: "top",
       });
 
@@ -43,7 +43,7 @@ function UserFollowCard({ item, onClick, name, introduction, onAvatarClick }) {
         title: "成功取消追蹤此使用者",
         icon: "info",
         showConfirmButton: false,
-        timer: 1000,
+        timer: 2000,
         position: "top",
       });
       try {
@@ -78,7 +78,7 @@ function UserFollowCard({ item, onClick, name, introduction, onAvatarClick }) {
                   handleFollow();
                 }}
               >
-                {item.isFollowed === true ? "正在跟隨" : "跟隨"}
+                {item.isFollowed ? "正在跟隨" : "跟隨"}
               </StyledButton>
               {/* <StyledButton className={"follow_btn"}>跟隨</StyledButton> */}
             </FollowBtnBox>

@@ -251,7 +251,7 @@ function UserModal() {
     ) {
       handleSaveClick();
       handleClose();
-      handleSave();
+      // handleSave();
     }
   };
 
@@ -394,7 +394,11 @@ function UserModal() {
             <h5>編輯個人資料</h5>
             <StyledButton
               className="save active"
-              onClick={handleSaveInfo}
+              // onClick={handleSaveInfo}
+              onClick={() => {
+                handleSaveInfo();
+                handleSave();
+              }}
               onSaveInfo={handleSaveClick}
               // onSave={handleSave}
             >
@@ -461,12 +465,12 @@ function UserModal() {
             </UserInfoPicture>
             <UserInfoText>
               <input
-                label="名稱"
+                title={"名稱"}
                 value={userName}
                 errorMessage={errorMessage.name || null}
                 onChange={(event) => {
                   handleNameChange?.(event.target.value);
-                  setErrorMessage({ ...errorMessage, name: "" });
+                  setErrorMessage({ ...errorMessage, name: "名稱不能為空白" });
                 }}
               />
               <div className="caption">{userName.length}/50</div>
@@ -476,7 +480,10 @@ function UserModal() {
                 errorMessage={errorMessage.introduction || null}
                 onChange={(event) => {
                   handleIntrodrctionChange?.(event.target.value);
-                  setErrorMessage({ ...errorMessage, introduction: "" });
+                  setErrorMessage({
+                    ...errorMessage,
+                    introduction: "自我介紹最多160字",
+                  });
                 }}
               />
               <div className="caption">{inroduction.length}/160</div>
