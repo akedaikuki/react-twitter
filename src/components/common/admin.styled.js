@@ -57,9 +57,6 @@ const StyledBtn = styled.button`
   }
 `
 
-
-
-
 export {
     colors,
     styledBorder,

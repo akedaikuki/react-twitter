@@ -2,14 +2,13 @@ import axios from "axios";
 
 const apiURL = "https://secure-beach-58251-e97c6ff22f2e.herokuapp.com/api";
 
-// 登入後台
+
 export const adminLogin = async ({ account, password }) => {
   try {
     const res = await axios.post(`${apiURL}/admin/login`, {
       account,
       password,
     });
-    // 檢查是否有 res 物件回傳以及 data 是否存在
     if (!res || !res.data) {
       throw Error("nothing returned");
     }
