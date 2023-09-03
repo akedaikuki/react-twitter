@@ -60,5 +60,7 @@ export {
   StyledAuthInputContainer as AuthInputContainer,
   StyledButton as AuthButton,
   StyledLinkText as AuthLinkText,
+
   StyledLinkWrapper as AuthLinkWrapper,
+
 };

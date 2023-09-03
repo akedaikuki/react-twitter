@@ -125,6 +125,7 @@ function UserPage() {
           setUserLikeList([]);
         } else {
           setUserLikeList(userLikeListData);
+          console.log(userLikeListData);
         }
       } catch (error) {
         console.error(error);
@@ -320,7 +321,7 @@ function UserPage() {
       </UserPageConainer>
       <Popular onAvatarClick={handleAvatarClick} />
 
-      {/* {showEditModal && (
+      {showEditModal && (
         <UserModal
           // userToken={userToken}
           userInfo={userInfo}
@@ -329,7 +330,7 @@ function UserPage() {
           followingCount={followingCount}
         />
       )}
-      {showPostModal && <SideBarModal onAddHomeList={onAddHomeList} />}
+      {/* {showPostModal && <SideBarModal onAddHomeList={onAddHomeList} />}
       {showReplyModal && (
         <TweetReplyModal
           // tweet={tweet}

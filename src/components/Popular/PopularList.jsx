@@ -4,6 +4,7 @@ import { styled } from "styled-components";
 import { useNavigate } from "react-router-dom";
 import {
   deleteUserFollow,
+  getAccountInfo,
   getpopularData,
   postUserFollow,
 } from "../../API/usercopy";
@@ -30,18 +31,21 @@ const Popularstyle = styled.div`
     /* outline: 3px solid tomato; */
   }
 `;
-function PopularList({ onAvatarClick, onFollowClick }) {
+function PopularList() {
   // const [usersInfo, setUsersInfo] = useState(users);
-  const [popularData, setPopularData] = useState([]);
+  const [followData, setFollowData] = useState([]);
+  // const [followingData, setfollowingData] = useState([]);
+  const [otherUser, setOtherUser] = useState({});
   const navigate = useNavigate();
+  const otherId = localStorage.getItem("otherId");
 
   const handleClick = (value) => {
     const userToken = localStorage.getItem("userToken");
     const { id, isFollowed } = value;
     if (isFollowed) {
       deleteUserFollowAsync(userToken, id);
-      setPopularData(
-        popularData.map((item) => {
+      setFollowData(
+        followData.map((item) => {
           if (item.FollowingId === id) {
             return {
               ...item,
@@ -54,8 +58,8 @@ function PopularList({ onAvatarClick, onFollowClick }) {
       );
     } else if (!isFollowed) {
       postUserFollowAsync(userToken, id);
-      setPopularData(
-        popularData.map((item) => {
+      setFollowData(
+        followData.map((item) => {
           if (item.FollowingId === id) {
             return {
               ...item,
@@ -68,6 +72,47 @@ function PopularList({ onAvatarClick, onFollowClick }) {
       );
     }
   };
+
+  useEffect(() => {
+    const getAccountInfoAsync = async () => {
+      try {
+        const userToken = localStorage.getItem("userToken");
+        const data = await getAccountInfo(userToken, otherId);
+
+        setOtherUser(data);
+        console.log(otherId);
+        localStorage.setItem("tweetCount", data.tweetCount);
+        localStorage.setItem("userName", data.name);
+
+        // console.log(data);
+
+        return data;
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getAccountInfoAsync();
+  }, [localStorage.getItem("otherId")]);
+
+  const handleFollowClick = async () => {
+    const userToken = localStorage.getItem("userToken");
+    if (otherUser.isFollowed) {
+      setOtherUser({
+        ...otherUser,
+        isFollowed: !otherUser.isFollowed,
+      });
+      // setFollowState();
+      deleteUserFollowAsync(userToken, otherUser.id);
+    } else {
+      postUserFollowAsync(userToken, otherUser.id);
+      setOtherUser({
+        ...otherUser,
+        isFollowed: !otherUser.isFollowed,
+      });
+      // setFollowState("true");
+    }
+  };
+
   const postUserFollowAsync = async (userToken, id) => {
     try {
       const data = await postUserFollow(userToken, id);
@@ -84,60 +129,51 @@ function PopularList({ onAvatarClick, onFollowClick }) {
       console.error(error);
     }
   };
-  // const handleFollowClick = async () => {
-  //   const userToken = localStorage.getItem("userToken");
-  //   if (popularData.isFollowed) {
-  //     setPopularData({
-  //       ...popularData,
-  //       isFollowed: !popularData.isFollowed,
-  //     });
-  //     // setFollowState();
-  //     deleteUserFollowAsync(userToken, popularData.id);
-  //   } else {
-  //     postUserFollowAsync(userToken, popularData.id);
-  //     setPopularData({
-  //       ...popularData,
-  //       isFollowed: !popularData.isFollowed,
-  //     });
-  //     // setFollowState("true");
-  //   }
-  // };
 
   useEffect(() => {
     const getpopularDataAsync = async () => {
       const userToken = localStorage.getItem("userToken");
       const data = await getpopularData(userToken);
-      setPopularData(data);
+      console.log(data);
+      // setfollowingData(data);
+      setFollowData(data);
     };
     getpopularDataAsync();
   }, []);
+  const handleImgClick = (id) => {
+    localStorage.setItem("otherId", id);
+    if (id === localStorage.getItem("id")) {
+      navigate("/users");
+    } else {
+      navigate("/other");
+    }
+  };
 
   return (
     <Popularstyle className="Popularstyle">
       <h4 className="PopularTitle">推薦跟隨</h4>
       <div className="line"></div>
       <ul className="popularList">
-        {popularData.map((item) => (
+        {/* followingData.map((item) => (
+              <PopularCard
+                item={item}
+                key={item.followingId}
+                onClick={handleClick}
+                onAvatarClick={handleImgClick}
+                onFollowClick={handleFollowClick}
+              />
+            ))
+          :  */}
+        {followData.map((item) => (
           <PopularCard
             item={item}
-            key={item.FollowingId}
+            key={item.followerId}
             onClick={handleClick}
-            onAvatarClick={onAvatarClick}
-            onFollowClick={onFollowClick}
-          />
-        ))}
-        {/* {usersInfo.map((usersInfo) => (
-          <PopularCard
-            useId={usersInfo.data.user[0].id}
-            key={usersInfo.data.user[0].id}
-            avatar={usersInfo.data.user[0].avatar}
-            userId={usersInfo.data.user[0].id}
-            name={usersInfo.data.user[0].name}
-            account={usersInfo.data.user[0].account}
-            isFollowed={usersInfo.data.user[0].isFollowed}
+            onAvatarClick={handleImgClick}
+            // onFollowClick={handleFollowClick}
             // handleFollowBtnClick={handleFollowBtnClick}
           />
-        ))} */}
+        ))}
       </ul>
     </Popularstyle>
   );

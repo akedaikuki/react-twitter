@@ -10,7 +10,7 @@ import { styled } from "styled-components";
 import createTime from "../utilities/creatTime";
 import relativeTime from "../utilities/relativeTime";
 import { ShowModalContext } from "../Context/ShowModalContext";
-import TweetReplyModal from "../components/profile/TweetReplyModal";
+import TweetReplyModalForTweet from "../components/profile/TweetReplyModalForTweet";
 import { getSingleTweetInfo } from "../API/usercopy";
 import { userLikeTweet, userUnLikeTweet } from "../API/usercopy";
 import { useUserPostModal } from "../Context/MainPageContext";
@@ -138,6 +138,7 @@ function TweetPage() {
   const { onAddHomeList } = useUserPostModal();
   const { onTheTweetId } = TweetIdContext();
   const TweetId = localStorage.getItem("TweetId");
+
   useEffect(() => {
     const userToken = localStorage.getItem("userToken");
     const TweetId = localStorage.getItem("TweetId");
@@ -174,7 +175,7 @@ function TweetPage() {
       });
     });
   };
-  console.log(tweetOwnerInfo);
+  // console.log(tweetOwnerInfo);
   const handleLikeClick = async (type) => {
     const userToken = localStorage.getItem("userToken");
     const TweetId = localStorage.getItem("TweetId");
@@ -244,7 +245,11 @@ function TweetPage() {
       navigate("/other");
     }
   };
-
+  const handleChange = (e) => {
+    setErrorMsg(null);
+    setText(e.target.value);
+    // onAddHomeList(text);
+  };
   return (
     <>
       <UserPageConainer className="tweetPageConainer">
@@ -331,7 +336,13 @@ function TweetPage() {
       </UserPageConainer>
       <Popular onAvatarClick={handleAvatarClick} />
       {showReplyModal ? (
-        <TweetReplyModal tweetOwnerInfo={tweetOwnerInfo} text={text} />
+        <TweetReplyModalForTweet
+          tweet={tweetOwnerInfo}
+          onChange={handleChange}
+          text={text}
+          onUserReply={onUserReply}
+          errorMsg={errorMsg}
+        />
       ) : null}
     </>
   );

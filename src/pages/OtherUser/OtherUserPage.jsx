@@ -20,7 +20,7 @@ import {
 import Popular from "../../components/Popular";
 // import UserModal from "../components/profile/UserModal";
 // import Tweetslist from "../../components/profile/Tweetslist";
-import OtherUserControl from "../../components/profile/OtherUserControl";
+import UserControl from "../../components/profile/UserControl";
 // import users from "../../API/users";
 import { ShowModalContext } from "../../Context/ShowModalContext";
 import SideBarModal from "../../components/profile/SideBarModal";
@@ -366,7 +366,7 @@ function OtherUserPage() {
           </div>
 
           <StyledTabbar>
-            <OtherUserControl
+            <UserControl
               // render={render}
               postList={postList}
               replyList={replyList}
