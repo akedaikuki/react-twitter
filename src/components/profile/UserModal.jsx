@@ -261,6 +261,10 @@ function UserModal({ userInfo, setUserInfo }) {
   };
 
   // avatar
+  const avatarRef = useRef(userAvatar);
+  const handleOnAvatarUpload = () => {
+    avatarRef.current.click();
+  };
   const [modalAvatar, setModalAvatar] = useState("");
   const handleOnAvatar = (event) => {
     const file = event.target.files[0];
@@ -372,45 +376,55 @@ function UserModal({ userInfo, setUserInfo }) {
                 <img
                   width={640}
                   height={200}
-                  src={userCover}
+                  // src={userCover}
+                  src={user.cover}
                   alt=""
                   className="cover"
                   coverStatus={coverStatus}
                 />
                 <div className="changeCoverActions">
-                  <label htmlFor="cover" className="cameraIcon">
-                    <CameraIcon />
+                  <div htmlFor="cover" className="cameraIcon">
+                    <CameraIcon
+                      onClick={handleOnClickUpload}
+                      //
+                    />
                     <input
                       type="file"
+                      accept="image/*"
                       name="cover"
                       id="cover"
-                      src={user.cover}
-                      onOnPreview={handleOnPreview}
-                      inputfileref={inputfileref}
+                      onChange={handleOnPreview}
+                      // inputfileref={inputfileref}
                       ref={inputfileref}
-                      avatarStatus={avatarStatus}
+                      //
                     />
-                  </label>
+                  </div>
                   <CloseIcon
                     className="removeIcon"
-                    onDeletePreview={handleDeletePreview}
+                    onClick={handleDeletePreview}
                   />
                 </div>
               </div>
               <div className="modalAvatar">
                 <div className="imgBox">
-                  <label htmlFor="avatar" className="cameraIcon">
-                    <CameraIcon />
+                  <div htmlFor="avatar" className="cameraIcon">
+                    <CameraIcon onClick={handleOnAvatarUpload} />
                     <input
                       type="file"
+                      accept="image/*"
                       name="avatar"
                       id="avatar"
-                      src={user.avatar}
-                      onOnAvatar={handleOnAvatar}
-                      onClickUpload={handleOnClickUpload}
+                      ref={avatarRef}
+                      onChange={handleOnAvatar}
+                      // src={user.avatar}
                     />
-                  </label>
-                  <img src={userAvatar} alt="" />
+                  </div>
+                  <img
+                    src={user.avatar}
+                    avatarStatus={avatarStatus}
+                    // src={userAvatar}
+                    alt=""
+                  />
                 </div>
               </div>
             </UserInfoPicture>
@@ -426,7 +440,7 @@ function UserModal({ userInfo, setUserInfo }) {
               />
               <div className="caption">{userName.length}/50</div>
               <textarea
-                label={"自我介紹"}
+                label="自我介紹"
                 value={inroduction}
                 errorMessage={errorMessage.introduction || null}
                 onChange={(event) => {

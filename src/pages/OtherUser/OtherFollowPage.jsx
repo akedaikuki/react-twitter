@@ -12,6 +12,7 @@ import user1 from "../../API/user1";
 import users from "../../API/users";
 import clsx from "clsx";
 import UserFollowCard from "../../components/Cards/UserFollowCard";
+import UserFollowingCard from "../../components/Cards/UserFollowingCard";
 import {
   deleteUserFollow,
   getUserFollowers,
@@ -45,7 +46,7 @@ const FollowList = ({
       return null;
     } else {
       return followingData.map((item) => (
-        <UserFollowCard
+        <UserFollowingCard
           key={item.UserId}
           item={item}
           onClick={(id) => onClick?.(id)}
