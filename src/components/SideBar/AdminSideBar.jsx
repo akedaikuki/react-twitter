@@ -16,7 +16,7 @@ const NavbarContainer = styled.div`
 
   .navbarStyle {
     width: 178px;
-    margin-left: 113px;
+    /* margin-left: 113px; */
     margin-right: 24px;
   }
   .logo {
@@ -47,6 +47,7 @@ const LinkStyle = styled.div`
 
   &.logout {
     display: flex;
+    justify-content: center;
     align-items: center;
     padding: 16px;
     position: absolute;
