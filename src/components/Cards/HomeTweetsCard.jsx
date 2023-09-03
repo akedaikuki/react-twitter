@@ -10,6 +10,7 @@ import { userLikeTweet, userUnLikeTweet } from "../../API/usercopy";
 import { useUserPostModal } from "../../Context/MainPageContext";
 import { TweetIdContext } from "../contexts/DataContext";
 import { Toast } from "../../utilities/sweetalert";
+import Swal from "sweetalert2";
 
 const ReplyIconStyle = styled.div`
   display: flex;
@@ -72,6 +73,7 @@ function TweetsCard({
     const userToken = localStorage.getItem("userToken");
     if (type === "increment") {
       setCountLike(countLike + 1);
+
       handleShowLike();
       Toast.fire({
         title: "你已成功喜歡這則貼文",
@@ -90,7 +92,9 @@ function TweetsCard({
       }
     } else if (type === "decrement") {
       setCountLike(countLike - 1);
+
       handleShowLike();
+
       Toast.fire({
         title: "你已成功移除喜歡",
         icon: "error",
@@ -124,8 +128,31 @@ function TweetsCard({
     setText(e.target.value);
     // onAddHomeList(text);
   };
-
-  // console.log(tweet);
+  function handleTimerInterval() {
+    let timerInterval;
+    Swal.fire({
+      title: "Auto close alert!",
+      html: "I will close in <b></b> milliseconds.",
+      timer: 2000,
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading();
+        const b = Swal.getHtmlContainer().querySelector("b");
+        timerInterval = setInterval(() => {
+          b.textContent = Swal.getTimerLeft();
+        }, 100);
+      },
+      willClose: () => {
+        clearInterval(timerInterval);
+      },
+    }).then((result) => {
+      /* Read more about handling dismissals below */
+      if (result.dismiss === Swal.DismissReason.timer) {
+        console.log("I was closed by the timer");
+      }
+    });
+  }
+  // console.log(tweet.tweetOwnerId);
 
   return (
     <>
@@ -157,7 +184,15 @@ function TweetsCard({
           </Link>
           <div className="card-footer" style={{ display: "flex" }}>
             <ReplyIconStyle>
-              <ReplyIcon className="reply" onClick={toggleShowReplyModal} />
+              <ReplyIcon
+                className="reply"
+                // onClick={toggleShowReplyModal}
+                onClick={() => {
+                  toggleShowReplyModal();
+                  onTheTweetId(TweetId);
+                  handleTimerInterval();
+                }}
+              />
               <span className="en-font-family">{tweet.replyCount}</span>
             </ReplyIconStyle>
             {showLike ? (
@@ -189,7 +224,7 @@ function TweetsCard({
           {/*  */}
         </div>
       </TweetCardContainer>
-      {showReplyModal ? (
+      {/* {showReplyModal ? (
         <TweetReplyModal
           TweetId={TweetId}
           text={text}
@@ -198,7 +233,7 @@ function TweetsCard({
           errorMsg={errorMsg}
           onChange={handleChange}
         />
-      ) : null}
+      ) : null} */}
     </>
   );
 }

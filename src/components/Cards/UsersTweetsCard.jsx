@@ -54,12 +54,14 @@ function TweetsCard({
   onPostList,
   onUserLikeList,
   onAvatarClick,
-  onClickShowLike,
+  // onClickShowLike,
   onLikeClick,
-  showLike,
+  // showLike,
 }) {
   const { showReplyModal, toggleShowReplyModal } = useContext(ShowModalContext);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [showLike, setShowLike] = useState(isLiked);
+  const [countLike, setCountLike] = useState(likeCount);
   const { onLike, onUnLike } = useUserPostModal();
   const { onTheTweetId } = TweetIdContext();
   const { onUserReply } = useUserPostModal();
@@ -73,6 +75,60 @@ function TweetsCard({
     setText(e.target.value);
     // onAddHomeList(text);
   };
+
+  // 上傳愛心狀態
+  async function handleLikeClick(type) {
+    const userToken = localStorage.getItem("userToken");
+    if (type === "increment") {
+      setCountLike(countLike + 1);
+
+      handleShowLike();
+      Toast.fire({
+        title: "你已成功喜歡這則貼文",
+        icon: "success",
+        showConfirmButton: false,
+        timer: 1000,
+        position: "top",
+      });
+      try {
+        await userLikeTweet({ userToken, TweetId });
+        onLike(TweetId);
+        onPostList?.({ TweetId, Count: +1 });
+        onUserLikeList?.({ TweetId, Count: +1 });
+      } catch (error) {
+        console.error(error);
+      }
+    } else if (type === "decrement") {
+      setCountLike(countLike - 1);
+
+      handleShowLike();
+      Toast.fire({
+        title: "你已成功移除喜歡",
+        icon: "error",
+        showConfirmButton: false,
+        timer: 1000,
+        position: "top",
+      });
+      try {
+        await userUnLikeTweet({ userToken, TweetId });
+        onUnLike(TweetId);
+        onPostList?.({ TweetId, Count: -1 });
+        onUserLikeList?.({ TweetId, Count: -1 });
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }
+  // console.log(tweet.TweetId);
+  // 愛心狀態
+  function handleShowLike() {
+    if (showLike === true) {
+      setShowLike(false);
+      console.log(showLike);
+    } else if (showLike === false) {
+      setShowLike(true);
+    }
+  }
 
   // console.log(tweet);
 
@@ -106,14 +162,23 @@ function TweetsCard({
           </Link>
           <div className="card-footer" style={{ display: "flex" }}>
             <ReplyIconStyle>
-              <ReplyIcon className="reply" onClick={toggleShowReplyModal} />
+              <ReplyIcon
+                className="reply"
+                onClick={() => {
+                  toggleShowReplyModal();
+                  onTheTweetId(TweetId);
+                }}
+              />
               <span className="en-font-family">{tweet.replyCount}</span>
             </ReplyIconStyle>
             {showLike ? (
               <LikeIconStyle
                 style={{ marginLeft: "15px" }}
-                onClickShowLike={onClickShowLike}
-                onLikeClick={onLikeClick}
+                onClick={() => {
+                  // handleShowLike();
+                  handleLikeClick("decrement");
+                  onTheTweetId(TweetId);
+                }}
               >
                 <LikedIcon className="like active" />
                 <span className="en-font-family">{tweet.likeCount}</span>
@@ -121,8 +186,11 @@ function TweetsCard({
             ) : (
               <LikeIconStyle
                 style={{ marginLeft: "15px" }}
-                onClickShowLike={onClickShowLike}
-                onLikeClick={onLikeClick}
+                onClick={() => {
+                  // handleShowLike();
+                  handleLikeClick("increment");
+                  onTheTweetId(TweetId);
+                }}
               >
                 <LikeIcon className="like" />
                 <span className="en-font-family">{tweet.likeCount}</span>
