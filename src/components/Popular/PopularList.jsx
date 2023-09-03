@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import PopularCard from "./PopularCard";
 import { styled } from "styled-components";
 import { useNavigate } from "react-router-dom";
 import {
   deleteUserFollow,
   getAccountInfo,
+  getUserFollowing,
   getpopularData,
   postUserFollow,
 } from "../../API/usercopy";
+import { ClickingContext } from "../../App";
 // import users from "../../API/users";
 
 const Popularstyle = styled.div`
@@ -31,22 +33,29 @@ const Popularstyle = styled.div`
     /* outline: 3px solid tomato; */
   }
 `;
+
 function PopularList() {
   // const [usersInfo, setUsersInfo] = useState(users);
-  const [followData, setFollowData] = useState([]);
+  const [followerData, setFollowerData] = useState([]);
+  // const [followingData, setFollowingData] = useState([]);
   // const [followingData, setfollowingData] = useState([]);
-  const [otherUser, setOtherUser] = useState({});
+  // const [otherUser, setOtherUser] = useState({});
+  const { clicking, setClicking } = useContext(ClickingContext);
   const navigate = useNavigate();
   const otherId = localStorage.getItem("otherId");
+  const userToken = localStorage.getItem("userToken");
+  const tweetCount = localStorage.getItem("tweetCount");
+  const userName = localStorage.getItem("userName");
 
   const handleClick = (value) => {
     const userToken = localStorage.getItem("userToken");
     const { id, isFollowed } = value;
     if (isFollowed) {
       deleteUserFollowAsync(userToken, id);
-      setFollowData(
-        followData.map((item) => {
+      setFollowerData(
+        followerData.map((item) => {
           if (item.FollowingId === id) {
+            // console.log(item.FollowingId);
             return {
               ...item,
               isFollowed: !item.isFollowed,
@@ -58,8 +67,8 @@ function PopularList() {
       );
     } else if (!isFollowed) {
       postUserFollowAsync(userToken, id);
-      setFollowData(
-        followData.map((item) => {
+      setFollowerData(
+        followerData.map((item) => {
           if (item.FollowingId === id) {
             return {
               ...item,
@@ -73,45 +82,45 @@ function PopularList() {
     }
   };
 
-  useEffect(() => {
-    const getAccountInfoAsync = async () => {
-      try {
-        const userToken = localStorage.getItem("userToken");
-        const data = await getAccountInfo(userToken, otherId);
+  // useEffect(() => {
+  //   const getAccountInfoAsync = async () => {
+  //     try {
+  //       const userToken = localStorage.getItem("userToken");
+  //       const data = await getAccountInfo(userToken, otherId);
 
-        setOtherUser(data);
-        console.log(otherId);
-        localStorage.setItem("tweetCount", data.tweetCount);
-        localStorage.setItem("userName", data.name);
+  //       setFollowerData(data);
+  //       console.log(otherId);
+  //       localStorage.setItem("tweetCount", data.tweetCount);
+  //       localStorage.setItem("userName", data.name);
 
-        // console.log(data);
+  //       // console.log(data);
 
-        return data;
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    getAccountInfoAsync();
-  }, [localStorage.getItem("otherId")]);
+  //       return data;
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+  //   getAccountInfoAsync();
+  // }, [localStorage.getItem("otherId")]);
 
-  const handleFollowClick = async () => {
-    const userToken = localStorage.getItem("userToken");
-    if (otherUser.isFollowed) {
-      setOtherUser({
-        ...otherUser,
-        isFollowed: !otherUser.isFollowed,
-      });
-      // setFollowState();
-      deleteUserFollowAsync(userToken, otherUser.id);
-    } else {
-      postUserFollowAsync(userToken, otherUser.id);
-      setOtherUser({
-        ...otherUser,
-        isFollowed: !otherUser.isFollowed,
-      });
-      // setFollowState("true");
-    }
-  };
+  // const handleFollowClick = async () => {
+  //   const userToken = localStorage.getItem("userToken");
+  //   if (otherUser.isFollowed) {
+  //     setOtherUser({
+  //       ...otherUser,
+  //       isFollowed: !otherUser.isFollowed,
+  //     });
+  //     // setFollowState();
+  //     deleteUserFollowAsync(userToken, otherUser.id);
+  //   } else {
+  //     postUserFollowAsync(userToken, otherUser.id);
+  //     setOtherUser({
+  //       ...otherUser,
+  //       isFollowed: !otherUser.isFollowed,
+  //     });
+  //     // setFollowState("true");
+  //   }
+  // };
 
   const postUserFollowAsync = async (userToken, id) => {
     try {
@@ -134,9 +143,9 @@ function PopularList() {
     const getpopularDataAsync = async () => {
       const userToken = localStorage.getItem("userToken");
       const data = await getpopularData(userToken);
-      console.log(data);
+      // console.log(data);
       // setfollowingData(data);
-      setFollowData(data);
+      setFollowerData(data);
     };
     getpopularDataAsync();
   }, []);
@@ -153,7 +162,7 @@ function PopularList() {
     <Popularstyle className="Popularstyle">
       <h4 className="PopularTitle">推薦跟隨</h4>
       <div className="line"></div>
-      <ul className="popularList">
+      <div className="popularList">
         {/* followingData.map((item) => (
               <PopularCard
                 item={item}
@@ -164,17 +173,17 @@ function PopularList() {
               />
             ))
           :  */}
-        {followData.map((item) => (
+        {followerData.map((item) => (
           <PopularCard
             item={item}
-            key={item.followerId}
+            // key={item.followerId}
             onClick={handleClick}
             onAvatarClick={handleImgClick}
             // onFollowClick={handleFollowClick}
             // handleFollowBtnClick={handleFollowBtnClick}
           />
         ))}
-      </ul>
+      </div>
     </Popularstyle>
   );
 }
