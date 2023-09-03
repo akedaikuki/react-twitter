@@ -1,4 +1,4 @@
-# Simple Twitter
+# React Twitter
 
 此專案使用 React 參考 Twitter 打造一個社交平台 Alphitter，讓使用者可以使用此平台進行註冊、登入、發文、點讚、回覆以及跟隨別人等功能。
 
@@ -51,7 +51,7 @@
 2. 在終端機中輸入以下文字進入專案資料夾：
 
    ```
-   cd simple-twitter
+   cd react-twitter
    ```
 
 3. 在終端機中輸入以下以安裝相關套件：
