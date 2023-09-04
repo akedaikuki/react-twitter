@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/react-twitter/static/css/main.2182f1df.css",
-    "main.js": "/react-twitter/static/js/main.0cfd9a91.js",
+    "main.js": "/react-twitter/static/js/main.9c864b42.js",
     "static/media/adminUserList-icon.svg": "/react-twitter/static/media/adminUserList-icon.3a3e5f7494dc9b69836dafcee872065c.svg",
     "static/media/adminUserListActive-icon.svg": "/react-twitter/static/media/adminUserListActive-icon.37ebf54d981c9ef8df5ff94fe84c7142.svg",
     "static/media/adminHome-icon.svg": "/react-twitter/static/media/adminHome-icon.36f517283743d165e7ebf91cc180a15b.svg",
@@ -30,10 +30,10 @@
     "static/media/liked-icon.svg": "/react-twitter/static/media/liked-icon.7e4abd95d90afc2dc3534c697a22c3b5.svg",
     "static/media/notiCheck.svg": "/react-twitter/static/media/notiCheck.6999c0c5e54e85ec78455abf382d9427.svg",
     "main.2182f1df.css.map": "/react-twitter/static/css/main.2182f1df.css.map",
-    "main.0cfd9a91.js.map": "/react-twitter/static/js/main.0cfd9a91.js.map"
+    "main.9c864b42.js.map": "/react-twitter/static/js/main.9c864b42.js.map"
   },
   "entrypoints": [
     "static/css/main.2182f1df.css",
-    "static/js/main.0cfd9a91.js"
+    "static/js/main.9c864b42.js"
   ]
 }
