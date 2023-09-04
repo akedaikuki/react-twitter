@@ -17,7 +17,6 @@ import SettingPage from "./pages/SettingPage";
 import RaectPage from "./pages/ReactPage";
 import { ErrorProvider } from "./components/contexts/ErrorContext";
 
-
 export const ClickingContext = createContext({
   clicking: false,
   setClicking: null,
@@ -31,40 +30,40 @@ function App() {
   return (
     <div className="App">
       <ErrorProvider>
-      <BrowserRouter>
-        <ClickingContext.Provider value={{ clicking, setClicking }}>
-          {/* <FollowClickContextProvider> */}
-          <Routes>
-            <Route element={<MainPage />}>
-              <Route path="home" element={<HomePage />} />
-              <Route path="users" element={<UserPage />} />
-              {/* <Route path="api/users/:id/replied_tweets" element={<UserPage />} /> */}
-              {/* <Route path="api/users/:id/likes" element={<UserPage />} /> */}
-              <Route path="tweets/:TweetId" element={<TweetPage />} />
-              <Route path="other" element={<OtheruserPage />} />
-              {/* <Route
+        <BrowserRouter>
+          <ClickingContext.Provider value={{ clicking, setClicking }}>
+            {/* <FollowClickContextProvider> */}
+            <Routes>
+              <Route element={<MainPage />}>
+                <Route path="home" element={<HomePage />} />
+                <Route path="users" element={<UserPage />} />
+                {/* <Route path="api/users/:id/replied_tweets" element={<UserPage />} /> */}
+                {/* <Route path="api/users/:id/likes" element={<UserPage />} /> */}
+                <Route path="tweets/:TweetId" element={<TweetPage />} />
+                <Route path="other" element={<OtheruserPage />} />
+                {/* <Route
               path="api/users/:id/replied_tweets"
               element={<OtheruserPage />}
             /> */}
-              {/* <Route path="api/users/:id/likes" element={<OtheruserPage />} /> */}
-              <Route path="users/followers" element={<UserFollowPage />} />
-              <Route path="users/followings" element={<UserFollowPage />} />
-              <Route path="other/followers" element={<OtherFollowPage />} />
-              <Route path="other/followings" element={<OtherFollowPage />} />
-              <Route path="setting" element={<SettingPage />} />
-            </Route>
+                {/* <Route path="api/users/:id/likes" element={<OtheruserPage />} /> */}
+                <Route path="users/followers" element={<UserFollowPage />} />
+                <Route path="users/followings" element={<UserFollowPage />} />
+                <Route path="other/followers" element={<OtherFollowPage />} />
+                <Route path="other/followings" element={<OtherFollowPage />} />
+                <Route path="setting" element={<SettingPage />} />
+              </Route>
 
-            <Route path="login" element={<LoginPage />} />
-            <Route path="users/signin" element={<SignUpPage />} />
-            <Route path="admin/login" element={<AdminLoginPage />} />
-            <Route path="admin/tweets" element={<AdminTweetPage />} />
-            <Route path="admin/users" element={<AdminUserPage />} />
+              <Route path="login" element={<LoginPage />} />
+              <Route path="users/signin" element={<SignUpPage />} />
+              <Route path="admin/login" element={<AdminLoginPage />} />
+              <Route path="admin/tweets" element={<AdminTweetPage />} />
+              <Route path="admin/users" element={<AdminUserPage />} />
 
-            <Route path="/" element={<RaectPage />} />
-          </Routes>
-          {/* </FollowClickContextProvider> */}
-        </ClickingContext.Provider>
-      </BrowserRouter>
+              <Route path="./" element={<RaectPage />} />
+            </Routes>
+            {/* </FollowClickContextProvider> */}
+          </ClickingContext.Provider>
+        </BrowserRouter>
       </ErrorProvider>
     </div>
   );
