@@ -5,7 +5,7 @@
 ## 專案介紹
 
 - 線上部署後的主要頁面
-  - 登入頁
+  - 登入頁 https://akedaikuki.github.io/react-twitter
 
 ## 專案功能
 
