@@ -1,7 +1,7 @@
 {
   "name": "twitter-project",
   "version": "0.1.0",
-  "homepage": "https://akedaikuki.github.io/react-twitter/",
+  "homepage": "https://akedaikuki.github.io/react-twitter/login",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
