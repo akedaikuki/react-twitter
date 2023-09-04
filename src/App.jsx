@@ -59,7 +59,7 @@ function App() {
               <Route path="admin/tweets" element={<AdminTweetPage />} />
               <Route path="admin/users" element={<AdminUserPage />} />
 
-              <Route path="./" element={<RaectPage />} />
+              <Route path="*" element={<RaectPage />} />
             </Routes>
             {/* </FollowClickContextProvider> */}
           </ClickingContext.Provider>
